@@ -85,22 +85,37 @@
 
         .tab-btn {
             flex: 1;
-            padding: 12px;
-            background: rgba(0, 0, 0, 0.6);
-            border: 1px solid var(--neon-purple);
-            color: #ccc;
-            border-radius: 4px;
+            padding: 14px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 255, 255, 0.15);
+            color: #888;
+            border-radius: 8px;
             cursor: pointer;
             font-weight: bold;
+            font-size: 1rem;
+            letter-spacing: 2px;
             transition: 0.3s;
             backdrop-filter: blur(5px);
         }
 
+        .tab-btn:hover {
+            border-color: var(--neon-blue);
+            color: #ccc;
+            background: rgba(0, 255, 255, 0.1);
+        }
+
         .tab-btn.active {
-            border-color: var(--neon-pink);
+            border-color: var(--neon-blue);
+            border-width: 2px;
             color: #fff;
-            box-shadow: 0 0 15px rgba(255, 0, 255, 0.5);
-            transform: translateY(-2px);
+            background: linear-gradient(135deg, rgba(0, 255, 255, 0.2), rgba(0, 255, 255, 0.1));
+            box-shadow:
+                0 0 15px rgba(0, 255, 255, 0.5),
+                0 0 30px rgba(0, 255, 255, 0.2),
+                inset 0 0 15px rgba(0, 255, 255, 0.1);
+            transform: translateY(-3px);
+            text-shadow: 0 0 10px var(--neon-blue);
+            letter-spacing: 3px;
         }
 
         /* --- 卡片與內容 --- */
@@ -412,14 +427,14 @@
                     <div class="card-header"><span class="item-name">立繪壓克力立牌</span><span class="item-price">$650</span>
                     </div>
                     <div class="rows-container" id="stand-rows"></div>
-                    <button class="btn-add-row" onclick="addRow('stand')">+ ADD CHARACTER</button>
+                    <button class="btn-add-row" onclick="addRow('stand')">+ 新增角色</button>
                 </div>
 
                 <div class="item-card" data-group="towel">
                     <div class="card-header"><span class="item-name">立繪毛巾</span><span class="item-price">$80</span>
                     </div>
                     <div class="rows-container" id="towel-rows"></div>
-                    <button class="btn-add-row" onclick="addRow('towel')">+ ADD CHARACTER</button>
+                    <button class="btn-add-row" onclick="addRow('towel')">+ 新增角色</button>
                 </div>
 
                 <div class="item-card" data-group="scroll">
