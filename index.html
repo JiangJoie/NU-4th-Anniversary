@@ -792,7 +792,7 @@
                 total += (parseInt(input.value) || 0) * (parseInt(input.dataset.price) || 0);
             });
 
-            const groups = [{ id: 'stand-rows', p: 650 }, { id: 'towel-rows', p: 80 }, { id: 'scroll-rows', p: 2700 }, { id: 'big-stand-rows', p: 1850 }];
+            const groups = [{ id: 'stand-rows', p: 650 }, { id: 'towel-rows', p: 800 }, { id: 'scroll-rows', p: 2700 }, { id: 'big-stand-rows', p: 1850 }];
             groups.forEach(g => {
                 const el = document.getElementById(g.id);
                 if (el) total += el.children.length * g.p;
@@ -832,7 +832,7 @@
                 { id: 'print-drink-rows', name: '印刷飲料', price: 180 },
                 { id: 'cookie-rows', name: '印刷糖霜餅乾', price: 180 },
                 { id: 'stand-rows', name: '立繪壓克力立牌', price: 650 },
-                { id: 'towel-rows', name: '立繪毛巾', price: 80 },
+                { id: 'towel-rows', name: '立繪毛巾', price: 800 },
                 { id: 'scroll-rows', name: '立繪掛軸', price: 2700 },
                 { id: 'big-stand-rows', name: '放大版立繪立牌', price: 1850 },
             ];
