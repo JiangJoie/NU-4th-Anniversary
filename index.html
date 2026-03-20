@@ -186,18 +186,46 @@
             border-top: 1px solid rgba(255, 255, 255, 0.05);
         }
 
-        select,
-        input {
-            background: #000;
-            border: 1px solid #444;
+        select {
+            background: rgba(0, 0, 0, 0.6);
+            border: 1px solid var(--neon-blue);
             color: #fff;
-            padding: 10px;
-            border-radius: 4px;
+            padding: 10px 12px;
+            border-radius: 6px;
             outline: none;
+            cursor: pointer;
+            font-family: 'PingFang TC', 'Microsoft JhengHei', sans-serif;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+            backdrop-filter: blur(5px);
+            transition: 0.3s;
+            /* 自訂箭頭 */
+            appearance: none;
+            -webkit-appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2300ffff' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 10px center;
+            padding-right: 30px;
+            box-shadow: 0 0 8px rgba(0, 255, 255, 0.15);
+        }
+
+        select:hover {
+            border-color: var(--neon-blue);
+            box-shadow: 0 0 12px rgba(0, 255, 255, 0.4);
+            background-color: rgba(0, 255, 255, 0.05);
         }
 
         select:focus {
             border-color: var(--neon-blue);
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.5),
+                inset 0 0 8px rgba(0, 255, 255, 0.1);
+        }
+
+        /* 下拉選項樣式 */
+        select option {
+            background: #0a0015;
+            color: #fff;
+            padding: 10px;
         }
 
         /* --- 數字控制組 --- */
