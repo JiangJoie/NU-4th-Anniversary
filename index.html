@@ -37,7 +37,6 @@
             overflow-x: hidden;
         }
 
-        /* 隱藏原生數字箭頭 */
         input::-webkit-outer-spin-button,
         input::-webkit-inner-spin-button {
             -webkit-appearance: none;
@@ -73,7 +72,6 @@
             text-shadow: 0 0 10px var(--neon-blue), 0 0 20px var(--neon-blue);
         }
 
-        /* --- 分頁標籤 --- */
         .tabs {
             display: flex;
             gap: 15px;
@@ -118,7 +116,6 @@
             letter-spacing: 3px;
         }
 
-        /* --- 卡片與內容 --- */
         .item-list {
             display: none;
             flex-direction: column;
@@ -199,7 +196,6 @@
             letter-spacing: 1px;
             backdrop-filter: blur(5px);
             transition: 0.3s;
-            /* 自訂箭頭 */
             appearance: none;
             -webkit-appearance: none;
             background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2300ffff' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
@@ -221,14 +217,12 @@
                 inset 0 0 8px rgba(0, 255, 255, 0.1);
         }
 
-        /* 下拉選項樣式 */
         select option {
             background: #0a0015;
             color: #fff;
             padding: 10px;
         }
 
-        /* --- 數字控制組 --- */
         .number-control {
             display: flex;
             align-items: center;
@@ -280,7 +274,6 @@
             border-radius: 4px;
         }
 
-        /* --- 底部與截圖 --- */
         .calculator-footer {
             position: fixed;
             bottom: 0;
@@ -331,7 +324,6 @@
             display: block;
         }
 
-        /* --- 自定義彈窗樣式 --- */
         #custom-alert {
             position: fixed;
             top: 0;
@@ -399,29 +391,25 @@
 
             <div id="tab-food" class="item-list active">
                 <div class="item-card" data-group="drink1">
-                    <div class="card-header"><span class="item-name">前半段飲料 (限3)</span><span
-                            class="item-price">$180</span></div>
+                    <div class="card-header"><span class="item-name">前半段飲料 (限3)</span><span class="item-price">$180</span></div>
                     <div class="rows-container" id="drink1-rows"></div>
                     <button class="btn-add-row" onclick="addRow('drink1')">+ 新增飲料</button>
                 </div>
 
                 <div class="item-card" data-group="drink2">
-                    <div class="card-header"><span class="item-name">後半段飲料 (限3)</span><span
-                            class="item-price">$180</span></div>
+                    <div class="card-header"><span class="item-name">後半段飲料 (限3)</span><span class="item-price">$180</span></div>
                     <div class="rows-container" id="drink2-rows"></div>
                     <button class="btn-add-row" onclick="addRow('drink2')">+ 新增飲料</button>
                 </div>
 
                 <div class="item-card" data-group="print-drink">
-                    <div class="card-header"><span class="item-name">印刷飲料 (限3)</span><span
-                            class="item-price">$180</span></div>
+                    <div class="card-header"><span class="item-name">印刷飲料 (限3)</span><span class="item-price">$180</span></div>
                     <div class="rows-container" id="print-drink-rows"></div>
                     <button class="btn-add-row" onclick="addRow('print-drink')">+ 新增飲料</button>
                 </div>
 
                 <div class="item-card" data-group="cookie">
-                    <div class="card-header"><span class="item-name">印刷糖霜餅乾 (限1)</span><span
-                            class="item-price">$180</span></div>
+                    <div class="card-header"><span class="item-name">印刷糖霜餅乾 (限1)</span><span class="item-price">$180</span></div>
                     <div class="rows-container" id="cookie-rows"></div>
                     <button class="btn-add-row" id="btn-add-cookie" onclick="addRow('cookie')">+ 新增餅乾</button>
                 </div>
@@ -433,15 +421,11 @@
                     </div>
                     <div class="number-control">
                         <button type="button" class="btn-qty" onclick="changeQty('coaster-qty', -1, 99)">−</button>
-
-                        <input type="number" id="coaster-qty" class="qty-input-styled" value="0" min="0" disabled
-                            oninput="validateCoaster(this)">
-
+                        <input type="number" id="coaster-qty" class="qty-input-styled" value="0" min="0" disabled oninput="validateCoaster(this)">
                         <button type="button" class="btn-qty" onclick="changeQty('coaster-qty', 1, 99)">+</button>
                     </div>
                     <div style="margin-top: 10px;">
-                        <span id="coaster-limit-info"
-                            style="color:rgb(255, 140, 140); font-size: 0.75rem; font-weight: 600;">
+                        <span id="coaster-limit-info" style="color:rgb(255, 140, 140); font-size: 0.75rem; font-weight: 600;">
                             ※ 點飲料及餅乾後才可加購
                         </span>
                     </div>
@@ -452,40 +436,34 @@
                 <div id="simple-goods-container"></div>
 
                 <div class="item-card" data-group="stand">
-                    <div class="card-header"><span class="item-name">立繪壓克力立牌</span><span class="item-price">$650</span>
-                    </div>
+                    <div class="card-header"><span class="item-name">立繪壓克力立牌</span><span class="item-price">$650</span></div>
                     <div class="rows-container" id="stand-rows"></div>
                     <button class="btn-add-row" onclick="addRow('stand')">+ 新增角色</button>
                 </div>
 
                 <div class="item-card" data-group="towel">
-                    <div class="card-header"><span class="item-name">立繪毛巾</span><span class="item-price">$80</span>
-                    </div>
+                    <div class="card-header"><span class="item-name">立繪毛巾</span><span class="item-price">$80</span></div>
                     <div class="rows-container" id="towel-rows"></div>
                     <button class="btn-add-row" onclick="addRow('towel')">+ 新增角色</button>
                 </div>
 
                 <div class="item-card" data-group="scroll">
-                    <div class="card-header"><span class="item-name">立繪掛軸</span><span class="item-price">$2700</span>
-                    </div>
+                    <div class="card-header"><span class="item-name">立繪掛軸</span><span class="item-price">$2700</span></div>
                     <div class="rows-container" id="scroll-rows"></div>
                     <button class="btn-add-row" onclick="addRow('scroll')">+ 新增角色</button>
                 </div>
 
                 <div class="item-card" data-group="big-stand">
-                    <div class="card-header"><span class="item-name">放大版立繪立牌</span><span class="item-price">$1850</span>
-                    </div>
+                    <div class="card-header"><span class="item-name">放大版立繪立牌</span><span class="item-price">$1850</span></div>
                     <div class="rows-container" id="big-stand-rows"></div>
                     <button class="btn-add-row" onclick="addRow('big-stand')">+ 新增角色</button>
                 </div>
 
                 <div class="item-card">
-                    <div class="card-header"><span class="item-name">伊得超大型立牌</span><span class="item-price">$1350</span>
-                    </div>
+                    <div class="card-header"><span class="item-name">伊得超大型立牌</span><span class="item-price">$1350</span></div>
                     <div class="number-control">
                         <button type="button" class="btn-qty" onclick="changeQty('qty-big-eiden', -1, 99)">−</button>
-                        <input type="number" id="qty-big-eiden" class="qty-input-styled goods-qty" data-price="1350"
-                            data-max="99" value="0" min="0" oninput="validateAndCalc(this)">
+                        <input type="number" id="qty-big-eiden" class="qty-input-styled goods-qty" data-price="1350" data-max="99" value="0" min="0" oninput="validateAndCalc(this)">
                         <button type="button" class="btn-qty" onclick="changeQty('qty-big-eiden', 1, 99)">+</button>
                     </div>
                 </div>
@@ -493,13 +471,11 @@
 
             <div id="screenshot-total">
                 <div class="total-label">總金額：NT$</div>
-                <div style="font-size: 2rem; font-weight: bold; color: var(--neon-blue);">NT$ <span
-                        id="print-total-price">0</span></div>
+                <div style="font-size: 2rem; font-weight: bold; color: var(--neon-blue);">NT$ <span id="print-total-price">0</span></div>
             </div>
         </div>
 
         <footer class="calculator-footer">
-            <!-- <button class="action-btn" id="btn-capture">產出清單圖片</button> -->
             <button class="action-btn" onclick="exportToExcel()">產出Excel清單</button>
             <div class="total-container">
                 <div class="total-label">總金額:</div>
@@ -526,11 +502,11 @@
             { name: "裝飾卡套", price: 200, max: 10 }
         ];
 
-        // 彈窗控制
         function showAlert(msg) {
             document.getElementById('alert-msg').innerText = msg;
             document.getElementById('custom-alert').style.display = 'flex';
         }
+
         function closeAlert() {
             document.getElementById('custom-alert').style.display = 'none';
         }
@@ -548,7 +524,7 @@
                     </div>
                     <div class="number-control">
                         <button class="btn-qty" onclick="changeQty('${inputId}', -1, ${item.max})">−</button>
-                        <input type="number" id="${inputId}" class="qty-input-styled goods-qty" 
+                        <input type="number" id="${inputId}" class="qty-input-styled goods-qty"
                             data-price="${item.price}" data-max="${item.max}" value="0" min="0" oninput="validateAndCalc(this)">
                         <button class="btn-qty" onclick="changeQty('${inputId}', 1, ${item.max})">+</button>
                     </div>
@@ -703,98 +679,11 @@
             document.getElementById('print-total-price').innerText = total.toLocaleString();
         }
 
-        function downloadReceipt() {
-            // 1. 建立一個虛擬的 div 用來排版 (不顯示在畫面上)
-            const printArea = document.createElement('div');
-            printArea.style.cssText = `
-                width: 400px; 
-                padding: 30px; 
-                background-color: #1a1a1a; 
-                color: #fff; 
-                font-family: "Microsoft JhengHei", sans-serif;
-                position: absolute; 
-                left: -9999px;
-            `;
-
-            // 2. 標題
-            let htmlContent = `
-                <div style="text-align: center; border-bottom: 2px solid gold; padding-bottom: 15px; margin-bottom: 20px;">
-                    <h2 style="color: gold; margin: 0;">【4週年購物清單】</h2>
-                </div>
-            `;
-
-            let totalAmount = 0;
-            let hasItems = false;
-
-            // 3. 精準抓取：遍歷所有的 item-card
-            const cards = document.querySelectorAll('.item-card');
-
-            cards.forEach(card => {
-                const input = card.querySelector('input[type="number"]');
-                const qty = parseInt(input.value) || 0;
-
-                if (qty > 0) {
-                    hasItems = true;
-                    const name = card.querySelector('.item-name').innerText;
-                    const priceText = card.querySelector('.item-price').innerText.replace('$', '').replace(/,/g, '');
-                    const price = parseInt(priceText);
-                    const subtotal = price * qty;
-                    totalAmount += subtotal;
-
-                    htmlContent += `
-                        <div style="display: flex; justify-content: space-between; margin-bottom: 12px; font-size: 1.1rem;">
-                            <span>${name} <small style="color: #aaa;">x${qty}</small></span>
-                            <span style="color: #00ffcc;">$${subtotal}</span>
-                        </div>
-                    `;
-                }
-            });
-
-            if (!hasItems) {
-                alert("尚未勾選任何品項喔！");
-                return;
-            }
-
-            // 4. 結尾總計
-            htmlContent += `
-                <div style="margin-top: 20px; padding-top: 15px; border-top: 1px solid #444; text-align: right;">
-                    <span style="font-size: 1.2rem;">總計金額：</span>
-                    <span style="font-size: 1.5rem; color: gold; font-weight: bold;">$${totalAmount}</span>
-                </div>
-                <div style="text-align: center; margin-top: 20px; color: #888; font-size: 0.8rem;">
-                    感謝您的參與，期待下次再見！
-                </div>
-            `;
-
-            printArea.innerHTML = htmlContent;
-            document.body.appendChild(printArea);
-
-            // 5. 使用 html2canvas 轉成圖片
-            html2canvas(printArea, {
-                useCORS: true,        // 解決跨網域圖片問題
-                allowTaint: true,
-                backgroundColor: "#1a1a1a",
-                scale: 2              // 讓圖片更清晰
-            }).then(canvas => {
-                const link = document.createElement('a');
-                link.style.display = 'none';
-                link.href = canvas.toDataURL("image/png");
-                link.download = '4週年購物清單.png'; // 強制設定檔名
-                document.body.appendChild(link);
-                link.click();
-
-                // 清理環境
-                document.body.removeChild(link);
-                document.body.removeChild(printArea);
-            });
-        }
-
         function exportToExcel() {
             const data = [["品項名稱", "選擇內容", "單價", "數量", "小計"]];
             let totalAmount = 0;
             let hasItems = false;
 
-            // --- 1. 多行選擇型品項（每列單獨一行，顯示選單內容）---
             const rowGroups = [
                 { id: 'drink1-rows', name: '前半段飲料', price: 180 },
                 { id: 'drink2-rows', name: '後半段飲料', price: 180 },
@@ -812,21 +701,15 @@
                 const rows = container.children;
                 if (rows.length === 0) return;
 
-                // 每一列（每筆選擇）單獨輸出一行
                 Array.from(rows).forEach(row => {
                     const selects = row.querySelectorAll('select');
-                    // 把該列所有下拉選單的值合併，例如「伊得 / 冰紅茶 / 椰果」
-                    const selectedValues = Array.from(selects)
-                        .map(s => s.value)
-                        .join(' / ');
-
+                    const selectedValues = Array.from(selects).map(s => s.value).join(' / ');
                     hasItems = true;
                     totalAmount += g.price;
                     data.push([g.name, selectedValues, g.price, 1, g.price]);
                 });
             });
 
-            // --- 2. 數字輸入型品項（杯墊、周邊、超大型立牌）---
             document.querySelectorAll('input.qty-input-styled').forEach(input => {
                 const qty = parseInt(input.value) || 0;
                 if (qty > 0) {
@@ -857,18 +740,6 @@
             XLSX.utils.book_append_sheet(wb, ws, "購物清單");
             XLSX.writeFile(wb, "4週年購物清單.xlsx");
         }
-
-        document.getElementById('btn-capture').addEventListener('click', function () {
-            const area = document.getElementById('capture-area');
-            area.classList.add('is-screenshot');
-            html2canvas(area, { backgroundColor: "#0a0015", scale: 2, useCORS: true }).then(canvas => {
-                const link = document.createElement('a');
-                link.download = 'Neon-Rush-Order.png';
-                link.href = canvas.toDataURL('image/png');
-                link.click();
-                area.classList.remove('is-screenshot');
-            });
-        });
 
         init();
     </script>
