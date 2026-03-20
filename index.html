@@ -81,7 +81,8 @@
             z-index: 50;
         }
 
-        .tab-btn {
+        .tab-btn,
+        a.tab-btn {
             flex: 1;
             padding: 14px;
             background: rgba(255, 255, 255, 0.05);
@@ -94,15 +95,18 @@
             letter-spacing: 2px;
             transition: 0.3s;
             backdrop-filter: blur(5px);
+            text-decoration: none;
         }
 
-        .tab-btn:hover {
+        .tab-btn:hover,
+        a.tab-btn:hover {
             border-color: var(--neon-blue);
             color: #ccc;
             background: rgba(0, 255, 255, 0.1);
         }
 
-        .tab-btn.active {
+        .tab-btn.active,
+        a.tab-btn.active {
             border-color: var(--neon-blue);
             border-width: 2px;
             color: #fff;
@@ -366,6 +370,74 @@
             cursor: pointer;
             text-transform: uppercase;
         }
+
+        .card-img {
+            width: 100%;
+            border-radius: 6px;
+            margin: 10px 0;
+            display: block;
+        }
+
+        #bonus-panel {
+            margin: 20px 0 0 0;
+            padding: 16px 20px;
+            background: rgba(0, 255, 255, 0.05);
+            border: 1px solid var(--neon-blue);
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.1);
+        }
+
+        .bonus-title {
+            text-align: center;
+            color: var(--neon-blue);
+            font-weight: bold;
+            letter-spacing: 4px;
+            margin-bottom: 14px;
+            text-shadow: 0 0 8px var(--neon-blue);
+            font-size: 0.95rem;
+        }
+
+        .bonus-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .bonus-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 12px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 6px;
+            border-left: 3px solid var(--neon-blue);
+        }
+
+        .bonus-name {
+            color: #ccc;
+            font-size: 0.9rem;
+        }
+
+        .bonus-name small {
+            color: #888;
+            font-size: 0.75rem;
+            margin-left: 4px;
+        }
+
+        .bonus-val {
+            font-family: monospace;
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: var(--neon-blue);
+            text-shadow: 0 0 8px var(--neon-blue);
+            min-width: 30px;
+            text-align: right;
+        }
+
+        .bonus-val.has-bonus {
+            color: var(--neon-pink);
+            text-shadow: 0 0 8px var(--neon-pink);
+        }
     </style>
 </head>
 
@@ -387,31 +459,41 @@
             <div class="tabs">
                 <button class="tab-btn active" onclick="showTab('food')">飲料 & 餅乾</button>
                 <button class="tab-btn" onclick="showTab('goods')">周邊</button>
+                <a href="https://animate-cafe.com" target="_blank" class="tab-btn" style="display: flex; justify-content: center;">安咖官網</a>
             </div>
 
             <div id="tab-food" class="item-list active">
                 <div class="item-card" data-group="drink1">
-                    <div class="card-header"><span class="item-name">前半段飲料 (限3)</span><span class="item-price">$180</span></div>
+                    <div class="card-header"><span class="item-name">前半段飲料 (限3)</span><span
+                            class="item-price">$180</span></div>
                     <div class="rows-container" id="drink1-rows"></div>
+                    <!-- 圖片 -->
                     <button class="btn-add-row" onclick="addRow('drink1')">+ 新增飲料</button>
+                    <img src="images/1.png" class="card-img" alt="前半段飲料">
                 </div>
 
                 <div class="item-card" data-group="drink2">
-                    <div class="card-header"><span class="item-name">後半段飲料 (限3)</span><span class="item-price">$180</span></div>
+                    <div class="card-header"><span class="item-name">後半段飲料 (限3)</span><span
+                            class="item-price">$180</span></div>
                     <div class="rows-container" id="drink2-rows"></div>
                     <button class="btn-add-row" onclick="addRow('drink2')">+ 新增飲料</button>
+                    <img src="images/2.png" class="card-img" alt="後半段飲料">
                 </div>
 
                 <div class="item-card" data-group="print-drink">
-                    <div class="card-header"><span class="item-name">印刷飲料 (限3)</span><span class="item-price">$180</span></div>
+                    <div class="card-header"><span class="item-name">印刷飲料 (限3)</span><span
+                            class="item-price">$180</span></div>
                     <div class="rows-container" id="print-drink-rows"></div>
                     <button class="btn-add-row" onclick="addRow('print-drink')">+ 新增飲料</button>
+                    <img src="images/3.png" class="card-img" alt="印刷飲料">
                 </div>
 
                 <div class="item-card" data-group="cookie">
-                    <div class="card-header"><span class="item-name">印刷糖霜餅乾 (限1)</span><span class="item-price">$180</span></div>
+                    <div class="card-header"><span class="item-name">印刷糖霜餅乾 (限1)</span><span
+                            class="item-price">$180</span></div>
                     <div class="rows-container" id="cookie-rows"></div>
                     <button class="btn-add-row" id="btn-add-cookie" onclick="addRow('cookie')">+ 新增餅乾</button>
+                    <img src="images/4.png" class="card-img" alt="印刷糖霜餅乾">
                 </div>
 
                 <div class="item-card" id="coaster-card" style="border-left-color: gold;">
@@ -421,14 +503,17 @@
                     </div>
                     <div class="number-control">
                         <button type="button" class="btn-qty" onclick="changeQty('coaster-qty', -1, 99)">−</button>
-                        <input type="number" id="coaster-qty" class="qty-input-styled" value="0" min="0" disabled oninput="validateCoaster(this)">
+                        <input type="number" id="coaster-qty" class="qty-input-styled" value="0" min="0" disabled
+                            oninput="validateCoaster(this)">
                         <button type="button" class="btn-qty" onclick="changeQty('coaster-qty', 1, 99)">+</button>
                     </div>
                     <div style="margin-top: 10px;">
-                        <span id="coaster-limit-info" style="color:rgb(255, 140, 140); font-size: 0.75rem; font-weight: 600;">
+                        <span id="coaster-limit-info"
+                            style="color:rgb(255, 140, 140); font-size: 0.75rem; font-weight: 600;">
                             ※ 點飲料及餅乾後才可加購
                         </span>
                     </div>
+                    <img src="images/5.png" class="card-img" alt="壓克力杯墊">
                 </div>
             </div>
 
@@ -436,42 +521,80 @@
                 <div id="simple-goods-container"></div>
 
                 <div class="item-card" data-group="stand">
-                    <div class="card-header"><span class="item-name">立繪壓克力立牌</span><span class="item-price">$650</span></div>
+                    <div class="card-header"><span class="item-name">立繪壓克力立牌</span><span class="item-price">$650</span>
+                    </div>
                     <div class="rows-container" id="stand-rows"></div>
                     <button class="btn-add-row" onclick="addRow('stand')">+ 新增角色</button>
+                    <img src="images/14.png" class="card-img" alt="立繪壓克力立牌">
                 </div>
 
                 <div class="item-card" data-group="towel">
-                    <div class="card-header"><span class="item-name">立繪毛巾</span><span class="item-price">$80</span></div>
+                    <div class="card-header"><span class="item-name">立繪毛巾</span><span class="item-price">$80</span>
+                    </div>
                     <div class="rows-container" id="towel-rows"></div>
                     <button class="btn-add-row" onclick="addRow('towel')">+ 新增角色</button>
+                    <img src="images/15.png" class="card-img" alt="立繪毛巾">
                 </div>
 
                 <div class="item-card" data-group="scroll">
-                    <div class="card-header"><span class="item-name">立繪掛軸</span><span class="item-price">$2700</span></div>
+                    <div class="card-header"><span class="item-name">立繪掛軸</span><span class="item-price">$2700</span>
+                    </div>
                     <div class="rows-container" id="scroll-rows"></div>
                     <button class="btn-add-row" onclick="addRow('scroll')">+ 新增角色</button>
+                    <img src="images/16.png" class="card-img" alt="立繪掛軸">
                 </div>
 
                 <div class="item-card" data-group="big-stand">
-                    <div class="card-header"><span class="item-name">放大版立繪立牌</span><span class="item-price">$1850</span></div>
+                    <div class="card-header"><span class="item-name">放大版立繪立牌</span><span class="item-price">$1850</span>
+                    </div>
                     <div class="rows-container" id="big-stand-rows"></div>
                     <button class="btn-add-row" onclick="addRow('big-stand')">+ 新增角色</button>
+                    <img src="images/17.png" class="card-img" alt="放大版立繪立牌">
                 </div>
 
                 <div class="item-card">
-                    <div class="card-header"><span class="item-name">伊得超大型立牌</span><span class="item-price">$1350</span></div>
+                    <div class="card-header"><span class="item-name">伊得超大型立牌</span><span class="item-price">$1350</span>
+                    </div>
                     <div class="number-control">
                         <button type="button" class="btn-qty" onclick="changeQty('qty-big-eiden', -1, 99)">−</button>
-                        <input type="number" id="qty-big-eiden" class="qty-input-styled goods-qty" data-price="1350" data-max="99" value="0" min="0" oninput="validateAndCalc(this)">
+                        <input type="number" id="qty-big-eiden" class="qty-input-styled goods-qty" data-price="1350"
+                            data-max="99" value="0" min="0" oninput="validateAndCalc(this)">
                         <button type="button" class="btn-qty" onclick="changeQty('qty-big-eiden', 1, 99)">+</button>
+                    </div>
+                    <img src="images/18.png" class="card-img" alt="伊得超大型立牌">
+                </div>
+            </div>
+
+            <div id="bonus-panel">
+                <div class="bonus-title">✦ 特典獲得一覽 ✦</div>
+                <div class="bonus-grid">
+                    <div class="bonus-item">
+                        <span class="bonus-name">特典杯墊</span>
+                        <span class="bonus-val" id="bonus-coaster">0</span>
+                    </div>
+                    <div class="bonus-item">
+                        <span class="bonus-name">特典小卡 <small>(滿$600)</small></span>
+                        <span class="bonus-val" id="bonus-card">0</span>
+                    </div>
+                    <div class="bonus-item">
+                        <span class="bonus-name">限定寫真 <small>(滿$800)</small></span>
+                        <span class="bonus-val" id="bonus-photo">0</span>
+                    </div>
+                    <div class="bonus-item">
+                        <span class="bonus-name">生日寫真 <small>(滿$800)</small></span>
+                        <span class="bonus-val" id="bonus-bday">0</span>
+                    </div>
+                    <div class="bonus-item">
+                        <span class="bonus-name">特典迎賓卡 <small>(滿$1200)</small></span>
+                        <span class="bonus-val" id="bonus-welcome">0</span>
                     </div>
                 </div>
             </div>
 
             <div id="screenshot-total">
                 <div class="total-label">總金額：NT$</div>
-                <div style="font-size: 2rem; font-weight: bold; color: var(--neon-blue);">NT$ <span id="print-total-price">0</span></div>
+                <div style="font-size: 2rem; font-weight: bold; color: var(--neon-blue);">NT$ <span
+                        id="print-total-price">0</span></div>
             </div>
         </div>
 
@@ -528,6 +651,7 @@
                             data-price="${item.price}" data-max="${item.max}" value="0" min="0" oninput="validateAndCalc(this)">
                         <button class="btn-qty" onclick="changeQty('${inputId}', 1, ${item.max})">+</button>
                     </div>
+                    <img src="images/${index + 6}.png" class="card-img" alt="${item.name}">
                 </div>`;
             });
         }
@@ -677,6 +801,25 @@
 
             document.getElementById('total-price').innerText = total.toLocaleString();
             document.getElementById('print-total-price').innerText = total.toLocaleString();
+
+            // 特典計算
+            const bonusCoaster = totalFood;
+            const bonusCard = Math.floor(total / 600);
+            const bonusPhoto = Math.floor(total / 800);
+            const bonusBday = Math.floor(total / 800);
+            const bonusWelcome = Math.floor(total / 1200);
+
+            const setBonus = (id, val) => {
+                const el = document.getElementById(id);
+                el.innerText = val;
+                el.className = 'bonus-val' + (val > 0 ? ' has-bonus' : '');
+            };
+
+            setBonus('bonus-coaster', bonusCoaster);
+            setBonus('bonus-card', bonusCard);
+            setBonus('bonus-photo', bonusPhoto);
+            setBonus('bonus-bday', bonusBday);
+            setBonus('bonus-welcome', bonusWelcome);
         }
 
         function exportToExcel() {
@@ -733,12 +876,33 @@
                 return;
             }
 
-            data.push([], ["", "", "", "總計金額：", totalAmount]);
+            const totalFood2 = document.getElementById('drink1-rows').children.length +
+                document.getElementById('drink2-rows').children.length +
+                document.getElementById('print-drink-rows').children.length +
+                document.getElementById('cookie-rows').children.length;
+
+            const bonusCoaster = totalFood2;
+            const bonusCard = Math.floor(totalAmount / 600);
+            const bonusPhoto = Math.floor(totalAmount / 800);
+            const bonusBday = Math.floor(totalAmount / 800);
+            const bonusWelcome = Math.floor(totalAmount / 1200);
+
+            data.push(
+                [],
+                ["✦ 特典獲得一覽 ✦", "", "", "", ""],
+                ["特典杯墊", "", "", "", bonusCoaster],
+                ["特典小卡 (滿$600)", "", "", "", bonusCard],
+                ["限定寫真 (滿$800)", "", "", "", bonusPhoto],
+                ["生日寫真 (滿$800)", "", "", "", bonusBday],
+                ["特典迎賓卡 (滿$1200)", "", "", "", bonusWelcome],
+                [],
+                ["", "", "", "總計金額：", totalAmount]
+            );
 
             const ws = XLSX.utils.aoa_to_sheet(data);
             const wb = XLSX.utils.book_new();
-            XLSX.utils.book_append_sheet(wb, ws, "購物清單");
-            XLSX.writeFile(wb, "4週年購物清單.xlsx");
+            XLSX.utils.book_append_sheet(wb, ws, "購買清單");
+            XLSX.writeFile(wb, "4週年安咖購買清單.xlsx");
         }
 
         init();
