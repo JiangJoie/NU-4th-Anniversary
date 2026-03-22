@@ -113,6 +113,82 @@
         margin: 14px auto 0;
         border-radius: 2px;
       }
+
+      /* Room Bar */
+      #room-bar {
+        margin: 0 16px 16px;
+        padding: 12px 16px;
+        background: rgba(45, 212, 191, 0.06);
+        border: 1px solid rgba(45, 212, 191, 0.25);
+        border-radius: 12px;
+      }
+      .room-bar-top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+      }
+      .room-code-label {
+        font-size: 0.7rem;
+        color: var(--text-dim);
+        letter-spacing: 1px;
+      }
+      .room-code-val {
+        font-family: "Space Mono", monospace;
+        font-size: 0.95rem;
+        font-weight: 700;
+        color: var(--teal);
+        letter-spacing: 3px;
+      }
+      .room-name-val {
+        font-size: 0.8rem;
+        color: var(--text-dim);
+        margin-top: 2px;
+      }
+      .room-actions {
+        display: flex;
+        gap: 6px;
+      }
+      .room-btn {
+        background: rgba(45, 212, 191, 0.1);
+        border: 1px solid rgba(45, 212, 191, 0.3);
+        color: var(--teal);
+        padding: 7px 12px;
+        border-radius: 8px;
+        font-size: 0.78rem;
+        font-weight: 700;
+        cursor: pointer;
+        font-family: "Noto Sans TC", sans-serif;
+        transition: 0.2s;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        white-space: nowrap;
+      }
+      .room-btn:hover {
+        background: rgba(45, 212, 191, 0.2);
+      }
+      .room-members {
+        display: flex;
+        gap: 6px;
+        flex-wrap: wrap;
+        margin-top: 10px;
+      }
+      .member-badge {
+        background: rgba(167, 139, 250, 0.12);
+        border: 1px solid rgba(167, 139, 250, 0.25);
+        color: #c4b5fd;
+        padding: 3px 10px;
+        border-radius: 99px;
+        font-size: 0.75rem;
+        font-weight: 600;
+      }
+      .member-badge.me {
+        background: rgba(167, 139, 250, 0.25);
+        border-color: rgba(167, 139, 250, 0.5);
+        color: #fff;
+      }
+
       .tabs {
         display: flex;
         gap: 8px;
@@ -236,6 +312,7 @@
         margin: 10px 0;
         display: block;
         opacity: 0.92;
+        cursor: zoom-in;
       }
       .controls {
         display: flex;
@@ -323,9 +400,6 @@
       .btn-add-row {
         background: rgba(167, 139, 250, 0.28);
         border: 1.5px solid rgba(167, 139, 250, 0.7);
-        box-shadow:
-          0 0 20px rgba(167, 139, 250, 0.45),
-          inset 0 0 16px rgba(167, 139, 250, 0.1);
         color: #fff;
         padding: 13px;
         width: 100%;
@@ -343,11 +417,9 @@
         text-shadow: 0 0 8px rgba(167, 139, 250, 0.6);
       }
       .btn-add-row:hover {
-        background: rgba(167, 139, 250, 0.28);
+        background: rgba(167, 139, 250, 0.35);
         border-color: #a78bfa;
-        box-shadow:
-          0 0 20px rgba(167, 139, 250, 0.45),
-          inset 0 0 16px rgba(167, 139, 250, 0.1);
+        box-shadow: 0 0 20px rgba(167, 139, 250, 0.45);
       }
       .btn-add-row:active {
         transform: scale(0.98);
@@ -449,8 +521,6 @@
         gap: 16px;
       }
       .action-btn {
-        /* background: linear-gradient(135deg, var(--purple), var(--pink)); */
-        /* border: none; */
         color: #fff;
         padding: 12px 18px;
         border-radius: 10px;
@@ -529,6 +599,8 @@
       #screenshot-total {
         display: none;
       }
+
+      /* Summary Modal */
       #summary-modal {
         position: fixed;
         inset: 0;
@@ -583,9 +655,6 @@
         padding: 16px 20px;
         overflow-y: auto;
         flex: 1;
-      }
-      .summary-section {
-        margin-bottom: 16px;
       }
       .summary-section-title {
         font-size: 0.7rem;
@@ -666,17 +735,249 @@
       .summary-dl-btn:hover {
         box-shadow: 0 0 24px rgba(56, 189, 248, 0.45);
       }
+      .summary-dl-btn:disabled {
+        opacity: 0.35;
+        cursor: not-allowed;
+        box-shadow: none;
+        pointer-events: none;
+      }
       .summary-empty {
         text-align: center;
         color: var(--text-dim);
         padding: 30px 0;
         font-size: 0.9rem;
       }
-      .summary-dl-btn:disabled {
-        opacity: 0.35;
-        cursor: not-allowed;
-        box-shadow: none;
-        pointer-events: none;
+
+      /* Room Modal */
+      #room-modal {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.88);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 10000;
+        backdrop-filter: blur(16px);
+        padding: 20px;
+      }
+      .room-box {
+        background: #0f0720;
+        border: 1px solid rgba(45, 212, 191, 0.35);
+        border-radius: 20px;
+        width: 100%;
+        max-width: 380px;
+        padding: 32px 28px;
+        box-shadow: 0 0 50px rgba(45, 212, 191, 0.15);
+      }
+      .room-box h2 {
+        font-size: 1.1rem;
+        font-weight: 700;
+        letter-spacing: 2px;
+        text-align: center;
+        margin-bottom: 6px;
+        background: linear-gradient(135deg, var(--teal), var(--purple));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+      .room-box p {
+        text-align: center;
+        color: var(--text-dim);
+        font-size: 0.82rem;
+        margin-bottom: 24px;
+      }
+      .room-input {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        color: #fff;
+        padding: 13px 16px;
+        border-radius: 10px;
+        font-size: 0.95rem;
+        font-family: "Noto Sans TC", sans-serif;
+        outline: none;
+        transition: 0.2s;
+        width: 100%;
+        margin-bottom: 10px;
+      }
+      .room-input:focus {
+        border-color: var(--teal);
+        box-shadow: 0 0 0 3px var(--teal-dim);
+      }
+      .room-input::placeholder {
+        color: var(--text-dim);
+      }
+      .room-submit-btn {
+        width: 100%;
+        padding: 13px;
+        border: none;
+        border-radius: 10px;
+        font-weight: 700;
+        font-size: 0.95rem;
+        cursor: pointer;
+        font-family: "Noto Sans TC", sans-serif;
+        transition: 0.2s;
+        margin-bottom: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+      }
+      .room-submit-btn.create {
+        background: linear-gradient(135deg, var(--teal), var(--purple));
+        color: #fff;
+      }
+      .room-submit-btn.join {
+        background: rgba(167, 139, 250, 0.15);
+        border: 1px solid rgba(167, 139, 250, 0.4);
+        color: #c4b5fd;
+      }
+      .room-submit-btn:hover {
+        opacity: 0.88;
+      }
+      .room-divider {
+        text-align: center;
+        color: var(--text-dim);
+        font-size: 0.78rem;
+        margin: 14px 0;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .room-divider::before,
+      .room-divider::after {
+        content: "";
+        flex: 1;
+        height: 1px;
+        background: var(--border);
+      }
+
+      /* Members Modal */
+      #members-modal {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.82);
+        display: none;
+        justify-content: center;
+        align-items: center;
+        z-index: 9997;
+        backdrop-filter: blur(12px);
+        padding: 20px;
+      }
+      .members-box {
+        background: #0f0720;
+        border: 1px solid rgba(167, 139, 250, 0.3);
+        border-radius: 16px;
+        width: 100%;
+        max-width: 400px;
+        max-height: 75vh;
+        display: flex;
+        flex-direction: column;
+        box-shadow: 0 0 40px rgba(167, 139, 250, 0.15);
+      }
+      .members-header {
+        padding: 16px 20px;
+        border-bottom: 1px solid var(--border);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .members-title {
+        font-family: "Space Mono", monospace;
+        font-size: 0.78rem;
+        letter-spacing: 3px;
+        color: var(--purple);
+      }
+      .members-body {
+        padding: 16px 20px;
+        overflow-y: auto;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+      .member-card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        padding: 12px 16px;
+      }
+      .member-card-name {
+        font-weight: 700;
+        font-size: 0.9rem;
+        color: #fff;
+        margin-bottom: 8px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+      .you-tag {
+        font-size: 0.65rem;
+        background: rgba(167, 139, 250, 0.2);
+        border: 1px solid rgba(167, 139, 250, 0.35);
+        color: var(--purple);
+        padding: 2px 7px;
+        border-radius: 99px;
+      }
+      .member-item-row {
+        font-size: 0.8rem;
+        color: var(--text-dim);
+        padding: 5px 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+        display: flex;
+        justify-content: space-between;
+      }
+      .member-item-row:last-child {
+        border-bottom: none;
+      }
+      .member-subtotal {
+        margin-top: 8px;
+        font-size: 0.82rem;
+        font-weight: 700;
+        color: var(--pink);
+        text-align: right;
+      }
+      .members-footer {
+        padding: 14px 20px;
+        border-top: 1px solid var(--border);
+      }
+      .members-export-btn {
+        width: 100%;
+        padding: 12px;
+        background: linear-gradient(
+          135deg,
+          rgba(248, 56, 239, 0.3),
+          rgba(252, 125, 229, 0.15)
+        );
+        border: 1px solid rgba(252, 125, 201, 0.5);
+        color: #fff;
+        border-radius: 10px;
+        font-weight: 700;
+        cursor: pointer;
+        font-family: "Noto Sans TC", sans-serif;
+        font-size: 0.88rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+      }
+
+      /* Lightbox */
+      #img-lightbox {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.9);
+        display: none;
+        justify-content: center;
+        align-items: center;
+        z-index: 99999;
+        backdrop-filter: blur(8px);
+        cursor: zoom-out;
+      }
+      #img-lightbox img {
+        max-width: 90%;
+        max-height: 90vh;
+        border-radius: 12px;
+        box-shadow: 0 0 40px rgba(0, 0, 0, 0.8);
       }
     </style>
   </head>
@@ -687,6 +988,116 @@
         <button class="alert-btn" onclick="closeAlert()">確認</button>
       </div>
     </div>
+
+    <!-- 房間 Modal -->
+    <div id="room-modal">
+      <div class="room-box">
+        <h2>animate cafe 試算</h2>
+        <p>建立或加入房間，與同伴一起規劃</p>
+
+        <input
+          class="room-input"
+          id="input-name-create"
+          placeholder="你的名字（必填）"
+          maxlength="10"
+        />
+        <button class="room-submit-btn create" onclick="createRoom()">
+          <span class="material-symbols-rounded" style="font-size: 1rem"
+            >add_circle</span
+          >建立新房間
+        </button>
+
+        <div class="room-divider">或加入現有房間</div>
+
+        <input
+          class="room-input"
+          id="input-name-join"
+          placeholder="你的名字（必填）"
+          maxlength="10"
+        />
+        <input
+          class="room-input"
+          id="input-room-code"
+          placeholder="輸入房間代碼（如 CAFE-A3X9）"
+          maxlength="10"
+          style="text-transform: uppercase; letter-spacing: 2px"
+        />
+        <button class="room-submit-btn join" onclick="joinRoom()">
+          <span class="material-symbols-rounded" style="font-size: 1rem"
+            >login</span
+          >加入房間
+        </button>
+      </div>
+    </div>
+
+    <!-- 成員清單 Modal -->
+    <div
+      id="members-modal"
+      onclick="if (event.target === this) closeMembersModal();"
+    >
+      <div class="members-box">
+        <div class="members-header">
+          <span class="members-title">✦ 所有人的清單 ✦</span>
+          <button class="summary-close" onclick="closeMembersModal()">✕</button>
+        </div>
+        <div class="members-body" id="members-body"></div>
+        <div class="members-footer" style="display: flex; gap: 10px">
+          <button class="members-export-btn" onclick="exportAllToExcel()">
+            <span class="material-symbols-rounded" style="font-size: 1rem"
+              >table_view</span
+            >匯出 Excel
+          </button>
+          <button
+            class="members-export-btn"
+            onclick="downloadMembersImage()"
+            style="
+              background: linear-gradient(
+                135deg,
+                rgba(56, 189, 248, 0.2),
+                rgba(125, 211, 252, 0.1)
+              );
+              border: 1px solid rgba(125, 211, 252, 0.5);
+              box-shadow: 0 0 14px rgba(56, 189, 248, 0.2);
+            "
+          >
+            <span class="material-symbols-rounded" style="font-size: 1rem"
+              >download</span
+            >下載圖片
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Summary Modal -->
+    <div
+      id="summary-modal"
+      onclick="if (event.target === this) closeSummary();"
+    >
+      <div class="summary-box">
+        <div class="summary-header">
+          <span class="summary-header-title">✦ 已選品項清單 ✦</span>
+          <button class="summary-close" onclick="closeSummary()">✕</button>
+        </div>
+        <div class="summary-body" id="summary-body"></div>
+        <div class="summary-total">
+          <span class="summary-total-label">合計金額</span>
+          <span class="summary-total-val"
+            >$<span id="summary-total-val">0</span></span
+          >
+        </div>
+        <div class="summary-footer">
+          <button class="summary-dl-btn" onclick="downloadSummaryImage()">
+            <span class="material-symbols-rounded">download</span> 下載清單圖片
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Lightbox -->
+    <div id="img-lightbox" onclick="closeLightbox()">
+      <img id="lightbox-img" src="" alt="" />
+    </div>
+
     <div id="app">
       <div id="capture-area">
         <header>
@@ -694,6 +1105,62 @@
           <h1>Animate Cafe<br />新世界狂歡品項</h1>
           <div class="header-line"></div>
         </header>
+
+        <div id="room-bar">
+          <div class="room-bar-top">
+            <div>
+              <div class="room-code-label">ROOM CODE</div>
+              <div class="room-code-val" id="display-room-code">—</div>
+              <div
+                style="
+                  display: flex;
+                  align-items: center;
+                  gap: 6px;
+                  margin-top: 4px;
+                "
+              >
+                <input
+                  id="display-my-name"
+                  value=""
+                  style="
+                    background: transparent;
+                    border: none;
+                    border-bottom: 1px solid rgba(45, 212, 191, 0.4);
+                    color: var(--text-dim);
+                    font-size: 0.8rem;
+                    outline: none;
+                    width: 80px;
+                    padding: 2px 0;
+                    font-family: &quot;Noto Sans TC&quot;, sans-serif;
+                  "
+                  placeholder="新的名字"
+                  onkeydown="if (event.key === 'Enter') confirmName();"
+                />
+                <button class="room-btn" onclick="confirmName()">
+                  <span
+                    class="material-symbols-rounded"
+                    style="font-size: 0.9rem"
+                    >edit</span
+                  >更改
+                </button>
+              </div>
+            </div>
+            <div class="room-actions">
+              <button class="room-btn" onclick="copyRoomCode()">
+                <span class="material-symbols-rounded" style="font-size: 0.9rem"
+                  >content_copy</span
+                >複製代碼
+              </button>
+              <button class="room-btn" onclick="openMembersModal()">
+                <span class="material-symbols-rounded" style="font-size: 0.9rem"
+                  >group</span
+                >成員清單
+              </button>
+            </div>
+          </div>
+          <div class="room-members" id="room-members-list"></div>
+        </div>
+
         <div class="tabs">
           <button class="tab-btn active" onclick="showTab('food')">
             <span class="material-symbols-rounded">local_cafe</span> 飲料餅乾
@@ -705,10 +1172,10 @@
             href="https://www.facebook.com/share/p/1NxcpfxPSk/?mibextid=wwXIfr"
             target="_blank"
             class="tab-btn"
+            ><span class="material-symbols-rounded">link</span> 官網</a
           >
-            <span class="material-symbols-rounded">link</span> 官網
-          </a>
         </div>
+
         <div id="tab-food" class="item-list active">
           <div class="item-card" data-group="drink1">
             <div class="card-header">
@@ -721,14 +1188,18 @@
                   "
                   >限選 3 杯</small
                 ></span
-              >
-              <span class="item-price">$180</span>
+              ><span class="item-price">$180</span>
             </div>
             <div class="rows-container" id="drink1-rows"></div>
             <button class="btn-add-row" onclick="addRow('drink1')">
               <span class="material-symbols-rounded">add</span> 新增飲料
             </button>
-            <img src="images/1.png" class="card-img" alt="前半段飲料" />
+            <img
+              src="images/1.png"
+              class="card-img"
+              alt="前半段飲料"
+              onclick="openLightbox(this.src)"
+            />
           </div>
           <div class="item-card" data-group="drink2">
             <div class="card-header">
@@ -741,14 +1212,18 @@
                   "
                   >限選 3 杯</small
                 ></span
-              >
-              <span class="item-price">$180</span>
+              ><span class="item-price">$180</span>
             </div>
             <div class="rows-container" id="drink2-rows"></div>
             <button class="btn-add-row" onclick="addRow('drink2')">
               <span class="material-symbols-rounded">add</span> 新增飲料
             </button>
-            <img src="images/2.png" class="card-img" alt="後半段飲料" />
+            <img
+              src="images/2.png"
+              class="card-img"
+              alt="後半段飲料"
+              onclick="openLightbox(this.src)"
+            />
           </div>
           <div class="item-card" data-group="print-drink">
             <div class="card-header">
@@ -761,14 +1236,18 @@
                   "
                   >限選 3 杯</small
                 ></span
-              >
-              <span class="item-price">$180</span>
+              ><span class="item-price">$180</span>
             </div>
             <div class="rows-container" id="print-drink-rows"></div>
             <button class="btn-add-row" onclick="addRow('print-drink')">
               <span class="material-symbols-rounded">add</span> 新增飲料
             </button>
-            <img src="images/3.png" class="card-img" alt="印刷飲料" />
+            <img
+              src="images/3.png"
+              class="card-img"
+              alt="印刷飲料"
+              onclick="openLightbox(this.src)"
+            />
           </div>
           <div class="item-card" data-group="cookie">
             <div class="card-header">
@@ -781,8 +1260,7 @@
                   "
                   >限選 1 片</small
                 ></span
-              >
-              <span class="item-price">$180</span>
+              ><span class="item-price">$180</span>
             </div>
             <div class="rows-container" id="cookie-rows"></div>
             <button
@@ -792,12 +1270,17 @@
             >
               <span class="material-symbols-rounded">add</span> 新增餅乾
             </button>
-            <img src="images/4.png" class="card-img" alt="印刷糖霜餅乾" />
+            <img
+              src="images/4.png"
+              class="card-img"
+              alt="印刷糖霜餅乾"
+              onclick="openLightbox(this.src)"
+            />
           </div>
           <div class="item-card gold-card" id="coaster-card">
             <div class="card-header">
-              <span class="item-name">加購：壓克力杯墊</span>
-              <span
+              <span class="item-name">加購：壓克力杯墊</span
+              ><span
                 class="item-price"
                 style="
                   color: var(--gold);
@@ -835,59 +1318,85 @@
             <div id="coaster-limit-info" class="coaster-hint">
               ※ 點飲料及餅乾後才可加購
             </div>
-            <img src="images/5.png" class="card-img" alt="壓克力杯墊" />
+            <img
+              src="images/5.png"
+              class="card-img"
+              alt="壓克力杯墊"
+              onclick="openLightbox(this.src)"
+            />
           </div>
         </div>
+
         <div id="tab-goods" class="item-list">
           <div class="item-card" data-group="stand">
             <div class="card-header">
-              <span class="item-name">立繪壓克力立牌</span>
-              <span class="item-price">$650</span>
+              <span class="item-name">立繪壓克力立牌</span
+              ><span class="item-price">$650</span>
             </div>
             <div class="rows-container" id="stand-rows"></div>
             <button class="btn-add-row" onclick="addRow('stand')">
               <span class="material-symbols-rounded">add</span> 新增角色
             </button>
-            <img src="images/14.png" class="card-img" alt="立繪壓克力立牌" />
+            <img
+              src="images/14.png"
+              class="card-img"
+              alt="立繪壓克力立牌"
+              onclick="openLightbox(this.src)"
+            />
           </div>
           <div class="item-card" data-group="towel">
             <div class="card-header">
-              <span class="item-name">立繪毛巾</span>
-              <span class="item-price">$800</span>
+              <span class="item-name">立繪毛巾</span
+              ><span class="item-price">$800</span>
             </div>
             <div class="rows-container" id="towel-rows"></div>
             <button class="btn-add-row" onclick="addRow('towel')">
               <span class="material-symbols-rounded">add</span> 新增角色
             </button>
-            <img src="images/15.png" class="card-img" alt="立繪毛巾" />
+            <img
+              src="images/15.png"
+              class="card-img"
+              alt="立繪毛巾"
+              onclick="openLightbox(this.src)"
+            />
           </div>
           <div id="simple-goods-container"></div>
           <div class="item-card" data-group="scroll">
             <div class="card-header">
-              <span class="item-name">立繪掛軸</span>
-              <span class="item-price">$2700</span>
+              <span class="item-name">立繪掛軸</span
+              ><span class="item-price">$2700</span>
             </div>
             <div class="rows-container" id="scroll-rows"></div>
             <button class="btn-add-row" onclick="addRow('scroll')">
               <span class="material-symbols-rounded">add</span> 新增角色
             </button>
-            <img src="images/16.png" class="card-img" alt="立繪掛軸" />
+            <img
+              src="images/16.png"
+              class="card-img"
+              alt="立繪掛軸"
+              onclick="openLightbox(this.src)"
+            />
           </div>
           <div class="item-card" data-group="big-stand">
             <div class="card-header">
-              <span class="item-name">放大版立繪立牌</span>
-              <span class="item-price">$1850</span>
+              <span class="item-name">放大版立繪立牌</span
+              ><span class="item-price">$1850</span>
             </div>
             <div class="rows-container" id="big-stand-rows"></div>
             <button class="btn-add-row" onclick="addRow('big-stand')">
               <span class="material-symbols-rounded">add</span> 新增角色
             </button>
-            <img src="images/17.png" class="card-img" alt="放大版立繪立牌" />
+            <img
+              src="images/17.png"
+              class="card-img"
+              alt="放大版立繪立牌"
+              onclick="openLightbox(this.src)"
+            />
           </div>
           <div class="item-card">
             <div class="card-header">
-              <span class="item-name">伊得超大型立牌</span>
-              <span class="item-price">$1350</span>
+              <span class="item-name">伊得超大型立牌</span
+              ><span class="item-price">$1350</span>
             </div>
             <div class="number-control">
               <button
@@ -915,9 +1424,15 @@
                 +
               </button>
             </div>
-            <img src="images/18.png" class="card-img" alt="伊得超大型立牌" />
+            <img
+              src="images/18.png"
+              class="card-img"
+              alt="伊得超大型立牌"
+              onclick="openLightbox(this.src)"
+            />
           </div>
         </div>
+
         <div id="bonus-panel">
           <div class="bonus-title">✦ 特典獲得一覽 ✦</div>
           <div class="bonus-grid">
@@ -948,6 +1463,7 @@
           <div>NT$ <span id="print-total-price">0</span></div>
         </div>
       </div>
+
       <footer class="calculator-footer">
         <div style="gap: 0.5rem; display: flex">
           <button class="action-btn" onclick="openSummary()">
@@ -969,7 +1485,6 @@
             <span class="material-symbols-rounded">table_view</span> 匯出 Excel
           </button>
         </div>
-
         <div class="total-container">
           <div class="total-label">試算總金額</div>
           <div class="total-val">$<span id="total-price">0</span></div>
@@ -977,42 +1492,427 @@
       </footer>
     </div>
 
-    <!-- 彈窗 -->
-    <div
-      id="summary-modal"
-      onclick="if (event.target === this) closeSummary();"
-    >
-      <div class="summary-box">
-        <div class="summary-header">
-          <span class="summary-header-title">✦ 已選品項清單 ✦</span>
-          <button class="summary-close" onclick="closeSummary()">✕</button>
-        </div>
-        <div class="summary-body" id="summary-body"></div>
-        <div class="summary-total">
-          <span class="summary-total-label">合計金額</span>
-          <span class="summary-total-val"
-            >$<span id="summary-total-val">0</span></span
-          >
-        </div>
-        <div class="summary-footer">
-          <button class="summary-dl-btn" onclick="downloadSummaryImage()">
-            <span class="material-symbols-rounded">download</span> 下載清單圖片
-          </button>
-        </div>
-      </div>
-    </div>
+    <!-- Firebase Compat SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-database-compat.js"></script>
+    <script>
+      const firebaseConfig = {
+        apiKey: "AIzaSyCNVL0zlOI7VhNoNN5r8gjkYix_HfSGhcU",
+        authDomain: "th-nu-anniversary.firebaseapp.com",
+        databaseURL: "https://th-nu-anniversary-default-rtdb.firebaseio.com",
+        projectId: "th-nu-anniversary",
+        storageBucket: "th-nu-anniversary.firebasestorage.app",
+        messagingSenderId: "823576819480",
+        appId: "1:823576819480:web:080ed83f27e00a508e106d",
+      };
+      firebase.initializeApp(firebaseConfig);
+      const db = firebase.database();
 
+      // compat SDK 輔助函式（讓後續程式碼不用改）
+      const dbRef = (path) => db.ref(path);
+      const dbSet = (r, val) => r.set(val);
+      const dbOn = (r, cb, opts) => {
+        if (opts && opts.onlyOnce) r.once("value").then((snap) => cb(snap));
+        else r.on("value", cb);
+      };
+      const dbTS = () => firebase.database.ServerValue.TIMESTAMP;
+
+      let myName = "";
+      let myUserId = "u_" + Math.random().toString(36).substr(2, 9);
+      let roomCode = "";
+
+      function genCode() {
+        const c = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+        let s = "CAFE-";
+        for (let i = 0; i < 4; i++)
+          s += c[Math.floor(Math.random() * c.length)];
+        return s;
+      }
+
+      window._createRoom = function () {
+        const name = document.getElementById("input-name-create").value.trim();
+        if (!name) {
+          alert("請輸入你的名字");
+          return;
+        }
+        myName = name;
+        roomCode = genCode();
+        enterRoom();
+      };
+
+      window._joinRoom = function () {
+        const name = document.getElementById("input-name-join").value.trim();
+        const code = document
+          .getElementById("input-room-code")
+          .value.trim()
+          .toUpperCase();
+        if (!name) {
+          alert("請輸入你的名字");
+          return;
+        }
+        if (!code) {
+          alert("請輸入房間代碼");
+          return;
+        }
+        myName = name;
+        roomCode = code;
+        enterRoom();
+      };
+
+      function enterRoom() {
+        document.getElementById("room-modal").style.display = "none";
+        document.getElementById("display-room-code").innerText = roomCode;
+        document.getElementById("display-my-name").value = myName;
+
+        // 先查詢是否已有相同名字的成員，有則沿用其 userId
+        dbRef(`rooms/${roomCode}/members`)
+          .once("value")
+          .then((snap) => {
+            const members = snap.val() || {};
+            const existing = Object.entries(members).find(
+              ([id, m]) => m.name === myName,
+            );
+            if (existing) {
+              myUserId = existing[0];
+            } else {
+              dbSet(dbRef(`rooms/${roomCode}/members/${myUserId}`), {
+                name: myName,
+                at: dbTS(),
+              });
+            }
+            startListening();
+            restoreMyData();
+          });
+      }
+
+      function startListening() {
+        dbOn(dbRef(`rooms/${roomCode}/members`), (snap) => {
+          const members = snap.val() || {};
+          const list = document.getElementById("room-members-list");
+          list.innerHTML = Object.values(members)
+            .map(
+              (m) =>
+                `<span class="member-badge${m.name === myName ? " me" : ""}">${m.name === myName ? "👤 " : ""}${m.name}</span>`,
+            )
+            .join("");
+        });
+      }
+
+      window._copyRoomCode = function () {
+        if (!roomCode) return;
+        navigator.clipboard
+          .writeText(roomCode)
+          .then(() => window.showAlert("房間代碼已複製！\n" + roomCode));
+      };
+
+      window._saveMyData = function () {
+        if (!roomCode || !myName) return;
+        const items = [];
+        const rowGroups = [
+          { id: "drink1-rows", name: "前半段飲料", price: 180 },
+          { id: "drink2-rows", name: "後半段飲料", price: 180 },
+          { id: "print-drink-rows", name: "印刷飲料", price: 180 },
+          { id: "cookie-rows", name: "印刷糖霜餅乾", price: 180 },
+          { id: "stand-rows", name: "立繪壓克力立牌", price: 650 },
+          { id: "towel-rows", name: "立繪毛巾", price: 800 },
+          { id: "scroll-rows", name: "立繪掛軸", price: 2700 },
+          { id: "big-stand-rows", name: "放大版立繪立牌", price: 1850 },
+        ];
+        rowGroups.forEach((g) => {
+          const c = document.getElementById(g.id);
+          if (!c) return;
+          Array.from(c.children).forEach((row) => {
+            const sub = Array.from(row.querySelectorAll("select"))
+              .map((s) => s.value)
+              .join(" / ");
+            items.push({ name: g.name, sub, price: g.price, qty: 1 });
+          });
+        });
+        document.querySelectorAll("input.qty-input-styled").forEach((input) => {
+          if (input.id === "coaster-qty") return;
+          const qty = parseInt(input.value) || 0;
+          if (qty <= 0) return;
+          const card = input.closest(".item-card");
+          if (!card) return;
+          const nameEl = card.querySelector(".item-name"),
+            priceEl = card.querySelector(".item-price");
+          if (!nameEl || !priceEl) return;
+          items.push({
+            name: nameEl.innerText.trim().split("\n")[0],
+            sub: `x${qty}`,
+            price: parseInt(priceEl.innerText.replace(/[^0-9]/g, "")) || 0,
+            qty,
+          });
+        });
+        const cq = parseInt(document.getElementById("coaster-qty").value) || 0;
+        if (cq > 0)
+          items.push({
+            name: "加購：壓克力杯墊",
+            sub: `x${cq}`,
+            price: 150,
+            qty: cq,
+          });
+        dbSet(dbRef(`rooms/${roomCode}/data/${myUserId}`), {
+          name: myName,
+          items,
+          at: dbTS(),
+        });
+      };
+
+      window._openMembersModal = function () {
+        if (!roomCode) return;
+        dbRef(`rooms/${roomCode}/members`)
+          .once("value")
+          .then((membersSnap) => {
+            dbRef(`rooms/${roomCode}/data`)
+              .once("value")
+              .then((dataSnap) => {
+                const members = membersSnap.val() || {};
+                const allData = dataSnap.val() || {};
+                const body = document.getElementById("members-body");
+
+                if (Object.keys(members).length === 0) {
+                  body.innerHTML =
+                    '<div class="summary-empty">目前只有你在房間中</div>';
+                  document.getElementById("members-modal").style.display =
+                    "flex";
+                  return;
+                }
+
+                // 計算全部人的總金額
+                let grandTotal = 0;
+                let grandFood = 0;
+                Object.entries(members).forEach(([uid, member]) => {
+                  const userData =
+                    Object.values(allData).find(
+                      (d) => d.name === member.name,
+                    ) || {};
+                  const items = userData.items || [];
+                  items.forEach((i) => {
+                    grandTotal += i.price * i.qty;
+                  });
+                  grandFood += items
+                    .filter((i) =>
+                      [
+                        "前半段飲料",
+                        "後半段飲料",
+                        "印刷飲料",
+                        "印刷糖霜餅乾",
+                      ].includes(i.name),
+                    )
+                    .reduce((s, i) => s + i.qty, 0);
+                });
+
+                // 特典計算（以全員總額）
+                const bonusRows = [
+                  { name: "特典杯墊", val: grandFood },
+                  {
+                    name: "特典小卡 (滿$600)",
+                    val: Math.floor(grandTotal / 600),
+                  },
+                  {
+                    name: "限定寫真 (滿$800)",
+                    val: Math.floor(grandTotal / 800),
+                  },
+                  {
+                    name: "生日寫真 (滿$800)",
+                    val: Math.floor(grandTotal / 800),
+                  },
+                  {
+                    name: "特典迎賓卡 (滿$1200)",
+                    val: Math.floor(grandTotal / 1200),
+                  },
+                ];
+
+                const bonusHtml = `
+        <div style="margin:0 0 12px;padding:12px 16px;background:rgba(56,189,248,.08);border:1px solid rgba(125,211,252,.5);border-radius:12px;box-shadow:0 0 16px rgba(56,189,248,.25)">
+          <div style="font-family:'Space Mono',monospace;font-size:.7rem;letter-spacing:3px;color:#fff;text-shadow:0 0 8px rgba(56,189,248,.8);margin-bottom:10px;text-align:center">✦ 全員特典一覽 ✦</div>
+          <div style="font-size:.72rem;color:#7dd3fc;text-align:center;margin-bottom:10px">全員總額 $${grandTotal.toLocaleString()}</div>
+          ${bonusRows
+            .map(
+              (b) => `
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:7px 10px;background:rgba(255,255,255,.04);border-radius:8px;margin-bottom:5px">
+              <span style="font-size:.85rem;color:#fff">${b.name}</span>
+              <span style="font-family:'Space Mono',monospace;font-weight:700;font-size:1rem;${b.val > 0 ? "color:#fff;text-shadow:0 0 10px rgba(56,189,248,.8)" : "color:rgba(255,255,255,.25)"}">${b.val}</span>
+            </div>`,
+            )
+            .join("")}
+        </div>`;
+
+                // 成員清單
+                const membersHtml = Object.entries(members)
+                  .map(([uid, member]) => {
+                    const userData =
+                      Object.values(allData).find(
+                        (d) => d.name === member.name,
+                      ) || {};
+                    const items = userData.items || [];
+                    const total = items.reduce(
+                      (s, i) => s + i.price * i.qty,
+                      0,
+                    );
+                    return `<div class="member-card">
+          <div class="member-card-name">${member.name}${member.name === myName ? '<span class="you-tag">你</span>' : ""}</div>
+          ${
+            items.length === 0
+              ? '<div style="font-size:.8rem;color:var(--text-dim)">尚未選擇品項</div>'
+              : items
+                  .map(
+                    (i) =>
+                      `<div class="member-item-row"><span>${i.name}${i.sub ? ` <span style="color:var(--text-dim)">(${i.sub})</span>` : ""}</span><span style="color:var(--pink)">$${i.price * i.qty}</span></div>`,
+                  )
+                  .join("")
+          }
+          ${items.length > 0 ? `<div class="member-subtotal">小計 $${total.toLocaleString()}</div>` : ""}
+        </div>`;
+                  })
+                  .join("");
+
+                body.innerHTML = bonusHtml + membersHtml;
+                document.getElementById("members-modal").style.display = "flex";
+              });
+          });
+      };
+
+      window._closeMembersModal = function () {
+        document.getElementById("members-modal").style.display = "none";
+      };
+
+      window._exportAllToExcel = function () {
+        if (!roomCode) return;
+        dbRef(`rooms/${roomCode}/members`)
+          .once("value")
+          .then((membersSnap) => {
+            dbRef(`rooms/${roomCode}/data`)
+              .once("value")
+              .then((dataSnap) => {
+                const members = membersSnap.val() || {};
+                const allData = dataSnap.val() || {};
+                const data = [
+                  ["成員", "品項名稱", "選擇內容", "單價", "數量", "小計"],
+                ];
+                let grand = 0;
+                let grandFood = 0;
+
+                Object.entries(members).forEach(([uid, member]) => {
+                  const userData =
+                    Object.values(allData).find(
+                      (d) => d.name === member.name,
+                    ) || {};
+                  const items = userData.items || [];
+                  items.forEach((i) => {
+                    data.push([
+                      member.name,
+                      i.name,
+                      i.sub || "—",
+                      i.price,
+                      i.qty,
+                      i.price * i.qty,
+                    ]);
+                    grand += i.price * i.qty;
+                  });
+                  grandFood += items
+                    .filter((i) =>
+                      [
+                        "前半段飲料",
+                        "後半段飲料",
+                        "印刷飲料",
+                        "印刷糖霜餅乾",
+                      ].includes(i.name),
+                    )
+                    .reduce((s, i) => s + i.qty, 0);
+                  if (items.length > 0) {
+                    const t = items.reduce((s, i) => s + i.price * i.qty, 0);
+                    data.push(["", "", "", "", `${member.name} 小計：`, t], []);
+                  }
+                });
+
+                data.push(
+                  ["", "", "", "", "總計金額：", grand],
+                  [],
+                  ["✦ 全員特典一覽 ✦", "", "", "", "", ""],
+                  ["全員總額", "", "", "", "", grand],
+                  ["特典杯墊", "", "", "", "", grandFood],
+                  [
+                    "特典小卡 (每滿$600)",
+                    "",
+                    "",
+                    "",
+                    "",
+                    Math.floor(grand / 600),
+                  ],
+                  [
+                    "限定寫真 (每滿$800)",
+                    "",
+                    "",
+                    "",
+                    "",
+                    Math.floor(grand / 800),
+                  ],
+                  [
+                    "生日寫真 (每滿$800)",
+                    "",
+                    "",
+                    "",
+                    "",
+                    Math.floor(grand / 800),
+                  ],
+                  [
+                    "特典迎賓卡 (每滿$1200)",
+                    "",
+                    "",
+                    "",
+                    "",
+                    Math.floor(grand / 1200),
+                  ],
+                );
+
+                const ws = XLSX.utils.aoa_to_sheet(data);
+                const wb = XLSX.utils.book_new();
+                XLSX.utils.book_append_sheet(wb, ws, "全員清單");
+                XLSX.writeFile(wb, "4週年安咖全員清單.xlsx");
+              });
+          });
+      };
+
+      window._updateMyName = function (newName) {
+        const oldName = myName;
+        myName = newName;
+        if (!roomCode) return;
+
+        // 更新 members 裡的名字
+        dbSet(dbRef(`rooms/${roomCode}/members/${myUserId}`), {
+          name: myName,
+          at: dbTS(),
+        });
+
+        // 同步更新 data 裡的名字
+        dbRef(`rooms/${roomCode}/data/${myUserId}`)
+          .once("value")
+          .then((snap) => {
+            const existing = snap.val();
+            if (existing) {
+              dbRef(`rooms/${roomCode}/data/${myUserId}/name`).set(myName);
+            }
+          });
+
+        // 更新畫面顯示
+        document.getElementById("display-my-name").value = myName;
+      };
+    </script>
+
+    <!-- Main Script -->
     <script>
       const roles_all = [
         "伊得",
         "八雲",
-        "艾德蒙特",
-        "奧利文",
+        "艾德蒙特(副團)",
+        "奧利文(奶綠)",
         "崑西",
-        "玖夜",
+        "玖夜(阿公)",
         "可爾",
         "布儡",
-        "啖天",
+        "啖天(城主)",
         "歛",
         "艾斯特",
         "墨菲",
@@ -1040,6 +1940,11 @@
       ];
       const drinks = ["冰紅茶", "冰抹茶歐雷", "冰鮮奶茶", "冰可可歐雷"];
       const toppings = ["無配料", "椰果", "爆爆珠", "黑糖珍珠"];
+      window._roles_all = roles_all;
+      window._roles_half1 = roles_half1;
+      window._roles_half2 = roles_half2;
+      window._drinks = drinks;
+      window._toppings = toppings;
       const goods_config = [
         { name: "CoLotta 克羅塔", price: 300, max: 10 },
         { name: "名片風小卡", price: 200, max: 10 },
@@ -1050,6 +1955,32 @@
         { name: "簽名小卡", price: 150, max: 10 },
         { name: "裝飾卡套", price: 200, max: 10 },
       ];
+
+      function createRoom() {
+        window._createRoom ? window._createRoom() : setTimeout(createRoom, 50);
+      }
+      function joinRoom() {
+        window._joinRoom ? window._joinRoom() : setTimeout(joinRoom, 50);
+      }
+      function copyRoomCode() {
+        window._copyRoomCode
+          ? window._copyRoomCode()
+          : setTimeout(copyRoomCode, 50);
+      }
+      function openMembersModal() {
+        window._openMembersModal
+          ? window._openMembersModal()
+          : setTimeout(openMembersModal, 50);
+      }
+      function closeMembersModal() {
+        window._closeMembersModal && window._closeMembersModal();
+      }
+      function exportAllToExcel() {
+        window._exportAllToExcel
+          ? window._exportAllToExcel()
+          : setTimeout(exportAllToExcel, 50);
+      }
+
       function showAlert(msg) {
         document.getElementById("alert-msg").innerText = msg;
         document.getElementById("custom-alert").style.display = "flex";
@@ -1057,13 +1988,20 @@
       function closeAlert() {
         document.getElementById("custom-alert").style.display = "none";
       }
+      function openLightbox(src) {
+        document.getElementById("lightbox-img").src = src;
+        document.getElementById("img-lightbox").style.display = "flex";
+      }
+      function closeLightbox() {
+        document.getElementById("img-lightbox").style.display = "none";
+      }
+
       function openSummary() {
         const body = document.getElementById("summary-body");
         body.innerHTML = "";
-        let total = 0;
-        let hasItems = false;
-        let html = "";
-
+        let total = 0,
+          hasItems = false,
+          sectionHtml = "";
         const rowGroups = [
           { id: "drink1-rows", name: "前半段飲料", price: 180 },
           { id: "drink2-rows", name: "後半段飲料", price: 180 },
@@ -1074,58 +2012,41 @@
           { id: "scroll-rows", name: "立繪掛軸", price: 2700 },
           { id: "big-stand-rows", name: "放大版立繪立牌", price: 1850 },
         ];
-
-        let sectionHtml = "";
         rowGroups.forEach((g) => {
-          const container = document.getElementById(g.id);
-          if (!container || container.children.length === 0) return;
-          Array.from(container.children).forEach((row) => {
-            const selects = row.querySelectorAll("select");
-            const sub = Array.from(selects)
+          const c = document.getElementById(g.id);
+          if (!c || c.children.length === 0) return;
+          Array.from(c.children).forEach((row) => {
+            const sub = Array.from(row.querySelectorAll("select"))
               .map((s) => s.value)
               .join(" / ");
             hasItems = true;
             total += g.price;
-            sectionHtml += `<div class="summary-row">
-                <div><div class="summary-row-name">${g.name}</div><div class="summary-row-sub">${sub}</div></div>
-                <div class="summary-row-price">$${g.price}</div>
-            </div>`;
+            sectionHtml += `<div class="summary-row"><div><div class="summary-row-name">${g.name}</div><div class="summary-row-sub">${sub}</div></div><div class="summary-row-price">$${g.price}</div></div>`;
           });
         });
-
         document.querySelectorAll("input.qty-input-styled").forEach((input) => {
           if (input.id === "coaster-qty") return;
           const qty = parseInt(input.value) || 0;
           if (qty <= 0) return;
           const card = input.closest(".item-card");
           if (!card) return;
-          const nameEl = card.querySelector(".item-name");
-          const priceEl = card.querySelector(".item-price");
+          const nameEl = card.querySelector(".item-name"),
+            priceEl = card.querySelector(".item-price");
           if (!nameEl || !priceEl) return;
           const name = nameEl.innerText.trim().split("\n")[0];
           const price = parseInt(priceEl.innerText.replace(/[^0-9]/g, "")) || 0;
           const subtotal = price * qty;
           hasItems = true;
           total += subtotal;
-          sectionHtml += `<div class="summary-row">
-            <div><div class="summary-row-name">${name}</div><div class="summary-row-sub">x${qty}</div></div>
-            <div class="summary-row-price">$${subtotal}</div>
-        </div>`;
+          sectionHtml += `<div class="summary-row"><div><div class="summary-row-name">${name}</div><div class="summary-row-sub">x${qty}</div></div><div class="summary-row-price">$${subtotal}</div></div>`;
         });
-
-        const coasterQty =
-          parseInt(document.getElementById("coaster-qty").value) || 0;
-        if (coasterQty > 0) {
+        const cq = parseInt(document.getElementById("coaster-qty").value) || 0;
+        if (cq > 0) {
           hasItems = true;
-          total += coasterQty * 150;
-          sectionHtml += `<div class="summary-row">
-            <div><div class="summary-row-name">加購：壓克力杯墊</div><div class="summary-row-sub">x${coasterQty}</div></div>
-            <div class="summary-row-price">$${coasterQty * 150}</div>
-        </div>`;
+          total += cq * 150;
+          sectionHtml += `<div class="summary-row"><div><div class="summary-row-name">加購：壓克力杯墊</div><div class="summary-row-sub">x${cq}</div></div><div class="summary-row-price">$${cq * 150}</div></div>`;
         }
-
         const dlBtn = document.querySelector(".summary-dl-btn");
-
         if (!hasItems) {
           body.innerHTML = '<div class="summary-empty">尚未選擇任何品項</div>';
           dlBtn.disabled = true;
@@ -1153,24 +2074,9 @@
               val: document.getElementById("bonus-welcome").innerText,
             },
           ];
-
-          const bonusHtml = `
-    <div class="summary-section-title" style="margin-top:16px">✦ 特典獲得一覽</div>
-    ${bonusItems
-      .map(
-        (b) => `
-        <div class="summary-row" style="border-color:rgba(125,211,252,0.2);background:rgba(56,189,248,0.06)">
-            <div class="summary-row-name">${b.name}</div>
-            <div class="summary-row-price" style="color:#38bdf8">× ${b.val}</div>
-        </div>
-    `,
-      )
-      .join("")}
-`;
-
+          const bonusHtml = `<div class="summary-section-title" style="margin-top:16px">✦ 特典獲得一覽</div>${bonusItems.map((b) => `<div class="summary-row" style="border-color:rgba(125,211,252,.2);background:rgba(56,189,248,.06)"><div class="summary-row-name">${b.name}</div><div class="summary-row-price" style="color:#38bdf8">× ${b.val}</div></div>`).join("")}`;
           body.innerHTML = sectionHtml + bonusHtml;
         }
-
         document.getElementById("summary-total-val").innerText =
           total.toLocaleString();
         document.getElementById("summary-modal").style.display = "flex";
@@ -1185,9 +2091,10 @@
         container.innerHTML = "";
         goods_config.forEach((item, index) => {
           const inputId = `qty-item-${index}`;
-          container.innerHTML += `<div class="item-card"><div class="card-header"><span class="item-name">${item.name}<br><small style="color:var(--text-dim);font-size:.78rem;font-weight:400">限 ${item.max} 個</small></span><span class="item-price">$${item.price}</span></div><div class="number-control"><button class="btn-qty" onclick="changeQty('${inputId}',-1,${item.max})">−</button><input type="number" id="${inputId}" class="qty-input-styled goods-qty" data-price="${item.price}" data-max="${item.max}" value="0" min="0" oninput="validateAndCalc(this)"><button class="btn-qty" onclick="changeQty('${inputId}',1,${item.max})">+</button></div><img src="images/${index + 6}.png" class="card-img" alt="${item.name}"></div>`;
+          container.innerHTML += `<div class="item-card"><div class="card-header"><span class="item-name">${item.name}<br><small style="color:var(--text-dim);font-size:.78rem;font-weight:400">限 ${item.max} 個</small></span><span class="item-price">$${item.price}</span></div><div class="number-control"><button class="btn-qty" onclick="changeQty('${inputId}',-1,${item.max})">−</button><input type="number" id="${inputId}" class="qty-input-styled goods-qty" data-price="${item.price}" data-max="${item.max}" value="0" min="0" oninput="validateAndCalc(this)"><button class="btn-qty" onclick="changeQty('${inputId}',1,${item.max})">+</button></div><img src="images/${index + 6}.png" class="card-img" alt="${item.name}" onclick="openLightbox(this.src)"></div>`;
         });
       }
+
       function showTab(tab) {
         document
           .querySelectorAll(".item-list")
@@ -1198,6 +2105,7 @@
         document.getElementById("tab-" + tab).classList.add("active");
         event.currentTarget.classList.add("active");
       }
+
       function addRow(type) {
         const container = document.getElementById(type + "-rows");
         const count = container.children.length;
@@ -1210,7 +2118,7 @@
         }
         const selectedRoles = getSelectedRoles(type);
         const availableRoles = roles_all.filter(
-          (role) => !selectedRoles.includes(role),
+          (r) => !selectedRoles.includes(r),
         );
         if (["stand", "towel"].includes(type) && availableRoles.length === 0) {
           showAlert("所有角色皆已加入清單！");
@@ -1227,45 +2135,47 @@
             createSelect(drinks, type) +
             createSelect(toppings, type);
         else {
-          const optionsToShow = ["stand", "towel"].includes(type)
+          const opts = ["stand", "towel"].includes(type)
             ? availableRoles
             : roles_all;
-          html = createSelect(optionsToShow, type);
+          html = createSelect(opts, type);
         }
-        html += `<button class="btn-del-row" onclick="this.parentElement.remove();refreshOptions('${type}');calculateTotal();" style="color:#f87171;background:rgba(248,113,113,.08);border:1px solid rgba(248,113,113,.25);border-radius:6px;padding:6px 10px;cursor:pointer;white-space:nowrap;display:flex;align-items:center;gap:4px;"><span class="material-symbols-rounded" style="font-size:1rem;">delete</span>刪除</button>`;
+        html += `<button class="btn-del-row" onclick="this.parentElement.remove();refreshOptions('${type}');calculateTotal();" style="color:#f87171;background:rgba(248,113,113,.08);border:1px solid rgba(248,113,113,.25);border-radius:6px;padding:6px 10px;cursor:pointer;white-space:nowrap;display:flex;align-items:center;gap:4px;"><span class="material-symbols-rounded" style="font-size:1rem">delete</span>刪除</button>`;
         div.innerHTML = html;
         container.appendChild(div);
         refreshOptions(type);
         calculateTotal();
       }
+
       function createSelect(options, type) {
         return `<select class="role-select" data-type="${type}" onchange="refreshOptions('${type}');calculateTotal();">${options.map((o) => `<option value="${o}">${o}</option>`).join("")}</select>`;
       }
+
       function getSelectedRoles(type) {
-        const container = document.getElementById(type + "-rows");
-        if (!container) return [];
-        return Array.from(container.querySelectorAll(".role-select")).map(
+        const c = document.getElementById(type + "-rows");
+        if (!c) return [];
+        return Array.from(c.querySelectorAll(".role-select")).map(
           (s) => s.value,
         );
       }
+
       function refreshOptions(type) {
         if (type !== "stand" && type !== "towel") return;
-        const container = document.getElementById(type + "-rows");
-        const selects = container.querySelectorAll(".role-select");
-        const currentSelections = Array.from(selects).map((s) => s.value);
-        selects.forEach((thisSelect) => {
-          const thisValue = thisSelect.value;
-          let newHtml = "";
+        const c = document.getElementById(type + "-rows");
+        const selects = c.querySelectorAll(".role-select");
+        const cur = Array.from(selects).map((s) => s.value);
+        selects.forEach((sel) => {
+          const v = sel.value;
+          let html = "";
           roles_all.forEach((role) => {
-            const isPickedByOthers = currentSelections.some(
-              (val, idx) => val === role && selects[idx] !== thisSelect,
-            );
-            if (!isPickedByOthers)
-              newHtml += `<option value="${role}"${role === thisValue ? " selected" : ""}>${role}</option>`;
+            const taken = cur.some((x, i) => x === role && selects[i] !== sel);
+            if (!taken)
+              html += `<option value="${role}"${role === v ? " selected" : ""}>${role}</option>`;
           });
-          thisSelect.innerHTML = newHtml;
+          sel.innerHTML = html;
         });
       }
+
       function changeQty(id, delta, max) {
         const input = document.getElementById(id);
         let val = (parseInt(input.value) || 0) + delta;
@@ -1274,6 +2184,7 @@
         input.value = val;
         calculateTotal();
       }
+
       function validateAndCalc(input) {
         const max = parseInt(input.dataset.max);
         let val = parseInt(input.value);
@@ -1282,44 +2193,43 @@
         input.value = val;
         calculateTotal();
       }
+
       function validateCoaster(input) {
-        const foodCount =
+        const fc =
           document.getElementById("drink1-rows").children.length +
           document.getElementById("drink2-rows").children.length +
           document.getElementById("print-drink-rows").children.length +
           document.getElementById("cookie-rows").children.length;
-        if (parseInt(input.value) > foodCount) input.value = foodCount;
+        if (parseInt(input.value) > fc) input.value = fc;
         if (parseInt(input.value) < 0) input.value = 0;
         calculateTotal();
       }
+
       function calculateTotal() {
         let total = 0;
-        const drinkCount =
+        const dc =
           document.getElementById("drink1-rows").children.length +
           document.getElementById("drink2-rows").children.length +
           document.getElementById("print-drink-rows").children.length;
-        const cookieCount =
-          document.getElementById("cookie-rows").children.length;
-        const totalFood = drinkCount + cookieCount;
-        const coasterInput = document.getElementById("coaster-qty");
-        const coasterHint = document.getElementById("coaster-limit-info");
+        const cc = document.getElementById("cookie-rows").children.length;
+        const totalFood = dc + cc;
+        const ci = document.getElementById("coaster-qty"),
+          ch = document.getElementById("coaster-limit-info");
         if (totalFood > 0) {
-          coasterInput.disabled = false;
-          if (parseInt(coasterInput.value) > totalFood)
-            coasterInput.value = totalFood;
-          coasterHint.innerText = `● 目前加購上限：${totalFood} 份`;
-          coasterHint.className = "coaster-hint active";
+          ci.disabled = false;
+          if (parseInt(ci.value) > totalFood) ci.value = totalFood;
+          ch.innerText = `● 目前加購上限：${totalFood} 份`;
+          ch.className = "coaster-hint active";
         } else {
-          coasterInput.value = 0;
-          coasterInput.disabled = true;
-          coasterHint.innerText = "※ 點飲料及餅乾後才可加購";
-          coasterHint.className = "coaster-hint";
+          ci.value = 0;
+          ci.disabled = true;
+          ch.innerText = "※ 點飲料及餅乾後才可加購";
+          ch.className = "coaster-hint";
         }
         total += totalFood * 180;
-        total += (parseInt(coasterInput.value) || 0) * 150;
-        document.querySelectorAll(".goods-qty").forEach((input) => {
-          total +=
-            (parseInt(input.value) || 0) * (parseInt(input.dataset.price) || 0);
+        total += (parseInt(ci.value) || 0) * 150;
+        document.querySelectorAll(".goods-qty").forEach((i) => {
+          total += (parseInt(i.value) || 0) * (parseInt(i.dataset.price) || 0);
         });
         [
           { id: "stand-rows", p: 650 },
@@ -1334,22 +2244,24 @@
           total.toLocaleString();
         document.getElementById("print-total-price").innerText =
           total.toLocaleString();
-        const setBonus = (id, val) => {
+        const sb = (id, val) => {
           const el = document.getElementById(id);
           el.innerText = val;
           el.className = "bonus-val" + (val > 0 ? " has-bonus" : "");
         };
-        setBonus("bonus-coaster", totalFood);
-        setBonus("bonus-card", Math.floor(total / 600));
-        setBonus("bonus-photo", Math.floor(total / 800));
-        setBonus("bonus-bday", Math.floor(total / 800));
-        setBonus("bonus-welcome", Math.floor(total / 1200));
+        sb("bonus-coaster", totalFood);
+        sb("bonus-card", Math.floor(total / 600));
+        sb("bonus-photo", Math.floor(total / 800));
+        sb("bonus-bday", Math.floor(total / 800));
+        sb("bonus-welcome", Math.floor(total / 1200));
+        if (window._saveMyData) window._saveMyData();
       }
+
       function exportToExcel() {
         const data = [["品項名稱", "選擇內容", "單價", "數量", "小計"]];
         let totalAmount = 0,
           hasItems = false;
-        const rowGroups = [
+        const rg = [
           { id: "drink1-rows", name: "前半段飲料", price: 180 },
           { id: "drink2-rows", name: "後半段飲料", price: 180 },
           { id: "print-drink-rows", name: "印刷飲料", price: 180 },
@@ -1359,19 +2271,18 @@
           { id: "scroll-rows", name: "立繪掛軸", price: 2700 },
           { id: "big-stand-rows", name: "放大版立繪立牌", price: 1850 },
         ];
-        rowGroups.forEach((g) => {
-          const container = document.getElementById(g.id);
-          if (!container) return;
-          const rows = container.children;
+        rg.forEach((g) => {
+          const c = document.getElementById(g.id);
+          if (!c) return;
+          const rows = c.children;
           if (rows.length === 0) return;
           Array.from(rows).forEach((row) => {
-            const selects = row.querySelectorAll("select");
-            const selectedValues = Array.from(selects)
+            const sv = Array.from(row.querySelectorAll("select"))
               .map((s) => s.value)
               .join(" / ");
             hasItems = true;
             totalAmount += g.price;
-            data.push([g.name, selectedValues, g.price, 1, g.price]);
+            data.push([g.name, sv, g.price, 1, g.price]);
           });
         });
         document.querySelectorAll("input.qty-input-styled").forEach((input) => {
@@ -1380,36 +2291,28 @@
           if (qty > 0) {
             const card = input.closest(".item-card");
             if (!card) return;
-            const nameEl = card.querySelector(".item-name");
-            const priceEl = card.querySelector(".item-price");
-            if (!nameEl || !priceEl) return;
-            const name = nameEl.innerText.trim().split("\n")[0];
-            const price =
-              parseInt(priceEl.innerText.replace(/[^0-9]/g, "")) || 0;
-            const subtotal = price * qty;
+            const ne = card.querySelector(".item-name"),
+              pe = card.querySelector(".item-price");
+            if (!ne || !pe) return;
+            const name = ne.innerText.trim().split("\n")[0];
+            const price = parseInt(pe.innerText.replace(/[^0-9]/g, "")) || 0;
+            const st = price * qty;
             hasItems = true;
-            totalAmount += subtotal;
-            data.push([name, "—", price, qty, subtotal]);
+            totalAmount += st;
+            data.push([name, "—", price, qty, st]);
           }
         });
-        const coasterQty =
-          parseInt(document.getElementById("coaster-qty").value) || 0;
-        if (coasterQty > 0) {
+        const cq = parseInt(document.getElementById("coaster-qty").value) || 0;
+        if (cq > 0) {
           hasItems = true;
-          totalAmount += coasterQty * 150;
-          data.push([
-            "加購：壓克力杯墊",
-            "—",
-            150,
-            coasterQty,
-            coasterQty * 150,
-          ]);
+          totalAmount += cq * 150;
+          data.push(["加購：壓克力杯墊", "—", 150, cq, cq * 150]);
         }
         if (!hasItems) {
           showAlert("尚未選擇任何品項喔！");
           return;
         }
-        const totalFood2 =
+        const tf2 =
           document.getElementById("drink1-rows").children.length +
           document.getElementById("drink2-rows").children.length +
           document.getElementById("print-drink-rows").children.length +
@@ -1417,7 +2320,7 @@
         data.push(
           [],
           ["✦ 特典獲得一覽 ✦", "", "", "", ""],
-          ["特典杯墊", "", "", "", totalFood2],
+          ["特典杯墊", "", "", "", tf2],
           ["特典小卡 (每滿$600)", "", "", "", Math.floor(totalAmount / 600)],
           ["限定寫真 (每滿$800)", "", "", "", Math.floor(totalAmount / 800)],
           ["生日寫真 (每滿$800)", "", "", "", Math.floor(totalAmount / 800)],
@@ -1436,19 +2339,58 @@
         XLSX.utils.book_append_sheet(wb, ws, "購買清單");
         XLSX.writeFile(wb, "4週年安咖購買清單.xlsx");
       }
+
       function downloadSummaryImage() {
         const box = document.querySelector(".summary-box");
         const body = document.getElementById("summary-body");
-
-        const originalMaxHeight = body.style.maxHeight;
-        const originalOverflow = body.style.overflow;
-        const originalBoxMaxHeight = box.style.maxHeight;
-        const originalBoxOverflow = box.style.overflow;
-
+        const om = body.style.maxHeight,
+          oo = body.style.overflow,
+          obm = box.style.maxHeight,
+          obo = box.style.overflow;
         body.style.maxHeight = "none";
         body.style.overflow = "visible";
         box.style.maxHeight = "none";
         box.style.overflow = "visible";
+        html2canvas(box, {
+          backgroundColor: "#0f0720",
+          scale: 2,
+          useCORS: true,
+          scrollY: -window.scrollY,
+          width: box.offsetWidth,
+          height: box.scrollHeight,
+        }).then((canvas) => {
+          body.style.maxHeight = om;
+          body.style.overflow = oo;
+          box.style.maxHeight = obm;
+          box.style.overflow = obo;
+          canvas.toBlob((blob) => {
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement("a");
+            link.href = url;
+            link.download = "4週年安咖購買清單.png";
+            document.body.appendChild(link);
+            link.click();
+            if (/iPad|iPhone|iPod/.test(navigator.userAgent))
+              window.open(url, "_blank");
+            document.body.removeChild(link);
+            setTimeout(() => URL.revokeObjectURL(url), 3000);
+          }, "image/png");
+        });
+      }
+
+      function downloadMembersImage() {
+        const box = document.querySelector(".members-box");
+        const body = document.getElementById("members-body");
+
+        const origBMH = box.style.maxHeight;
+        const origBOF = box.style.overflow;
+        const origMH = body.style.maxHeight;
+        const origOF = body.style.overflow;
+
+        box.style.maxHeight = "none";
+        box.style.overflow = "visible";
+        body.style.maxHeight = "none";
+        body.style.overflow = "visible";
 
         html2canvas(box, {
           backgroundColor: "#0f0720",
@@ -1458,32 +2400,141 @@
           width: box.offsetWidth,
           height: box.scrollHeight,
         }).then((canvas) => {
-          // 還原樣式
-          body.style.maxHeight = originalMaxHeight;
-          body.style.overflow = originalOverflow;
-          box.style.maxHeight = originalBoxMaxHeight;
-          box.style.overflow = originalBoxOverflow;
+          box.style.maxHeight = origBMH;
+          box.style.overflow = origBOF;
+          body.style.maxHeight = origMH;
+          body.style.overflow = origOF;
 
-          // 手機相容的下載方式
           canvas.toBlob((blob) => {
             const url = URL.createObjectURL(blob);
             const link = document.createElement("a");
             link.href = url;
-            link.download = "4週年安咖購買清單.png";
+            link.download = "4週年安咖全員清單.png";
             document.body.appendChild(link);
             link.click();
-            // iOS Safari 偵測：若無法下載則開新分頁
-            const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
-            if (isIOS) {
+            if (/iPad|iPhone|iPod/.test(navigator.userAgent))
               window.open(url, "_blank");
-            }
             document.body.removeChild(link);
-
-            // iOS 不支援直接下載，改為新分頁開啟讓使用者長按儲存
             setTimeout(() => URL.revokeObjectURL(url), 3000);
           }, "image/png");
         });
       }
+
+      function updateMyName(newName) {
+        newName = newName.trim();
+        if (!newName) return;
+        if (window._updateMyName) window._updateMyName(newName);
+      }
+
+      function restoreMyData() {
+        dbRef(`rooms/${roomCode}/data/${myUserId}`)
+          .once("value")
+          .then((snap) => {
+            const userData = snap.val();
+            if (!userData || !userData.items) return;
+            const items = userData.items;
+
+            const rowGroups = [
+              { id: "drink1-rows", name: "前半段飲料", type: "drink1" },
+              { id: "drink2-rows", name: "後半段飲料", type: "drink2" },
+              { id: "print-drink-rows", name: "印刷飲料", type: "print-drink" },
+              { id: "cookie-rows", name: "印刷糖霜餅乾", type: "cookie" },
+              { id: "stand-rows", name: "立繪壓克力立牌", type: "stand" },
+              { id: "towel-rows", name: "立繪毛巾", type: "towel" },
+              { id: "scroll-rows", name: "立繪掛軸", type: "scroll" },
+              {
+                id: "big-stand-rows",
+                name: "放大版立繪立牌",
+                type: "big-stand",
+              },
+            ];
+
+            items.forEach((item) => {
+              if (item.sub && item.sub.startsWith("x")) {
+                const qty = parseInt(item.sub.replace("x", "")) || 0;
+                document
+                  .querySelectorAll("input.qty-input-styled")
+                  .forEach((input) => {
+                    if (input.id === "coaster-qty") {
+                      if (item.name === "加購：壓克力杯墊") input.value = qty;
+                      return;
+                    }
+                    const card = input.closest(".item-card");
+                    if (!card) return;
+                    const nameEl = card.querySelector(".item-name");
+                    if (!nameEl) return;
+                    if (nameEl.innerText.trim().split("\n")[0] === item.name)
+                      input.value = qty;
+                  });
+              } else {
+                const group = rowGroups.find((g) => g.name === item.name);
+                if (!group) return;
+                const container = document.getElementById(group.id);
+                if (!container) return;
+
+                const div = document.createElement("div");
+                div.className = "controls";
+                const subs = item.sub ? item.sub.split(" / ") : [];
+
+                let html = "";
+                if (group.type === "drink1")
+                  html = createSelectWithValue(
+                    window._roles_half1,
+                    group.type,
+                    subs[0],
+                  );
+                else if (group.type === "drink2")
+                  html = createSelectWithValue(
+                    window._roles_half2,
+                    group.type,
+                    subs[0],
+                  );
+                else if (group.type === "print-drink")
+                  html =
+                    createSelectWithValue(
+                      window._roles_all,
+                      group.type,
+                      subs[0],
+                    ) +
+                    createSelectWithValue(window._drinks, group.type, subs[1]) +
+                    createSelectWithValue(
+                      window._toppings,
+                      group.type,
+                      subs[2],
+                    );
+                else
+                  html = createSelectWithValue(
+                    window._roles_all,
+                    group.type,
+                    subs[0],
+                  );
+
+                html += `<button class="btn-del-row" onclick="this.parentElement.remove();refreshOptions('${group.type}');calculateTotal();" style="color:#f87171;background:rgba(248,113,113,.08);border:1px solid rgba(248,113,113,.25);border-radius:6px;padding:6px 10px;cursor:pointer;white-space:nowrap;display:flex;align-items:center;gap:4px;"><span class="material-symbols-rounded" style="font-size:1rem">delete</span>刪除</button>`;
+                div.innerHTML = html;
+                container.appendChild(div);
+              }
+            });
+
+            calculateTotal();
+          });
+      }
+
+      function createSelectWithValue(options, type, selectedVal) {
+        return `<select class="role-select" data-type="${type}" onchange="refreshOptions('${type}');calculateTotal();">
+    ${options.map((o) => `<option value="${o}"${o === selectedVal ? " selected" : ""}>${o}</option>`).join("")}
+  </select>`;
+      }
+
+      function confirmName() {
+        const val = document.getElementById("display-my-name").value.trim();
+        if (!val) return;
+        if (!roomCode) {
+          showAlert("請先建立或加入房間");
+          return;
+        }
+        if (window._updateMyName) window._updateMyName(val);
+      }
+
       init();
     </script>
   </body>
