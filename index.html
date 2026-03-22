@@ -972,7 +972,10 @@
     </div>
 
     <!-- 彈窗 -->
-    <div id="summary-modal" onclick="if(event.target===this)closeSummary()">
+    <div
+      id="summary-modal"
+      onclick="if (event.target === this) closeSummary();"
+    >
       <div class="summary-box">
         <div class="summary-header">
           <span class="summary-header-title">✦ 已選品項清單 ✦</span>
@@ -1427,15 +1430,13 @@
         const box = document.querySelector(".summary-box");
         const body = document.getElementById("summary-body");
 
-        // 暫時展開 summary-body 讓 html2canvas 讀取完整高度
         const originalMaxHeight = body.style.maxHeight;
         const originalOverflow = body.style.overflow;
-        body.style.maxHeight = "none";
-        body.style.overflow = "visible";
-
-        // 暫時讓整個 box 高度自動撐開
         const originalBoxMaxHeight = box.style.maxHeight;
         const originalBoxOverflow = box.style.overflow;
+
+        body.style.maxHeight = "none";
+        body.style.overflow = "visible";
         box.style.maxHeight = "none";
         box.style.overflow = "visible";
 
@@ -1443,21 +1444,34 @@
           backgroundColor: "#0f0720",
           scale: 2,
           useCORS: true,
-          scrollY: 0,
-          windowWidth: box.scrollWidth,
+          scrollY: -window.scrollY,
           width: box.offsetWidth,
           height: box.scrollHeight,
         }).then((canvas) => {
-          const link = document.createElement("a");
-          link.download = "4週年安咖購買清單.png";
-          link.href = canvas.toDataURL("image/png");
-          link.click();
-
           // 還原樣式
           body.style.maxHeight = originalMaxHeight;
           body.style.overflow = originalOverflow;
           box.style.maxHeight = originalBoxMaxHeight;
           box.style.overflow = originalBoxOverflow;
+
+          // 手機相容的下載方式
+          canvas.toBlob((blob) => {
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement("a");
+            link.href = url;
+            link.download = "4週年安咖購買清單.png";
+            document.body.appendChild(link);
+            link.click();
+            // iOS Safari 偵測：若無法下載則開新分頁
+            const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+            if (isIOS) {
+              window.open(url, "_blank");
+            }
+            document.body.removeChild(link);
+
+            // iOS 不支援直接下載，改為新分頁開啟讓使用者長按儲存
+            setTimeout(() => URL.revokeObjectURL(url), 3000);
+          }, "image/png");
         });
       }
       init();
