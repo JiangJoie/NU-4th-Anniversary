@@ -1614,9 +1614,21 @@
           hasError = true;
         } else errCode.style.display = "none";
         if (hasError) return;
-        myName = name;
-        roomCode = code;
-        enterRoom();
+
+        // 查詢房間是否存在
+        dbRef(`rooms/${code}/members`)
+          .once("value")
+          .then((snap) => {
+            if (!snap.exists()) {
+              errCode.innerText = "此房間不存在，請確認代碼";
+              errCode.style.display = "block";
+              return;
+            }
+            errCode.style.display = "none";
+            myName = name;
+            roomCode = code;
+            enterRoom();
+          });
       };
 
       function enterRoom() {
