@@ -1,911 +1,412 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <title>4週年 animate cafe</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --neon-pink: #ff00ff;
-            --neon-blue: #00ffff;
-            --neon-purple: #bc13fe;
-            --bg-dark: #0a0015;
-            --card-bg: rgba(20, 0, 40, 0.7);
-            --glass-border: rgba(255, 255, 255, 0.1);
+            --pink: #f472b6;
+            --pink-dim: rgba(244,114,182,0.15);
+            --pink-glow: rgba(244,114,182,0.4);
+            --teal: #2dd4bf;
+            --teal-dim: rgba(45,212,191,0.12);
+            --purple: #a78bfa;
+            --purple-dim: rgba(167,139,250,0.15);
+            --bg: #07030f;
+            --bg2: #0f0720;
+            --surface: rgba(255,255,255,0.04);
+            --surface2: rgba(255,255,255,0.07);
+            --border: rgba(255,255,255,0.08);
+            --text: #f0eaf8;
+            --text-dim: #9b8cb5;
+            --gold: #fbbf24;
+            --gold-dim: rgba(251,191,36,0.15);
         }
-
-        * {
-            box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent;
-        }
-
-        body {
-            background-color: var(--bg-dark);
-            background-image:
-                linear-gradient(rgba(18, 0, 36, 0.9), rgba(10, 0, 21, 0.9)),
-                repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.03) 0px, rgba(255, 255, 255, 0.03) 1px, transparent 1px, transparent 2px);
-            background-size: 100% 100%, 100% 4px;
-            color: #fff;
-            font-family: 'PingFang TC', 'Microsoft JhengHei', sans-serif;
-            margin: 0;
-            display: flex;
-            justify-content: center;
-            overflow-x: hidden;
-        }
-
-        input::-webkit-outer-spin-button,
-        input::-webkit-inner-spin-button {
-            -webkit-appearance: none;
-            margin: 0;
-        }
-
-        input[type=number] {
-            -moz-appearance: textfield;
-        }
-
-        #app {
-            width: 100%;
-            max-width: 500px;
-            min-height: 100vh;
-            padding-bottom: 140px;
-        }
-
-        #capture-area {
-            padding: 20px;
-            background: transparent;
-        }
-
-        header {
-            text-align: center;
-            padding: 40px 0 20px 0;
-            letter-spacing: 4px;
-        }
-
-        header h1 {
-            font-size: 1.8rem;
-            margin: 0;
-            color: #fff;
-            text-shadow: 0 0 10px var(--neon-blue), 0 0 20px var(--neon-blue);
-        }
-
-        .tabs {
-            display: flex;
-            gap: 15px;
-            margin: 25px 0;
-            position: sticky;
-            top: 10px;
-            z-index: 50;
-        }
-
-        .tab-btn,
-        a.tab-btn {
-            flex: 1;
-            padding: 14px;
-            background: rgba(255, 255, 255, 0.05);
-            border: 2px solid rgba(255, 255, 255, 0.15);
-            color: #888;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: bold;
-            font-size: 1rem;
-            letter-spacing: 2px;
-            transition: 0.3s;
-            backdrop-filter: blur(5px);
-            text-decoration: none;
-        }
-
-        .tab-btn:hover,
-        a.tab-btn:hover {
-            border-color: var(--neon-blue);
-            color: #ccc;
-            background: rgba(0, 255, 255, 0.1);
-        }
-
-        .tab-btn.active {
-            border-color: var(--neon-blue);
-            border-width: 2px;
-            color: #fff;
-            background: linear-gradient(135deg, rgba(0, 255, 255, 0.2), rgba(0, 255, 255, 0.1));
-            box-shadow:
-                0 0 15px rgba(0, 255, 255, 0.5),
-                0 0 30px rgba(0, 255, 255, 0.2),
-                inset 0 0 15px rgba(0, 255, 255, 0.1);
-            transform: translateY(-3px);
-            text-shadow: 0 0 10px var(--neon-blue);
-            letter-spacing: 3px;
-        }
-
-        .item-list {
-            display: none;
-            flex-direction: column;
-            gap: 18px;
-        }
-
-        .item-list.active {
-            display: flex;
-        }
-
-        #simple-goods-container {
-            display: flex;
-            flex-direction: column;
-            gap: 18px;
-        }
-
-        .item-card {
-            background: var(--card-bg);
-            border: 1px solid var(--glass-border);
-            border-left: 4px solid var(--neon-blue);
-            padding: 16px;
-            border-radius: 4px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
-            animation: slideUp 0.4s ease-out forwards;
-        }
-
-        @keyframes slideUp {
-            from {
-                opacity: 0;
-                transform: translateY(15px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .card-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 12px;
-        }
-
-        .item-name {
-            font-size: 1rem;
-            color: #eee;
-            font-weight: 600;
-        }
-
-        .item-price {
-            color: var(--neon-pink);
-            font-family: monospace;
-            font-weight: bold;
-            font-size: 1.1rem;
-        }
-
-        .controls {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            align-items: center;
-            padding: 10px 0;
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
-        }
-
-        select {
-            background: rgba(0, 0, 0, 0.6);
-            border: 1px solid var(--neon-blue);
-            color: #fff;
-            padding: 10px 12px;
-            border-radius: 6px;
-            outline: none;
-            cursor: pointer;
-            font-family: 'PingFang TC', 'Microsoft JhengHei', sans-serif;
-            font-size: 0.9rem;
-            letter-spacing: 1px;
-            backdrop-filter: blur(5px);
-            transition: 0.3s;
-            appearance: none;
-            -webkit-appearance: none;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2300ffff' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
-            background-repeat: no-repeat;
-            background-position: right 10px center;
-            padding-right: 30px;
-            box-shadow: 0 0 8px rgba(0, 255, 255, 0.15);
-        }
-
-        select:hover {
-            border-color: var(--neon-blue);
-            box-shadow: 0 0 12px rgba(0, 255, 255, 0.4);
-            background-color: rgba(0, 255, 255, 0.05);
-        }
-
-        select:focus {
-            border-color: var(--neon-blue);
-            box-shadow: 0 0 15px rgba(0, 255, 255, 0.5),
-                inset 0 0 8px rgba(0, 255, 255, 0.1);
-        }
-
-        select option {
-            background: #0a0015;
-            color: #fff;
-            padding: 10px;
-        }
-
-        .number-control {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            margin-top: 10px;
-        }
-
-        .btn-qty {
-            width: 40px;
-            height: 40px;
-            background: rgba(0, 0, 0, 0.5);
-            border: 1px solid var(--neon-blue);
-            color: var(--neon-blue);
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 1.5rem;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            transition: 0.2s;
-        }
-
-        .btn-qty:hover {
-            background: rgba(0, 255, 255, 0.1);
-            box-shadow: 0 0 15px rgba(0, 255, 255, 0.4);
-        }
-
-        .qty-input-styled {
-            width: 60px;
-            background: rgba(255, 255, 255, 0.05);
-            border: none;
-            border-bottom: 1px solid var(--neon-blue);
-            color: #fff;
-            text-align: center;
-            font-size: 1.2rem;
-            font-family: monospace;
-            outline: none;
-        }
-
-        .btn-add-row {
-            background: transparent;
-            border: 1px dashed var(--neon-purple);
-            color: var(--neon-purple);
-            padding: 10px;
-            width: 100%;
-            cursor: pointer;
-            margin-top: 8px;
-            font-weight: bold;
-            border-radius: 4px;
-        }
-
-        .calculator-footer {
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-            max-width: 500px;
-            background: rgba(10, 0, 21, 0.95);
-            border-top: 2px solid var(--neon-pink);
-            padding: 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            z-index: 1000;
-        }
-
-        .action-btn {
-            background: linear-gradient(45deg, var(--neon-purple), var(--neon-pink));
-            border: none;
-            color: white;
-            padding: 14px 24px;
-            border-radius: 4px;
-            font-weight: bold;
-            cursor: pointer;
-            box-shadow: 0 0 15px rgba(255, 0, 255, 0.4);
-        }
-
-        .total-val {
-            font-size: 1.8rem;
-            font-weight: bold;
-            text-shadow: 0 0 10px var(--neon-pink);
-        }
-
-        #screenshot-total {
-            display: none;
-            margin-top: 40px;
-            padding: 25px;
-            border: 2px solid var(--neon-blue);
-            text-align: right;
-        }
-
-        .is-screenshot .tabs,
-        .is-screenshot .btn-add-row,
-        .is-screenshot .calculator-footer,
-        .is-screenshot .btn-del-row {
-            display: none !important;
-        }
-
-        .is-screenshot #screenshot-total {
-            display: block;
-        }
-
-        #custom-alert {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.8);
-            display: none;
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
-            backdrop-filter: blur(8px);
-        }
-
-        .alert-box {
-            background: #1a0033;
-            border: 2px solid var(--neon-pink);
-            padding: 30px;
-            border-radius: 8px;
-            max-width: 300px;
-            width: 80%;
-            text-align: center;
-            box-shadow: 0 0 30px rgba(255, 0, 255, 0.3);
-        }
-
-        .alert-msg {
-            margin-bottom: 25px;
-            line-height: 1.6;
-            font-weight: bold;
-            color: #fff;
-        }
-
-        .alert-btn {
-            background: var(--neon-blue);
-            border: none;
-            color: #000;
-            padding: 10px 30px;
-            border-radius: 4px;
-            font-weight: bold;
-            cursor: pointer;
-            text-transform: uppercase;
-        }
-
-        .card-img {
-            width: 100%;
-            border-radius: 6px;
-            margin: 10px 0;
-            display: block;
-        }
-
-        #bonus-panel {
-            margin: 20px 0 0 0;
-            padding: 16px 20px;
-            background: rgba(0, 255, 255, 0.05);
-            border: 1px solid var(--neon-blue);
-            border-radius: 8px;
-            box-shadow: 0 0 20px rgba(0, 255, 255, 0.1);
-        }
-
-        .bonus-title {
-            text-align: center;
-            color: var(--neon-blue);
-            font-weight: bold;
-            letter-spacing: 4px;
-            margin-bottom: 14px;
-            text-shadow: 0 0 8px var(--neon-blue);
-            font-size: 0.95rem;
-        }
-
-        .bonus-grid {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-
-        .bonus-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 8px 12px;
-            background: rgba(0, 0, 0, 0.3);
-            border-radius: 6px;
-            border-left: 3px solid var(--neon-blue);
-        }
-
-        .bonus-name {
-            color: #ccc;
-            font-size: 0.9rem;
-        }
-
-        .bonus-name small {
-            color: #888;
-            font-size: 0.75rem;
-            margin-left: 4px;
-        }
-
-        .bonus-val {
-            font-family: monospace;
-            font-size: 1.2rem;
-            font-weight: bold;
-            color: var(--neon-blue);
-            text-shadow: 0 0 8px var(--neon-blue);
-            min-width: 30px;
-            text-align: right;
-        }
-
-        .bonus-val.has-bonus {
-            color: var(--neon-pink);
-            text-shadow: 0 0 8px var(--neon-pink);
-        }
+        *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;margin:0;padding:0}
+        input::-webkit-outer-spin-button,input::-webkit-inner-spin-button{-webkit-appearance:none}
+        input[type=number]{-moz-appearance:textfield}
+        body{background-color:var(--bg);background-image:radial-gradient(ellipse 80% 50% at 50% -10%,rgba(167,139,250,0.12) 0%,transparent 60%),radial-gradient(ellipse 60% 40% at 80% 100%,rgba(244,114,182,0.08) 0%,transparent 50%);color:var(--text);font-family:'Noto Sans TC',sans-serif;display:flex;justify-content:center;min-height:100vh;overflow-x:hidden}
+        #app{width:100%;max-width:480px;padding-bottom:120px}
+        header{padding:48px 24px 24px;text-align:center}
+        .header-eyebrow{font-family:'Space Mono',monospace;font-size:.7rem;letter-spacing:6px;color:var(--teal);text-transform:uppercase;margin-bottom:10px;opacity:.8}
+        header h1{font-size:1.5rem;font-weight:700;letter-spacing:2px;background:linear-gradient(135deg,#fff 0%,var(--purple) 50%,var(--pink) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1.3}
+        .header-line{width:60px;height:2px;background:linear-gradient(90deg,var(--teal),var(--purple));margin:14px auto 0;border-radius:2px}
+        .tabs{display:flex;gap:8px;margin:8px 16px 20px;padding:6px;background:var(--surface);border:1px solid var(--border);border-radius:14px;position:sticky;top:8px;z-index:50;backdrop-filter:blur(12px)}
+        .tab-btn,a.tab-btn{flex:1;padding:10px 8px;background:transparent;border:none;color:var(--text-dim);border-radius:10px;cursor:pointer;font-weight:700;font-size:.8rem;transition:all .25s ease;text-decoration:none;display:flex;justify-content:center;align-items:center;font-family:'Noto Sans TC',sans-serif}
+        .tab-btn:hover,a.tab-btn:hover{color:var(--text);background:var(--surface2)}
+        .tab-btn.active{background:linear-gradient(135deg,rgba(167,139,250,.25),rgba(244,114,182,.2));color:#fff;box-shadow:0 2px 12px rgba(167,139,250,.2);border:1px solid rgba(167,139,250,.3)}
+        #capture-area{padding:0 16px}
+        .item-list{display:none;flex-direction:column;gap:12px}
+        .item-list.active{display:flex}
+        #simple-goods-container{display:flex;flex-direction:column;gap:12px}
+        .item-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:16px;transition:border-color .2s;animation:fadeUp .35s ease-out forwards;opacity:0}
+        .item-card:hover{border-color:rgba(167,139,250,.2)}
+        .item-card.gold-card{border-color:rgba(251,191,36,.2);background:linear-gradient(135deg,rgba(251,191,36,.04),var(--surface))}
+        @keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+        .card-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px;gap:8px}
+        .item-name{font-size:.95rem;color:var(--text);font-weight:700;line-height:1.5}
+        .item-price{font-family:'Space Mono',monospace;color:var(--pink);font-weight:700;font-size:.95rem;white-space:nowrap;background:var(--pink-dim);padding:4px 12px;border-radius:20px;border:1px solid rgba(244,114,182,.2);flex-shrink:0}
+        .card-img{width:100%;border-radius:10px;margin:10px 0;display:block;opacity:.92}
+        .controls{display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding:10px 0 4px;border-top:1px solid var(--border)}
+        select{background:var(--bg2);border:1px solid rgba(45,212,191,.3);color:var(--text);padding:12px 36px 12px 14px;border-radius:10px;outline:none;cursor:pointer;font-family:'Noto Sans TC',sans-serif;font-size:.9rem;transition:.2s;appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 10 10'%3E%3Cpath fill='%232dd4bf' d='M5 7L1 3h8z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;flex:1;min-width:90px;min-height:44px}
+        select:focus{border-color:var(--teal);box-shadow:0 0 0 3px var(--teal-dim)}
+        select option{background:#0f0720}
+        .number-control{display:flex;align-items:center;margin-top:12px;background:var(--bg2);border:1px solid rgba(45,212,191,0.4);border-radius:10px;overflow:hidden;width:fit-content;box-shadow:0 0 14px rgba(45,212,191,0.2),inset 0 0 10px rgba(45,212,191,0.04)}
+        .btn-qty{width:48px;height:48px;background:transparent;border:none;color:var(--teal);cursor:pointer;font-size:1.4rem;display:flex;justify-content:center;align-items:center;transition:.15s;flex-shrink:0}
+        .btn-qty:hover{background:var(--teal-dim)}
+        .btn-qty:active{background:rgba(45,212,191,0.2)}
+        .qty-input-styled{width:56px;background:transparent;border:none;border-left:1px solid var(--border);border-right:1px solid var(--border);color:#fff;text-align:center;font-size:1.05rem;font-family:'Space Mono',monospace;font-weight:700;outline:none;height:48px;padding:0}
+        .btn-add-row{background:rgba(167,139,250,0.28);border:1.5px solid rgba(167,139,250,0.7);box-shadow:0 0 20px rgba(167,139,250,0.45),inset 0 0 16px rgba(167,139,250,0.1);color:#fff;padding:13px;width:100%;cursor:pointer;margin-top:12px;font-weight:700;border-radius:10px;font-size:.9rem;transition:.2s;font-family:'Noto Sans TC',sans-serif;letter-spacing:.5px;box-shadow:0 0 12px rgba(167,139,250,0.2),inset 0 0 12px rgba(167,139,250,0.05);text-shadow:0 0 8px rgba(167,139,250,0.6)}
+        .btn-add-row:hover{background:rgba(167,139,250,0.28);border-color:#a78bfa;box-shadow:0 0 20px rgba(167,139,250,0.45),inset 0 0 16px rgba(167,139,250,0.1)}
+        .btn-add-row:active{transform:scale(0.98)}
+        .coaster-hint{margin-top:10px;font-size:.78rem;font-weight:600;color:#f87171}
+        .coaster-hint.active{color:var(--teal)}
+        #bonus-panel{margin:20px 0 0;padding:0;background:rgba(56,189,248,0.08);border:1px solid rgba(125,211,252,0.8);border-radius:16px;overflow:hidden;box-shadow:0 0 30px rgba(56,189,248,0.5),0 0 60px rgba(56,189,248,0.2),inset 0 0 30px rgba(56,189,248,0.08)}
+        .bonus-title{text-align:center;font-family:'Space Mono',monospace;font-size:.72rem;letter-spacing:4px;color:#fff;margin-bottom:0;text-transform:uppercase;padding:13px 16px;background:rgba(56,189,248,0.15);border-bottom:1px solid rgba(125,211,252,0.25);text-shadow:0 0 10px rgba(56,189,248,0.8)}
+        .bonus-grid{display:flex;flex-direction:column;gap:0;padding:4px 0}
+        .bonus-item{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;border-bottom:1px solid rgba(125,211,252,0.1)}
+        .bonus-item:last-child{border-bottom:none}
+        .bonus-name{color:#fff;font-size:.9rem;display:flex;align-items:center;gap:8px;font-weight:500}
+        .bonus-name small{font-size:.7rem;color:#7dd3fc;background:rgba(125,211,252,0.12);padding:2px 8px;border-radius:99px;border:1px solid rgba(125,211,252,0.25)}
+        .bonus-val{font-family:'Space Mono',monospace;font-size:1.2rem;font-weight:700;color:rgba(255,255,255,0.25);min-width:28px;text-align:right;transition:.3s}
+        .bonus-val.has-bonus{color:#fff;text-shadow:0 0 12px rgba(56,189,248,0.9),0 0 24px rgba(56,189,248,0.5)}
+        .calculator-footer{position:fixed;bottom:0;width:100%;max-width:480px;background:rgba(7,3,15,.93);border-top:1px solid rgba(167,139,250,.18);padding:14px 20px;display:flex;justify-content:space-between;align-items:center;z-index:1000;backdrop-filter:blur(16px);gap:16px}
+        .action-btn{background:linear-gradient(135deg,var(--purple),var(--pink));border:none;color:#fff;padding:12px 18px;border-radius:10px;font-weight:700;cursor:pointer;font-size:.85rem;font-family:'Noto Sans TC',sans-serif;white-space:nowrap;transition:opacity .2s}
+        .action-btn:hover{opacity:.88}
+        .total-container{text-align:right}
+        .total-label{font-size:.7rem;color:var(--text-dim);letter-spacing:1px;margin-bottom:2px}
+        .total-val{font-family:'Space Mono',monospace;font-size:1.55rem;font-weight:700;color:#fff}
+        .total-val span{color:var(--pink)}
+        #custom-alert{position:fixed;inset:0;background:rgba(0,0,0,.75);display:none;justify-content:center;align-items:center;z-index:9999;backdrop-filter:blur(10px)}
+        .alert-box{background:var(--bg2);border:1px solid rgba(244,114,182,.3);padding:28px 24px;border-radius:16px;max-width:280px;width:85%;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.6)}
+        .alert-msg{margin-bottom:20px;line-height:1.6;font-weight:700;color:var(--text);font-size:.95rem}
+        .alert-btn{background:linear-gradient(135deg,var(--teal),var(--purple));border:none;color:#fff;padding:10px 28px;border-radius:8px;font-weight:700;cursor:pointer;font-family:'Noto Sans TC',sans-serif}
+        #screenshot-total{display:none}
     </style>
 </head>
-
 <body>
-
-    <div id="custom-alert">
-        <div class="alert-box">
-            <div id="alert-msg" class="alert-msg">提示訊息</div>
-            <button class="alert-btn" onclick="closeAlert()">確認</button>
-        </div>
+<div id="custom-alert">
+    <div class="alert-box">
+        <div id="alert-msg" class="alert-msg">提示訊息</div>
+        <button class="alert-btn" onclick="closeAlert()">確認</button>
     </div>
-
-    <div id="app">
-        <div id="capture-area">
-            <header>
-                <h1>4週年 animate cafe 品項</h1>
-            </header>
-
-            <div class="tabs">
-                <button class="tab-btn active" onclick="showTab('food')">飲料 & 餅乾</button>
-                <button class="tab-btn" onclick="showTab('goods')">周邊</button>
-                <a href="https://www.facebook.com/share/17kxjrf246/?mibextid=wwXIfr" target="_blank" class="tab-btn" style="display: flex; justify-content: center; align-items: center; font-weight: bold;">安咖官網</a>
+</div>
+<div id="app">
+    <div id="capture-area">
+        <header>
+            <div class="header-eyebrow">4th Anniversary</div>
+            <h1>animate cafe<br>品項試算表</h1>
+            <div class="header-line"></div>
+        </header>
+        <div class="tabs">
+            <button class="tab-btn active" onclick="showTab('food')">🧋 飲料餅乾</button>
+            <button class="tab-btn" onclick="showTab('goods')">🛍 周邊</button>
+            <a href="https://www.facebook.com/share/17kxjrf246/?mibextid=wwXIfr" target="_blank" class="tab-btn">🔗 官網</a>
+        </div>
+        <div id="tab-food" class="item-list active">
+            <div class="item-card" data-group="drink1">
+                <div class="card-header">
+                    <span class="item-name">前半段飲料<br><small style="color:var(--text-dim);font-size:.78rem;font-weight:400">限選 3 杯</small></span>
+                    <span class="item-price">$180</span>
+                </div>
+                <div class="rows-container" id="drink1-rows"></div>
+                <button class="btn-add-row" onclick="addRow('drink1')">＋ 新增飲料</button>
+                <img src="images/1.png" class="card-img" alt="前半段飲料">
             </div>
-
-            <div id="tab-food" class="item-list active">
-                <div class="item-card" data-group="drink1">
-                    <div class="card-header"><span class="item-name">前半段飲料 (限3)</span><span
-                            class="item-price">$180</span></div>
-                    <div class="rows-container" id="drink1-rows"></div>
-                    <!-- 圖片 -->
-                    <button class="btn-add-row" onclick="addRow('drink1')">+ 新增飲料</button>
-                    <img src="images/1.png" class="card-img" alt="前半段飲料">
+            <div class="item-card" data-group="drink2">
+                <div class="card-header">
+                    <span class="item-name">後半段飲料<br><small style="color:var(--text-dim);font-size:.78rem;font-weight:400">限選 3 杯</small></span>
+                    <span class="item-price">$180</span>
                 </div>
-
-                <div class="item-card" data-group="drink2">
-                    <div class="card-header"><span class="item-name">後半段飲料 (限3)</span><span
-                            class="item-price">$180</span></div>
-                    <div class="rows-container" id="drink2-rows"></div>
-                    <button class="btn-add-row" onclick="addRow('drink2')">+ 新增飲料</button>
-                    <img src="images/2.png" class="card-img" alt="後半段飲料">
-                </div>
-
-                <div class="item-card" data-group="print-drink">
-                    <div class="card-header"><span class="item-name">印刷飲料 (限3)</span><span
-                            class="item-price">$180</span></div>
-                    <div class="rows-container" id="print-drink-rows"></div>
-                    <button class="btn-add-row" onclick="addRow('print-drink')">+ 新增飲料</button>
-                    <img src="images/3.png" class="card-img" alt="印刷飲料">
-                </div>
-
-                <div class="item-card" data-group="cookie">
-                    <div class="card-header"><span class="item-name">印刷糖霜餅乾 (限1)</span><span
-                            class="item-price">$180</span></div>
-                    <div class="rows-container" id="cookie-rows"></div>
-                    <button class="btn-add-row" id="btn-add-cookie" onclick="addRow('cookie')">+ 新增餅乾</button>
-                    <img src="images/4.png" class="card-img" alt="印刷糖霜餅乾">
-                </div>
-
-                <div class="item-card" id="coaster-card" style="border-left-color: gold;">
-                    <div class="card-header">
-                        <span class="item-name">加購：壓克力杯墊</span>
-                        <span class="item-price">$150</span>
-                    </div>
-                    <div class="number-control">
-                        <button type="button" class="btn-qty" onclick="changeQty('coaster-qty', -1, 99)">−</button>
-                        <input type="number" id="coaster-qty" class="qty-input-styled" value="0" min="0" disabled
-                            oninput="validateCoaster(this)">
-                        <button type="button" class="btn-qty" onclick="changeQty('coaster-qty', 1, 99)">+</button>
-                    </div>
-                    <div style="margin-top: 10px;">
-                        <span id="coaster-limit-info"
-                            style="color:rgb(255, 140, 140); font-size: 0.75rem; font-weight: 600;">
-                            ※ 點飲料及餅乾後才可加購
-                        </span>
-                    </div>
-                    <img src="images/5.png" class="card-img" alt="壓克力杯墊">
-                </div>
+                <div class="rows-container" id="drink2-rows"></div>
+                <button class="btn-add-row" onclick="addRow('drink2')">＋ 新增飲料</button>
+                <img src="images/2.png" class="card-img" alt="後半段飲料">
             </div>
-
-            <div id="tab-goods" class="item-list">
-                <div id="simple-goods-container"></div>
-
-                <div class="item-card" data-group="stand">
-                    <div class="card-header"><span class="item-name">立繪壓克力立牌</span><span class="item-price">$650</span>
-                    </div>
-                    <div class="rows-container" id="stand-rows"></div>
-                    <button class="btn-add-row" onclick="addRow('stand')">+ 新增角色</button>
-                    <img src="images/14.png" class="card-img" alt="立繪壓克力立牌">
+            <div class="item-card" data-group="print-drink">
+                <div class="card-header">
+                    <span class="item-name">印刷飲料<br><small style="color:var(--text-dim);font-size:.78rem;font-weight:400">限選 3 杯</small></span>
+                    <span class="item-price">$180</span>
                 </div>
-
-                <div class="item-card" data-group="towel">
-                    <div class="card-header"><span class="item-name">立繪毛巾</span><span class="item-price">$800</span>
-                    </div>
-                    <div class="rows-container" id="towel-rows"></div>
-                    <button class="btn-add-row" onclick="addRow('towel')">+ 新增角色</button>
-                    <img src="images/15.png" class="card-img" alt="立繪毛巾">
-                </div>
-
-                <div class="item-card" data-group="scroll">
-                    <div class="card-header"><span class="item-name">立繪掛軸</span><span class="item-price">$2700</span>
-                    </div>
-                    <div class="rows-container" id="scroll-rows"></div>
-                    <button class="btn-add-row" onclick="addRow('scroll')">+ 新增角色</button>
-                    <img src="images/16.png" class="card-img" alt="立繪掛軸">
-                </div>
-
-                <div class="item-card" data-group="big-stand">
-                    <div class="card-header"><span class="item-name">放大版立繪立牌</span><span class="item-price">$1850</span>
-                    </div>
-                    <div class="rows-container" id="big-stand-rows"></div>
-                    <button class="btn-add-row" onclick="addRow('big-stand')">+ 新增角色</button>
-                    <img src="images/17.png" class="card-img" alt="放大版立繪立牌">
-                </div>
-
-                <div class="item-card">
-                    <div class="card-header"><span class="item-name">伊得超大型立牌</span><span class="item-price">$1350</span>
-                    </div>
-                    <div class="number-control">
-                        <button type="button" class="btn-qty" onclick="changeQty('qty-big-eiden', -1, 99)">−</button>
-                        <input type="number" id="qty-big-eiden" class="qty-input-styled goods-qty" data-price="1350"
-                            data-max="99" value="0" min="0" oninput="validateAndCalc(this)">
-                        <button type="button" class="btn-qty" onclick="changeQty('qty-big-eiden', 1, 99)">+</button>
-                    </div>
-                    <img src="images/18.png" class="card-img" alt="伊得超大型立牌">
-                </div>
+                <div class="rows-container" id="print-drink-rows"></div>
+                <button class="btn-add-row" onclick="addRow('print-drink')">＋ 新增飲料</button>
+                <img src="images/3.png" class="card-img" alt="印刷飲料">
             </div>
-
-            <div id="bonus-panel">
-                <div class="bonus-title">✦ 特典獲得一覽 ✦</div>
-                <div class="bonus-grid">
-                    <div class="bonus-item">
-                        <span class="bonus-name">特典杯墊</span>
-                        <span class="bonus-val" id="bonus-coaster">0</span>
-                    </div>
-                    <div class="bonus-item">
-                        <span class="bonus-name">特典小卡 <small>(滿$600)</small></span>
-                        <span class="bonus-val" id="bonus-card">0</span>
-                    </div>
-                    <div class="bonus-item">
-                        <span class="bonus-name">限定寫真 <small>(滿$800)</small></span>
-                        <span class="bonus-val" id="bonus-photo">0</span>
-                    </div>
-                    <div class="bonus-item">
-                        <span class="bonus-name">生日寫真 <small>(滿$800)</small></span>
-                        <span class="bonus-val" id="bonus-bday">0</span>
-                    </div>
-                    <div class="bonus-item">
-                        <span class="bonus-name">特典迎賓卡 <small>(滿$1200)</small></span>
-                        <span class="bonus-val" id="bonus-welcome">0</span>
-                    </div>
+            <div class="item-card" data-group="cookie">
+                <div class="card-header">
+                    <span class="item-name">印刷糖霜餅乾<br><small style="color:var(--text-dim);font-size:.78rem;font-weight:400">限選 1 片</small></span>
+                    <span class="item-price">$180</span>
                 </div>
+                <div class="rows-container" id="cookie-rows"></div>
+                <button class="btn-add-row" id="btn-add-cookie" onclick="addRow('cookie')">＋ 新增餅乾</button>
+                <img src="images/4.png" class="card-img" alt="印刷糖霜餅乾">
             </div>
-
-            <div id="screenshot-total">
-                <div class="total-label">總金額：NT$</div>
-                <div style="font-size: 2rem; font-weight: bold; color: var(--neon-blue);">NT$ <span
-                        id="print-total-price">0</span></div>
+            <div class="item-card gold-card" id="coaster-card">
+                <div class="card-header">
+                    <span class="item-name">加購：壓克力杯墊</span>
+                    <span class="item-price" style="color:var(--gold);background:var(--gold-dim);border-color:rgba(251,191,36,.2)">$150</span>
+                </div>
+                <div class="number-control">
+                    <button type="button" class="btn-qty" onclick="changeQty('coaster-qty',-1,99)">−</button>
+                    <input type="number" id="coaster-qty" class="qty-input-styled" value="0" min="0" disabled oninput="validateCoaster(this)">
+                    <button type="button" class="btn-qty" onclick="changeQty('coaster-qty',1,99)">+</button>
+                </div>
+                <div id="coaster-limit-info" class="coaster-hint">※ 點飲料及餅乾後才可加購</div>
+                <img src="images/5.png" class="card-img" alt="壓克力杯墊">
             </div>
         </div>
-
-        <footer class="calculator-footer">
-            <button class="action-btn" onclick="exportToExcel()">產出Excel清單</button>
-            <div class="total-container">
-                <div class="total-label">總金額:</div>
-                <div class="total-val">$<span id="total-price">0</span></div>
+        <div id="tab-goods" class="item-list">
+            <div class="item-card" data-group="stand">
+                <div class="card-header">
+                    <span class="item-name">立繪壓克力立牌</span>
+                    <span class="item-price">$650</span>
+                </div>
+                <div class="rows-container" id="stand-rows"></div>
+                <button class="btn-add-row" onclick="addRow('stand')">＋ 新增角色</button>
+                <img src="images/14.png" class="card-img" alt="立繪壓克力立牌">
             </div>
-        </footer>
+            <div class="item-card" data-group="towel">
+                <div class="card-header">
+                    <span class="item-name">立繪毛巾</span>
+                    <span class="item-price">$800</span>
+                </div>
+                <div class="rows-container" id="towel-rows"></div>
+                <button class="btn-add-row" onclick="addRow('towel')">＋ 新增角色</button>
+                <img src="images/15.png" class="card-img" alt="立繪毛巾">
+            </div>
+            <div id="simple-goods-container"></div>
+            <div class="item-card" data-group="scroll">
+                <div class="card-header">
+                    <span class="item-name">立繪掛軸</span>
+                    <span class="item-price">$2700</span>
+                </div>
+                <div class="rows-container" id="scroll-rows"></div>
+                <button class="btn-add-row" onclick="addRow('scroll')">＋ 新增角色</button>
+                <img src="images/16.png" class="card-img" alt="立繪掛軸">
+            </div>
+            <div class="item-card" data-group="big-stand">
+                <div class="card-header">
+                    <span class="item-name">放大版立繪立牌</span>
+                    <span class="item-price">$1850</span>
+                </div>
+                <div class="rows-container" id="big-stand-rows"></div>
+                <button class="btn-add-row" onclick="addRow('big-stand')">＋ 新增角色</button>
+                <img src="images/17.png" class="card-img" alt="放大版立繪立牌">
+            </div>
+            <div class="item-card">
+                <div class="card-header">
+                    <span class="item-name">伊得超大型立牌</span>
+                    <span class="item-price">$1350</span>
+                </div>
+                <div class="number-control">
+                    <button type="button" class="btn-qty" onclick="changeQty('qty-big-eiden',-1,99)">−</button>
+                    <input type="number" id="qty-big-eiden" class="qty-input-styled goods-qty" data-price="1350" data-max="99" value="0" min="0" oninput="validateAndCalc(this)">
+                    <button type="button" class="btn-qty" onclick="changeQty('qty-big-eiden',1,99)">+</button>
+                </div>
+                <img src="images/18.png" class="card-img" alt="伊得超大型立牌">
+            </div>
+        </div>
+        <div id="bonus-panel">
+            <div class="bonus-title">✦ 特典獲得一覽 ✦</div>
+            <div class="bonus-grid">
+                <div class="bonus-item"><span class="bonus-name">特典杯墊</span><span class="bonus-val" id="bonus-coaster">0</span></div>
+                <div class="bonus-item"><span class="bonus-name">特典小卡 <small>(每滿 $600)</small></span><span class="bonus-val" id="bonus-card">0</span></div>
+                <div class="bonus-item"><span class="bonus-name">限定寫真 <small>(每滿 $800)</small></span><span class="bonus-val" id="bonus-photo">0</span></div>
+                <div class="bonus-item"><span class="bonus-name">生日寫真 <small>(每滿 $800)</small></span><span class="bonus-val" id="bonus-bday">0</span></div>
+                <div class="bonus-item"><span class="bonus-name">特典迎賓卡 <small>(每滿 $1200)</small></span><span class="bonus-val" id="bonus-welcome">0</span></div>
+            </div>
+        </div>
+        <div id="screenshot-total"><div>NT$ <span id="print-total-price">0</span></div></div>
     </div>
-
-    <script>
-        const roles_all = ["伊得", "八雲", "艾德蒙特", "奧利文", "崑西", "玖夜", "可爾", "布儡", "啖天", "歛", "艾斯特", "墨菲", "休伊", "環"];
-        const roles_half1 = ["01 伊得", "02 八雲", "03 艾德蒙特", "04 奧利文", "05 墨菲", "06 艾斯特", "07 休伊"];
-        const roles_half2 = ["01 伊得", "02 崑西", "03 玖夜", "04 可爾", "05 布儡", "06 啖天", "07 歛", "08 環"];
-        const drinks = ["冰紅茶", "冰抹茶歐雷", "冰鮮奶茶", "冰可可歐雷"];
-        const toppings = ["無配料", "椰果", "爆爆珠", "黑糖珍珠"];
-
-        const goods_config = [
-            { name: "CoLotta 克羅塔", price: 300, max: 10 },
-            { name: "名片風小卡", price: 200, max: 10 },
-            { name: "精裝立繪寫真卡", price: 300, max: 10 },
-            { name: "心型胸針", price: 180, max: 10 },
-            { name: "壓克力水晶相框", price: 800, max: 10 },
-            { name: "貼紙套組", price: 250, max: 10 },
-            { name: "簽名小卡", price: 150, max: 10 },
-            { name: "裝飾卡套", price: 200, max: 10 }
+    <footer class="calculator-footer">
+        <button class="action-btn" onclick="exportToExcel()">📊 匯出 Excel</button>
+        <div class="total-container">
+            <div class="total-label">試算總金額</div>
+            <div class="total-val">$<span id="total-price">0</span></div>
+        </div>
+    </footer>
+</div>
+<script>
+    const roles_all=["伊得","八雲","艾德蒙特","奧利文","崑西","玖夜","可爾","布儡","啖天","歛","艾斯特","墨菲","休伊","環"];
+    const roles_half1=["01 伊得","02 八雲","03 艾德蒙特","04 奧利文","05 墨菲","06 艾斯特","07 休伊"];
+    const roles_half2=["01 伊得","02 崑西","03 玖夜","04 可爾","05 布儡","06 啖天","07 歛","08 環"];
+    const drinks=["冰紅茶","冰抹茶歐雷","冰鮮奶茶","冰可可歐雷"];
+    const toppings=["無配料","椰果","爆爆珠","黑糖珍珠"];
+    const goods_config=[
+        {name:"CoLotta 克羅塔",price:300,max:10},
+        {name:"名片風小卡",price:200,max:10},
+        {name:"精裝立繪寫真卡",price:300,max:10},
+        {name:"心型胸針",price:180,max:10},
+        {name:"壓克力水晶相框",price:800,max:10},
+        {name:"貼紙套組",price:250,max:10},
+        {name:"簽名小卡",price:150,max:10},
+        {name:"裝飾卡套",price:200,max:10}
+    ];
+    function showAlert(msg){document.getElementById('alert-msg').innerText=msg;document.getElementById('custom-alert').style.display='flex'}
+    function closeAlert(){document.getElementById('custom-alert').style.display='none'}
+    function init(){
+        const container=document.getElementById('simple-goods-container');
+        container.innerHTML='';
+        goods_config.forEach((item,index)=>{
+            const inputId=`qty-item-${index}`;
+            container.innerHTML+=`<div class="item-card"><div class="card-header"><span class="item-name">${item.name}<br><small style="color:var(--text-dim);font-size:.78rem;font-weight:400">限 ${item.max} 個</small></span><span class="item-price">$${item.price}</span></div><div class="number-control"><button class="btn-qty" onclick="changeQty('${inputId}',-1,${item.max})">−</button><input type="number" id="${inputId}" class="qty-input-styled goods-qty" data-price="${item.price}" data-max="${item.max}" value="0" min="0" oninput="validateAndCalc(this)"><button class="btn-qty" onclick="changeQty('${inputId}',1,${item.max})">+</button></div><img src="images/${index+6}.png" class="card-img" alt="${item.name}"></div>`;
+        });
+    }
+    function showTab(tab){
+        document.querySelectorAll('.item-list').forEach(el=>el.classList.remove('active'));
+        document.querySelectorAll('.tab-btn').forEach(el=>el.classList.remove('active'));
+        document.getElementById('tab-'+tab).classList.add('active');
+        event.currentTarget.classList.add('active');
+    }
+    function addRow(type){
+        const container=document.getElementById(type+'-rows');
+        const count=container.children.length;
+        if((type.includes('drink')&&count>=3)||(type==='cookie'&&count>=1)){showAlert("已達該項目最大選購筆數");return}
+        const selectedRoles=getSelectedRoles(type);
+        const availableRoles=roles_all.filter(role=>!selectedRoles.includes(role));
+        if(['stand','towel'].includes(type)&&availableRoles.length===0){showAlert("所有角色皆已加入清單！");return}
+        const div=document.createElement('div');
+        div.className='controls';
+        let html='';
+        if(type==='drink1')html=createSelect(roles_half1,type);
+        else if(type==='drink2')html=createSelect(roles_half2,type);
+        else if(type==='print-drink')html=createSelect(roles_all,type)+createSelect(drinks,type)+createSelect(toppings,type);
+        else{const optionsToShow=['stand','towel'].includes(type)?availableRoles:roles_all;html=createSelect(optionsToShow,type)}
+        html+=`<button class="btn-del-row" onclick="this.parentElement.remove();refreshOptions('${type}');calculateTotal();" style="color:#f87171;background:rgba(248,113,113,.08);border:1px solid rgba(248,113,113,.25);border-radius:6px;padding:6px 10px;cursor:pointer;font-size:.8rem;white-space:nowrap;font-family:'Noto Sans TC',sans-serif;">✕ 刪除</button>`;
+        div.innerHTML=html;
+        container.appendChild(div);
+        refreshOptions(type);
+        calculateTotal();
+    }
+    function createSelect(options,type){
+        return `<select class="role-select" data-type="${type}" onchange="refreshOptions('${type}');calculateTotal();">${options.map(o=>`<option value="${o}">${o}</option>`).join('')}</select>`;
+    }
+    function getSelectedRoles(type){
+        const container=document.getElementById(type+'-rows');
+        if(!container)return[];
+        return Array.from(container.querySelectorAll('.role-select')).map(s=>s.value);
+    }
+    function refreshOptions(type){
+        if(type!=='stand'&&type!=='towel')return;
+        const container=document.getElementById(type+'-rows');
+        const selects=container.querySelectorAll('.role-select');
+        const currentSelections=Array.from(selects).map(s=>s.value);
+        selects.forEach(thisSelect=>{
+            const thisValue=thisSelect.value;
+            let newHtml='';
+            roles_all.forEach(role=>{
+                const isPickedByOthers=currentSelections.some((val,idx)=>val===role&&selects[idx]!==thisSelect);
+                if(!isPickedByOthers)newHtml+=`<option value="${role}"${role===thisValue?' selected':''}>${role}</option>`;
+            });
+            thisSelect.innerHTML=newHtml;
+        });
+    }
+    function changeQty(id,delta,max){
+        const input=document.getElementById(id);
+        let val=(parseInt(input.value)||0)+delta;
+        if(val<0)val=0;
+        if(val>max)val=max;
+        input.value=val;
+        calculateTotal();
+    }
+    function validateAndCalc(input){
+        const max=parseInt(input.dataset.max);
+        let val=parseInt(input.value);
+        if(isNaN(val)||val<0)val=0;
+        else if(val>max)val=max;
+        input.value=val;
+        calculateTotal();
+    }
+    function validateCoaster(input){
+        const foodCount=document.getElementById('drink1-rows').children.length+document.getElementById('drink2-rows').children.length+document.getElementById('print-drink-rows').children.length+document.getElementById('cookie-rows').children.length;
+        if(parseInt(input.value)>foodCount)input.value=foodCount;
+        if(parseInt(input.value)<0)input.value=0;
+        calculateTotal();
+    }
+    function calculateTotal(){
+        let total=0;
+        const drinkCount=document.getElementById('drink1-rows').children.length+document.getElementById('drink2-rows').children.length+document.getElementById('print-drink-rows').children.length;
+        const cookieCount=document.getElementById('cookie-rows').children.length;
+        const totalFood=drinkCount+cookieCount;
+        const coasterInput=document.getElementById('coaster-qty');
+        const coasterHint=document.getElementById('coaster-limit-info');
+        if(totalFood>0){
+            coasterInput.disabled=false;
+            if(parseInt(coasterInput.value)>totalFood)coasterInput.value=totalFood;
+            coasterHint.innerText=`● 目前加購上限：${totalFood} 份`;
+            coasterHint.className='coaster-hint active';
+        }else{
+            coasterInput.value=0;
+            coasterInput.disabled=true;
+            coasterHint.innerText='※ 點飲料及餅乾後才可加購';
+            coasterHint.className='coaster-hint';
+        }
+        total+=totalFood*180;
+        total+=(parseInt(coasterInput.value)||0)*150;
+        document.querySelectorAll('.goods-qty').forEach(input=>{total+=(parseInt(input.value)||0)*(parseInt(input.dataset.price)||0)});
+        [{id:'stand-rows',p:650},{id:'towel-rows',p:800},{id:'scroll-rows',p:2700},{id:'big-stand-rows',p:1850}].forEach(g=>{const el=document.getElementById(g.id);if(el)total+=el.children.length*g.p});
+        document.getElementById('total-price').innerText=total.toLocaleString();
+        document.getElementById('print-total-price').innerText=total.toLocaleString();
+        const setBonus=(id,val)=>{const el=document.getElementById(id);el.innerText=val;el.className='bonus-val'+(val>0?' has-bonus':'')};
+        setBonus('bonus-coaster',totalFood);
+        setBonus('bonus-card',Math.floor(total/600));
+        setBonus('bonus-photo',Math.floor(total/800));
+        setBonus('bonus-bday',Math.floor(total/800));
+        setBonus('bonus-welcome',Math.floor(total/1200));
+    }
+    function exportToExcel(){
+        const data=[["品項名稱","選擇內容","單價","數量","小計"]];
+        let totalAmount=0,hasItems=false;
+        const rowGroups=[
+            {id:'drink1-rows',name:'前半段飲料',price:180},
+            {id:'drink2-rows',name:'後半段飲料',price:180},
+            {id:'print-drink-rows',name:'印刷飲料',price:180},
+            {id:'cookie-rows',name:'印刷糖霜餅乾',price:180},
+            {id:'stand-rows',name:'立繪壓克力立牌',price:650},
+            {id:'towel-rows',name:'立繪毛巾',price:800},
+            {id:'scroll-rows',name:'立繪掛軸',price:2700},
+            {id:'big-stand-rows',name:'放大版立繪立牌',price:1850},
         ];
-
-        function showAlert(msg) {
-            document.getElementById('alert-msg').innerText = msg;
-            document.getElementById('custom-alert').style.display = 'flex';
-        }
-
-        function closeAlert() {
-            document.getElementById('custom-alert').style.display = 'none';
-        }
-
-        function init() {
-            const container = document.getElementById('simple-goods-container');
-            container.innerHTML = '';
-            goods_config.forEach((item, index) => {
-                const inputId = `qty-item-${index}`;
-                container.innerHTML += `
-                <div class="item-card">
-                    <div class="card-header">
-                        <span class="item-name">${item.name} (限${item.max})</span>
-                        <span class="item-price">$${item.price}</span>
-                    </div>
-                    <div class="number-control">
-                        <button class="btn-qty" onclick="changeQty('${inputId}', -1, ${item.max})">−</button>
-                        <input type="number" id="${inputId}" class="qty-input-styled goods-qty"
-                            data-price="${item.price}" data-max="${item.max}" value="0" min="0" oninput="validateAndCalc(this)">
-                        <button class="btn-qty" onclick="changeQty('${inputId}', 1, ${item.max})">+</button>
-                    </div>
-                    <img src="images/${index + 6}.png" class="card-img" alt="${item.name}">
-                </div>`;
+        rowGroups.forEach(g=>{
+            const container=document.getElementById(g.id);
+            if(!container)return;
+            const rows=container.children;
+            if(rows.length===0)return;
+            Array.from(rows).forEach(row=>{
+                const selects=row.querySelectorAll('select');
+                const selectedValues=Array.from(selects).map(s=>s.value).join(' / ');
+                hasItems=true;totalAmount+=g.price;
+                data.push([g.name,selectedValues,g.price,1,g.price]);
             });
-        }
-
-        function showTab(tab) {
-            document.querySelectorAll('.item-list').forEach(el => el.classList.remove('active'));
-            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
-            document.getElementById('tab-' + tab).classList.add('active');
-            event.currentTarget.classList.add('active');
-        }
-
-        function addRow(type) {
-            const container = document.getElementById(type + '-rows');
-            const count = container.children.length;
-
-            if ((type.includes('drink') && count >= 3) || (type === 'cookie' && count >= 1)) {
-                showAlert("已達該項目最大選購筆數");
-                return;
+        });
+        document.querySelectorAll('input.qty-input-styled').forEach(input=>{
+            if(input.id==='coaster-qty')return;
+            const qty=parseInt(input.value)||0;
+            if(qty>0){
+                const card=input.closest('.item-card');if(!card)return;
+                const nameEl=card.querySelector('.item-name');
+                const priceEl=card.querySelector('.item-price');
+                if(!nameEl||!priceEl)return;
+                const name=nameEl.innerText.trim().split('\n')[0];
+                const price=parseInt(priceEl.innerText.replace(/[^0-9]/g,''))||0;
+                const subtotal=price*qty;
+                hasItems=true;totalAmount+=subtotal;
+                data.push([name,'—',price,qty,subtotal]);
             }
-
-            const selectedRoles = getSelectedRoles(type);
-            const availableRoles = roles_all.filter(role => !selectedRoles.includes(role));
-
-            if (['stand', 'towel'].includes(type) && availableRoles.length === 0) {
-                showAlert("所有角色皆已加入清單！");
-                return;
-            }
-
-            const div = document.createElement('div');
-            div.className = 'controls';
-
-            let html = '';
-            if (type === 'drink1') html = createSelect(roles_half1, type);
-            else if (type === 'drink2') html = createSelect(roles_half2, type);
-            else if (type === 'print-drink') {
-                html = createSelect(roles_all, type) + createSelect(drinks, type) + createSelect(toppings, type);
-            } else {
-                const optionsToShow = ['stand', 'towel'].includes(type) ? availableRoles : roles_all;
-                html = createSelect(optionsToShow, type);
-            }
-
-            html += `<button class="btn-del-row" onclick="this.parentElement.remove(); refreshOptions('${type}'); calculateTotal();" style="color:red; background:none; border:none; cursor:pointer; font-size:1.2rem; margin-left:auto;">✕</button>`;
-            div.innerHTML = html;
-            container.appendChild(div);
-
-            refreshOptions(type);
-            calculateTotal();
-        }
-
-        function createSelect(options, type) {
-            return `<select class="role-select" data-type="${type}" onchange="refreshOptions('${type}'); calculateTotal();">
-                ${options.map(o => `<option value="${o}">${o}</option>`).join('')}
-            </select>`;
-        }
-
-        function getSelectedRoles(type) {
-            const container = document.getElementById(type + '-rows');
-            if (!container) return [];
-            const selects = container.querySelectorAll('.role-select');
-            return Array.from(selects).map(s => s.value);
-        }
-
-        function refreshOptions(type) {
-            if (type !== 'stand' && type !== 'towel') return;
-            const container = document.getElementById(type + '-rows');
-            const selects = container.querySelectorAll('.role-select');
-            const currentSelections = Array.from(selects).map(s => s.value);
-
-            selects.forEach((thisSelect) => {
-                const thisValue = thisSelect.value;
-                let newHtml = '';
-                roles_all.forEach(role => {
-                    const isPickedByOthers = currentSelections.some((val, idx) => val === role && selects[idx] !== thisSelect);
-                    if (!isPickedByOthers) {
-                        newHtml += `<option value="${role}" ${role === thisValue ? 'selected' : ''}>${role}</option>`;
-                    }
-                });
-                thisSelect.innerHTML = newHtml;
-            });
-        }
-
-        function changeQty(id, delta, max) {
-            const input = document.getElementById(id);
-            let val = (parseInt(input.value) || 0) + delta;
-            if (val < 0) val = 0;
-            if (val > max) val = max;
-            input.value = val;
-            calculateTotal();
-        }
-
-        function validateAndCalc(input) {
-            const max = parseInt(input.dataset.max);
-            let val = parseInt(input.value);
-            if (isNaN(val) || val < 0) val = 0;
-            else if (val > max) val = max;
-            input.value = val;
-            calculateTotal();
-        }
-
-        function validateCoaster(input) {
-            const foodCount = document.getElementById('drink1-rows').children.length +
-                document.getElementById('drink2-rows').children.length +
-                document.getElementById('print-drink-rows').children.length +
-                document.getElementById('cookie-rows').children.length;
-            if (parseInt(input.value) > foodCount) input.value = foodCount;
-            if (parseInt(input.value) < 0) input.value = 0;
-            calculateTotal();
-        }
-
-        function calculateTotal() {
-            let total = 0;
-            const drinkCount = document.getElementById('drink1-rows').children.length +
-                document.getElementById('drink2-rows').children.length +
-                document.getElementById('print-drink-rows').children.length;
-            const cookieCount = document.getElementById('cookie-rows').children.length;
-            const totalFood = drinkCount + cookieCount;
-
-            const coasterInput = document.getElementById('coaster-qty');
-            const coasterHint = document.getElementById('coaster-limit-info');
-
-            if (totalFood > 0) {
-                coasterInput.disabled = false;
-                if (parseInt(coasterInput.value) > totalFood) coasterInput.value = totalFood;
-                coasterHint.innerText = `● 目前加購上限：${totalFood} 份`;
-                coasterHint.style.color = "var(--neon-blue)";
-            } else {
-                coasterInput.value = 0;
-                coasterInput.disabled = true;
-                coasterHint.innerText = `※ 點飲料及餅乾後才可加購`;
-                coasterHint.style.color = "rgb(255, 140, 140)";
-                coasterHint.style.fontSize = "0.75rem";
-                coasterHint.style.fontWeight = "600";
-            }
-
-            total += totalFood * 180;
-            total += (parseInt(coasterInput.value) || 0) * 150;
-
-            document.querySelectorAll('.goods-qty').forEach(input => {
-                total += (parseInt(input.value) || 0) * (parseInt(input.dataset.price) || 0);
-            });
-
-            const groups = [{ id: 'stand-rows', p: 650 }, { id: 'towel-rows', p: 800 }, { id: 'scroll-rows', p: 2700 }, { id: 'big-stand-rows', p: 1850 }];
-            groups.forEach(g => {
-                const el = document.getElementById(g.id);
-                if (el) total += el.children.length * g.p;
-            });
-
-            document.getElementById('total-price').innerText = total.toLocaleString();
-            document.getElementById('print-total-price').innerText = total.toLocaleString();
-
-            // 特典計算
-            const bonusCoaster = totalFood;
-            const bonusCard = Math.floor(total / 600);
-            const bonusPhoto = Math.floor(total / 800);
-            const bonusBday = Math.floor(total / 800);
-            const bonusWelcome = Math.floor(total / 1200);
-
-            const setBonus = (id, val) => {
-                const el = document.getElementById(id);
-                el.innerText = val;
-                el.className = 'bonus-val' + (val > 0 ? ' has-bonus' : '');
-            };
-
-            setBonus('bonus-coaster', bonusCoaster);
-            setBonus('bonus-card', bonusCard);
-            setBonus('bonus-photo', bonusPhoto);
-            setBonus('bonus-bday', bonusBday);
-            setBonus('bonus-welcome', bonusWelcome);
-        }
-
-        function exportToExcel() {
-            const data = [["品項名稱", "選擇內容", "單價", "數量", "小計"]];
-            let totalAmount = 0;
-            let hasItems = false;
-
-            const rowGroups = [
-                { id: 'drink1-rows', name: '前半段飲料', price: 180 },
-                { id: 'drink2-rows', name: '後半段飲料', price: 180 },
-                { id: 'print-drink-rows', name: '印刷飲料', price: 180 },
-                { id: 'cookie-rows', name: '印刷糖霜餅乾', price: 180 },
-                { id: 'stand-rows', name: '立繪壓克力立牌', price: 650 },
-                { id: 'towel-rows', name: '立繪毛巾', price: 800 },
-                { id: 'scroll-rows', name: '立繪掛軸', price: 2700 },
-                { id: 'big-stand-rows', name: '放大版立繪立牌', price: 1850 },
-            ];
-
-            rowGroups.forEach(g => {
-                const container = document.getElementById(g.id);
-                if (!container) return;
-                const rows = container.children;
-                if (rows.length === 0) return;
-
-                Array.from(rows).forEach(row => {
-                    const selects = row.querySelectorAll('select');
-                    const selectedValues = Array.from(selects).map(s => s.value).join(' / ');
-                    hasItems = true;
-                    totalAmount += g.price;
-                    data.push([g.name, selectedValues, g.price, 1, g.price]);
-                });
-            });
-
-            document.querySelectorAll('input.qty-input-styled').forEach(input => {
-                const qty = parseInt(input.value) || 0;
-                if (qty > 0) {
-                    const card = input.closest('.item-card');
-                    if (!card) return;
-                    const nameEl = card.querySelector('.item-name');
-                    const priceEl = card.querySelector('.item-price');
-                    if (!nameEl || !priceEl) return;
-
-                    const name = nameEl.innerText.trim();
-                    const price = parseInt(priceEl.innerText.replace(/[^0-9]/g, '')) || 0;
-                    const subtotal = price * qty;
-                    hasItems = true;
-                    totalAmount += subtotal;
-                    data.push([name, "—", price, qty, subtotal]);
-                }
-            });
-
-            if (!hasItems) {
-                showAlert("尚未選擇任何品項喔！");
-                return;
-            }
-
-            const totalFood2 = document.getElementById('drink1-rows').children.length +
-                document.getElementById('drink2-rows').children.length +
-                document.getElementById('print-drink-rows').children.length +
-                document.getElementById('cookie-rows').children.length;
-
-            const bonusCoaster = totalFood2;
-            const bonusCard = Math.floor(totalAmount / 600);
-            const bonusPhoto = Math.floor(totalAmount / 800);
-            const bonusBday = Math.floor(totalAmount / 800);
-            const bonusWelcome = Math.floor(totalAmount / 1200);
-
-            data.push(
-                [],
-                ["✦ 特典獲得一覽 ✦", "", "", "", ""],
-                ["特典杯墊", "", "", "", bonusCoaster],
-                ["特典小卡 (滿$600)", "", "", "", bonusCard],
-                ["限定寫真 (滿$800)", "", "", "", bonusPhoto],
-                ["生日寫真 (滿$800)", "", "", "", bonusBday],
-                ["特典迎賓卡 (滿$1200)", "", "", "", bonusWelcome],
-                [],
-                ["", "", "", "總計金額：", totalAmount]
-            );
-
-            const ws = XLSX.utils.aoa_to_sheet(data);
-            const wb = XLSX.utils.book_new();
-            XLSX.utils.book_append_sheet(wb, ws, "購買清單");
-            XLSX.writeFile(wb, "4週年安咖購買清單.xlsx");
-        }
-
-        init();
-    </script>
+        });
+        const coasterQty=parseInt(document.getElementById('coaster-qty').value)||0;
+        if(coasterQty>0){hasItems=true;totalAmount+=coasterQty*150;data.push(['加購：壓克力杯墊','—',150,coasterQty,coasterQty*150])}
+        if(!hasItems){showAlert("尚未選擇任何品項喔！");return}
+        const totalFood2=document.getElementById('drink1-rows').children.length+document.getElementById('drink2-rows').children.length+document.getElementById('print-drink-rows').children.length+document.getElementById('cookie-rows').children.length;
+        data.push([],["✦ 特典獲得一覽 ✦","","","",""],["特典杯墊","","","",totalFood2],["特典小卡 (每滿$600)","","","",Math.floor(totalAmount/600)],["限定寫真 (每滿$800)","","","",Math.floor(totalAmount/800)],["生日寫真 (每滿$800)","","","",Math.floor(totalAmount/800)],["特典迎賓卡 (每滿$1200)","","","",Math.floor(totalAmount/1200)],[],["","","","總計金額：",totalAmount]);
+        const ws=XLSX.utils.aoa_to_sheet(data);
+        const wb=XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb,ws,"購買清單");
+        XLSX.writeFile(wb,"4週年安咖購買清單.xlsx");
+    }
+    init();
+</script>
 </body>
-
 </html>
