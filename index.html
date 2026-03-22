@@ -1,412 +1,1466 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="zh-TW">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
     <title>4週年 animate cafe</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
-        :root {
-            --pink: #f472b6;
-            --pink-dim: rgba(244,114,182,0.15);
-            --pink-glow: rgba(244,114,182,0.4);
-            --teal: #2dd4bf;
-            --teal-dim: rgba(45,212,191,0.12);
-            --purple: #a78bfa;
-            --purple-dim: rgba(167,139,250,0.15);
-            --bg: #07030f;
-            --bg2: #0f0720;
-            --surface: rgba(255,255,255,0.04);
-            --surface2: rgba(255,255,255,0.07);
-            --border: rgba(255,255,255,0.08);
-            --text: #f0eaf8;
-            --text-dim: #9b8cb5;
-            --gold: #fbbf24;
-            --gold-dim: rgba(251,191,36,0.15);
+      :root {
+        --pink: #f472b6;
+        --pink-dim: rgba(244, 114, 182, 0.15);
+        --pink-glow: rgba(244, 114, 182, 0.4);
+        --teal: #2dd4bf;
+        --teal-dim: rgba(45, 212, 191, 0.12);
+        --purple: #a78bfa;
+        --purple-dim: rgba(167, 139, 250, 0.15);
+        --bg: #07030f;
+        --bg2: #0f0720;
+        --surface: rgba(255, 255, 255, 0.04);
+        --surface2: rgba(255, 255, 255, 0.07);
+        --border: rgba(255, 255, 255, 0.08);
+        --text: #f0eaf8;
+        --text-dim: #9b8cb5;
+        --gold: #fbbf24;
+        --gold-dim: rgba(251, 191, 36, 0.15);
+      }
+      * {
+        box-sizing: border-box;
+        -webkit-tap-highlight-color: transparent;
+        margin: 0;
+        padding: 0;
+      }
+      input::-webkit-outer-spin-button,
+      input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+      }
+      input[type="number"] {
+        -moz-appearance: textfield;
+      }
+      body {
+        background-color: var(--bg);
+        background-image:
+          radial-gradient(
+            ellipse 80% 50% at 50% -10%,
+            rgba(167, 139, 250, 0.12) 0%,
+            transparent 60%
+          ),
+          radial-gradient(
+            ellipse 60% 40% at 80% 100%,
+            rgba(244, 114, 182, 0.08) 0%,
+            transparent 50%
+          );
+        color: var(--text);
+        font-family: "Noto Sans TC", sans-serif;
+        display: flex;
+        justify-content: center;
+        min-height: 100vh;
+        overflow-x: hidden;
+      }
+      .material-symbols-rounded {
+        font-size: 1.1rem;
+        vertical-align: middle;
+      }
+      #app {
+        width: 100%;
+        max-width: 480px;
+        padding-bottom: 120px;
+      }
+      header {
+        padding: 48px 24px 24px;
+        text-align: center;
+      }
+      .header-eyebrow {
+        font-family: "Space Mono", monospace;
+        font-size: 0.7rem;
+        letter-spacing: 6px;
+        color: var(--teal);
+        text-transform: uppercase;
+        margin-bottom: 10px;
+        opacity: 0.8;
+      }
+      header h1 {
+        font-size: 1.5rem;
+        font-weight: 700;
+        letter-spacing: 2px;
+        background: linear-gradient(
+          135deg,
+          #fff 0%,
+          var(--purple) 50%,
+          var(--pink) 100%
+        );
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        line-height: 1.3;
+      }
+      .header-line {
+        width: 60px;
+        height: 2px;
+        background: linear-gradient(90deg, var(--teal), var(--purple));
+        margin: 14px auto 0;
+        border-radius: 2px;
+      }
+      .tabs {
+        display: flex;
+        gap: 8px;
+        margin: 8px 16px 20px;
+        padding: 6px;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        position: sticky;
+        top: 8px;
+        z-index: 50;
+        backdrop-filter: blur(12px);
+      }
+      .tab-btn,
+      a.tab-btn {
+        flex: 1;
+        padding: 10px 8px;
+        background: transparent;
+        border: none;
+        color: var(--text-dim);
+        border-radius: 10px;
+        cursor: pointer;
+        font-weight: 700;
+        font-size: 0.8rem;
+        transition: all 0.25s ease;
+        text-decoration: none;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-family: "Noto Sans TC", sans-serif;
+      }
+      .tab-btn:hover,
+      a.tab-btn:hover {
+        color: var(--text);
+        background: var(--surface2);
+      }
+      .tab-btn.active {
+        background: linear-gradient(
+          135deg,
+          rgba(167, 139, 250, 0.25),
+          rgba(244, 114, 182, 0.2)
+        );
+        color: #fff;
+        box-shadow: 0 2px 12px rgba(167, 139, 250, 0.2);
+        border: 1px solid rgba(167, 139, 250, 0.3);
+      }
+      #capture-area {
+        padding: 0 16px;
+      }
+      .item-list {
+        display: none;
+        flex-direction: column;
+        gap: 12px;
+      }
+      .item-list.active {
+        display: flex;
+      }
+      #simple-goods-container {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+      .item-card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        padding: 16px;
+        transition: border-color 0.2s;
+        animation: fadeUp 0.35s ease-out forwards;
+        opacity: 0;
+      }
+      .item-card:hover {
+        border-color: rgba(167, 139, 250, 0.2);
+      }
+      .item-card.gold-card {
+        border-color: rgba(251, 191, 36, 0.2);
+        background: linear-gradient(
+          135deg,
+          rgba(251, 191, 36, 0.04),
+          var(--surface)
+        );
+      }
+      @keyframes fadeUp {
+        from {
+          opacity: 0;
+          transform: translateY(12px);
         }
-        *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;margin:0;padding:0}
-        input::-webkit-outer-spin-button,input::-webkit-inner-spin-button{-webkit-appearance:none}
-        input[type=number]{-moz-appearance:textfield}
-        body{background-color:var(--bg);background-image:radial-gradient(ellipse 80% 50% at 50% -10%,rgba(167,139,250,0.12) 0%,transparent 60%),radial-gradient(ellipse 60% 40% at 80% 100%,rgba(244,114,182,0.08) 0%,transparent 50%);color:var(--text);font-family:'Noto Sans TC',sans-serif;display:flex;justify-content:center;min-height:100vh;overflow-x:hidden}
-        #app{width:100%;max-width:480px;padding-bottom:120px}
-        header{padding:48px 24px 24px;text-align:center}
-        .header-eyebrow{font-family:'Space Mono',monospace;font-size:.7rem;letter-spacing:6px;color:var(--teal);text-transform:uppercase;margin-bottom:10px;opacity:.8}
-        header h1{font-size:1.5rem;font-weight:700;letter-spacing:2px;background:linear-gradient(135deg,#fff 0%,var(--purple) 50%,var(--pink) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1.3}
-        .header-line{width:60px;height:2px;background:linear-gradient(90deg,var(--teal),var(--purple));margin:14px auto 0;border-radius:2px}
-        .tabs{display:flex;gap:8px;margin:8px 16px 20px;padding:6px;background:var(--surface);border:1px solid var(--border);border-radius:14px;position:sticky;top:8px;z-index:50;backdrop-filter:blur(12px)}
-        .tab-btn,a.tab-btn{flex:1;padding:10px 8px;background:transparent;border:none;color:var(--text-dim);border-radius:10px;cursor:pointer;font-weight:700;font-size:.8rem;transition:all .25s ease;text-decoration:none;display:flex;justify-content:center;align-items:center;font-family:'Noto Sans TC',sans-serif}
-        .tab-btn:hover,a.tab-btn:hover{color:var(--text);background:var(--surface2)}
-        .tab-btn.active{background:linear-gradient(135deg,rgba(167,139,250,.25),rgba(244,114,182,.2));color:#fff;box-shadow:0 2px 12px rgba(167,139,250,.2);border:1px solid rgba(167,139,250,.3)}
-        #capture-area{padding:0 16px}
-        .item-list{display:none;flex-direction:column;gap:12px}
-        .item-list.active{display:flex}
-        #simple-goods-container{display:flex;flex-direction:column;gap:12px}
-        .item-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:16px;transition:border-color .2s;animation:fadeUp .35s ease-out forwards;opacity:0}
-        .item-card:hover{border-color:rgba(167,139,250,.2)}
-        .item-card.gold-card{border-color:rgba(251,191,36,.2);background:linear-gradient(135deg,rgba(251,191,36,.04),var(--surface))}
-        @keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
-        .card-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px;gap:8px}
-        .item-name{font-size:.95rem;color:var(--text);font-weight:700;line-height:1.5}
-        .item-price{font-family:'Space Mono',monospace;color:var(--pink);font-weight:700;font-size:.95rem;white-space:nowrap;background:var(--pink-dim);padding:4px 12px;border-radius:20px;border:1px solid rgba(244,114,182,.2);flex-shrink:0}
-        .card-img{width:100%;border-radius:10px;margin:10px 0;display:block;opacity:.92}
-        .controls{display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding:10px 0 4px;border-top:1px solid var(--border)}
-        select{background:var(--bg2);border:1px solid rgba(45,212,191,.3);color:var(--text);padding:12px 36px 12px 14px;border-radius:10px;outline:none;cursor:pointer;font-family:'Noto Sans TC',sans-serif;font-size:.9rem;transition:.2s;appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 10 10'%3E%3Cpath fill='%232dd4bf' d='M5 7L1 3h8z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;flex:1;min-width:90px;min-height:44px}
-        select:focus{border-color:var(--teal);box-shadow:0 0 0 3px var(--teal-dim)}
-        select option{background:#0f0720}
-        .number-control{display:flex;align-items:center;margin-top:12px;background:var(--bg2);border:1px solid rgba(45,212,191,0.4);border-radius:10px;overflow:hidden;width:fit-content;box-shadow:0 0 14px rgba(45,212,191,0.2),inset 0 0 10px rgba(45,212,191,0.04)}
-        .btn-qty{width:48px;height:48px;background:transparent;border:none;color:var(--teal);cursor:pointer;font-size:1.4rem;display:flex;justify-content:center;align-items:center;transition:.15s;flex-shrink:0}
-        .btn-qty:hover{background:var(--teal-dim)}
-        .btn-qty:active{background:rgba(45,212,191,0.2)}
-        .qty-input-styled{width:56px;background:transparent;border:none;border-left:1px solid var(--border);border-right:1px solid var(--border);color:#fff;text-align:center;font-size:1.05rem;font-family:'Space Mono',monospace;font-weight:700;outline:none;height:48px;padding:0}
-        .btn-add-row{background:rgba(167,139,250,0.28);border:1.5px solid rgba(167,139,250,0.7);box-shadow:0 0 20px rgba(167,139,250,0.45),inset 0 0 16px rgba(167,139,250,0.1);color:#fff;padding:13px;width:100%;cursor:pointer;margin-top:12px;font-weight:700;border-radius:10px;font-size:.9rem;transition:.2s;font-family:'Noto Sans TC',sans-serif;letter-spacing:.5px;box-shadow:0 0 12px rgba(167,139,250,0.2),inset 0 0 12px rgba(167,139,250,0.05);text-shadow:0 0 8px rgba(167,139,250,0.6)}
-        .btn-add-row:hover{background:rgba(167,139,250,0.28);border-color:#a78bfa;box-shadow:0 0 20px rgba(167,139,250,0.45),inset 0 0 16px rgba(167,139,250,0.1)}
-        .btn-add-row:active{transform:scale(0.98)}
-        .coaster-hint{margin-top:10px;font-size:.78rem;font-weight:600;color:#f87171}
-        .coaster-hint.active{color:var(--teal)}
-        #bonus-panel{margin:20px 0 0;padding:0;background:rgba(56,189,248,0.08);border:1px solid rgba(125,211,252,0.8);border-radius:16px;overflow:hidden;box-shadow:0 0 30px rgba(56,189,248,0.5),0 0 60px rgba(56,189,248,0.2),inset 0 0 30px rgba(56,189,248,0.08)}
-        .bonus-title{text-align:center;font-family:'Space Mono',monospace;font-size:.72rem;letter-spacing:4px;color:#fff;margin-bottom:0;text-transform:uppercase;padding:13px 16px;background:rgba(56,189,248,0.15);border-bottom:1px solid rgba(125,211,252,0.25);text-shadow:0 0 10px rgba(56,189,248,0.8)}
-        .bonus-grid{display:flex;flex-direction:column;gap:0;padding:4px 0}
-        .bonus-item{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;border-bottom:1px solid rgba(125,211,252,0.1)}
-        .bonus-item:last-child{border-bottom:none}
-        .bonus-name{color:#fff;font-size:.9rem;display:flex;align-items:center;gap:8px;font-weight:500}
-        .bonus-name small{font-size:.7rem;color:#7dd3fc;background:rgba(125,211,252,0.12);padding:2px 8px;border-radius:99px;border:1px solid rgba(125,211,252,0.25)}
-        .bonus-val{font-family:'Space Mono',monospace;font-size:1.2rem;font-weight:700;color:rgba(255,255,255,0.25);min-width:28px;text-align:right;transition:.3s}
-        .bonus-val.has-bonus{color:#fff;text-shadow:0 0 12px rgba(56,189,248,0.9),0 0 24px rgba(56,189,248,0.5)}
-        .calculator-footer{position:fixed;bottom:0;width:100%;max-width:480px;background:rgba(7,3,15,.93);border-top:1px solid rgba(167,139,250,.18);padding:14px 20px;display:flex;justify-content:space-between;align-items:center;z-index:1000;backdrop-filter:blur(16px);gap:16px}
-        .action-btn{background:linear-gradient(135deg,var(--purple),var(--pink));border:none;color:#fff;padding:12px 18px;border-radius:10px;font-weight:700;cursor:pointer;font-size:.85rem;font-family:'Noto Sans TC',sans-serif;white-space:nowrap;transition:opacity .2s}
-        .action-btn:hover{opacity:.88}
-        .total-container{text-align:right}
-        .total-label{font-size:.7rem;color:var(--text-dim);letter-spacing:1px;margin-bottom:2px}
-        .total-val{font-family:'Space Mono',monospace;font-size:1.55rem;font-weight:700;color:#fff}
-        .total-val span{color:var(--pink)}
-        #custom-alert{position:fixed;inset:0;background:rgba(0,0,0,.75);display:none;justify-content:center;align-items:center;z-index:9999;backdrop-filter:blur(10px)}
-        .alert-box{background:var(--bg2);border:1px solid rgba(244,114,182,.3);padding:28px 24px;border-radius:16px;max-width:280px;width:85%;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.6)}
-        .alert-msg{margin-bottom:20px;line-height:1.6;font-weight:700;color:var(--text);font-size:.95rem}
-        .alert-btn{background:linear-gradient(135deg,var(--teal),var(--purple));border:none;color:#fff;padding:10px 28px;border-radius:8px;font-weight:700;cursor:pointer;font-family:'Noto Sans TC',sans-serif}
-        #screenshot-total{display:none}
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      .card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 14px;
+        gap: 8px;
+      }
+      .item-name {
+        font-size: 0.95rem;
+        color: var(--text);
+        font-weight: 700;
+        line-height: 1.5;
+      }
+      .item-price {
+        font-family: "Space Mono", monospace;
+        color: var(--pink);
+        font-weight: 700;
+        font-size: 0.95rem;
+        white-space: nowrap;
+        background: var(--pink-dim);
+        padding: 4px 12px;
+        border-radius: 20px;
+        border: 1px solid rgba(244, 114, 182, 0.2);
+        flex-shrink: 0;
+      }
+      .card-img {
+        width: 100%;
+        border-radius: 10px;
+        margin: 10px 0;
+        display: block;
+        opacity: 0.92;
+      }
+      .controls {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        align-items: center;
+        padding: 10px 0 4px;
+        border-top: 1px solid var(--border);
+      }
+      select {
+        background: var(--bg2);
+        border: 1px solid rgba(45, 212, 191, 0.3);
+        color: var(--text);
+        padding: 12px 36px 12px 14px;
+        border-radius: 10px;
+        outline: none;
+        cursor: pointer;
+        font-family: "Noto Sans TC", sans-serif;
+        font-size: 0.9rem;
+        transition: 0.2s;
+        appearance: none;
+        -webkit-appearance: none;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 10 10'%3E%3Cpath fill='%232dd4bf' d='M5 7L1 3h8z'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 12px center;
+        flex: 1;
+        min-width: 90px;
+        min-height: 44px;
+      }
+      select:focus {
+        border-color: var(--teal);
+        box-shadow: 0 0 0 3px var(--teal-dim);
+      }
+      select option {
+        background: #0f0720;
+      }
+      .number-control {
+        display: flex;
+        align-items: center;
+        margin-top: 12px;
+        background: var(--bg2);
+        border: 1px solid rgba(45, 212, 191, 0.4);
+        border-radius: 10px;
+        overflow: hidden;
+        width: fit-content;
+        box-shadow:
+          0 0 14px rgba(45, 212, 191, 0.2),
+          inset 0 0 10px rgba(45, 212, 191, 0.04);
+      }
+      .btn-qty {
+        width: 48px;
+        height: 48px;
+        background: transparent;
+        border: none;
+        color: var(--teal);
+        cursor: pointer;
+        font-size: 1.4rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        transition: 0.15s;
+        flex-shrink: 0;
+      }
+      .btn-qty:hover {
+        background: var(--teal-dim);
+      }
+      .btn-qty:active {
+        background: rgba(45, 212, 191, 0.2);
+      }
+      .qty-input-styled {
+        width: 56px;
+        background: transparent;
+        border: none;
+        border-left: 1px solid var(--border);
+        border-right: 1px solid var(--border);
+        color: #fff;
+        text-align: center;
+        font-size: 1.05rem;
+        font-family: "Space Mono", monospace;
+        font-weight: 700;
+        outline: none;
+        height: 48px;
+        padding: 0;
+      }
+      .btn-add-row {
+        background: rgba(167, 139, 250, 0.28);
+        border: 1.5px solid rgba(167, 139, 250, 0.7);
+        box-shadow:
+          0 0 20px rgba(167, 139, 250, 0.45),
+          inset 0 0 16px rgba(167, 139, 250, 0.1);
+        color: #fff;
+        padding: 13px;
+        width: 100%;
+        cursor: pointer;
+        margin-top: 12px;
+        font-weight: 700;
+        border-radius: 10px;
+        font-size: 0.9rem;
+        transition: 0.2s;
+        font-family: "Noto Sans TC", sans-serif;
+        letter-spacing: 0.5px;
+        box-shadow:
+          0 0 12px rgba(167, 139, 250, 0.2),
+          inset 0 0 12px rgba(167, 139, 250, 0.05);
+        text-shadow: 0 0 8px rgba(167, 139, 250, 0.6);
+      }
+      .btn-add-row:hover {
+        background: rgba(167, 139, 250, 0.28);
+        border-color: #a78bfa;
+        box-shadow:
+          0 0 20px rgba(167, 139, 250, 0.45),
+          inset 0 0 16px rgba(167, 139, 250, 0.1);
+      }
+      .btn-add-row:active {
+        transform: scale(0.98);
+      }
+      .coaster-hint {
+        margin-top: 10px;
+        font-size: 0.78rem;
+        font-weight: 600;
+        color: #f87171;
+      }
+      .coaster-hint.active {
+        color: var(--teal);
+      }
+      #bonus-panel {
+        margin: 20px 0 0;
+        padding: 0;
+        background: rgba(56, 189, 248, 0.08);
+        border: 1px solid rgba(125, 211, 252, 0.8);
+        border-radius: 16px;
+        overflow: hidden;
+        box-shadow:
+          0 0 30px rgba(56, 189, 248, 0.5),
+          0 0 60px rgba(56, 189, 248, 0.2),
+          inset 0 0 30px rgba(56, 189, 248, 0.08);
+      }
+      .bonus-title {
+        text-align: center;
+        font-family: "Space Mono", monospace;
+        font-size: 0.72rem;
+        letter-spacing: 4px;
+        color: #fff;
+        margin-bottom: 0;
+        text-transform: uppercase;
+        padding: 13px 16px;
+        background: rgba(56, 189, 248, 0.15);
+        border-bottom: 1px solid rgba(125, 211, 252, 0.25);
+        text-shadow: 0 0 10px rgba(56, 189, 248, 0.8);
+      }
+      .bonus-grid {
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+        padding: 4px 0;
+      }
+      .bonus-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 12px 16px;
+        border-bottom: 1px solid rgba(125, 211, 252, 0.1);
+      }
+      .bonus-item:last-child {
+        border-bottom: none;
+      }
+      .bonus-name {
+        color: #fff;
+        font-size: 0.9rem;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-weight: 500;
+      }
+      .bonus-name small {
+        font-size: 0.7rem;
+        color: #7dd3fc;
+        background: rgba(125, 211, 252, 0.12);
+        padding: 2px 8px;
+        border-radius: 99px;
+        border: 1px solid rgba(125, 211, 252, 0.25);
+      }
+      .bonus-val {
+        font-family: "Space Mono", monospace;
+        font-size: 1.2rem;
+        font-weight: 700;
+        color: rgba(255, 255, 255, 0.25);
+        min-width: 28px;
+        text-align: right;
+        transition: 0.3s;
+      }
+      .bonus-val.has-bonus {
+        color: #fff;
+        text-shadow:
+          0 0 12px rgba(56, 189, 248, 0.9),
+          0 0 24px rgba(56, 189, 248, 0.5);
+      }
+      .calculator-footer {
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        max-width: 480px;
+        background: rgba(7, 3, 15, 0.93);
+        border-top: 1px solid rgba(167, 139, 250, 0.18);
+        padding: 14px 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        z-index: 1000;
+        backdrop-filter: blur(16px);
+        gap: 16px;
+      }
+      .action-btn {
+        /* background: linear-gradient(135deg, var(--purple), var(--pink)); */
+        /* border: none; */
+        color: #fff;
+        padding: 12px 18px;
+        border-radius: 10px;
+        font-weight: 700;
+        cursor: pointer;
+        font-size: 0.85rem;
+        font-family: "Noto Sans TC", sans-serif;
+        white-space: nowrap;
+        transition: opacity 0.2s;
+        background: linear-gradient(
+          135deg,
+          rgba(56, 189, 248, 0.3),
+          rgba(125, 211, 252, 0.15)
+        );
+        border: 1px solid rgba(125, 211, 252, 0.5);
+        box-shadow: 0 0 14px rgba(56, 189, 248, 0.25);
+      }
+      .action-btn:hover {
+        opacity: 0.88;
+      }
+      .total-container {
+        text-align: right;
+      }
+      .total-label {
+        font-size: 0.7rem;
+        color: var(--text-dim);
+        letter-spacing: 1px;
+        margin-bottom: 2px;
+      }
+      .total-val {
+        font-family: "Space Mono", monospace;
+        font-size: 1.55rem;
+        font-weight: 700;
+        color: #fff;
+      }
+      .total-val span {
+        color: var(--pink);
+      }
+      #custom-alert {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.75);
+        display: none;
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+        backdrop-filter: blur(10px);
+      }
+      .alert-box {
+        background: var(--bg2);
+        border: 1px solid rgba(244, 114, 182, 0.3);
+        padding: 28px 24px;
+        border-radius: 16px;
+        max-width: 280px;
+        width: 85%;
+        text-align: center;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+      }
+      .alert-msg {
+        margin-bottom: 20px;
+        line-height: 1.6;
+        font-weight: 700;
+        color: var(--text);
+        font-size: 0.95rem;
+      }
+      .alert-btn {
+        background: linear-gradient(135deg, var(--teal), var(--purple));
+        border: none;
+        color: #fff;
+        padding: 10px 28px;
+        border-radius: 8px;
+        font-weight: 700;
+        cursor: pointer;
+        font-family: "Noto Sans TC", sans-serif;
+      }
+      #screenshot-total {
+        display: none;
+      }
+      #summary-modal {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.82);
+        display: none;
+        justify-content: center;
+        align-items: center;
+        z-index: 9998;
+        backdrop-filter: blur(12px);
+        padding: 20px;
+      }
+      .summary-box {
+        background: #0f0720;
+        border: 1px solid rgba(125, 211, 252, 0.4);
+        border-radius: 16px;
+        width: 100%;
+        max-width: 440px;
+        max-height: 80vh;
+        display: flex;
+        flex-direction: column;
+        box-shadow: 0 0 40px rgba(56, 189, 248, 0.2);
+      }
+      .summary-header {
+        padding: 16px 20px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .summary-header-title {
+        font-family: "Space Mono", monospace;
+        font-size: 0.8rem;
+        letter-spacing: 3px;
+        color: #38bdf8;
+        text-shadow: 0 0 8px rgba(56, 189, 248, 0.6);
+      }
+      .summary-close {
+        background: none;
+        border: none;
+        color: var(--text-dim);
+        font-size: 1.4rem;
+        cursor: pointer;
+        padding: 4px 8px;
+        border-radius: 6px;
+        transition: 0.2s;
+      }
+      .summary-close:hover {
+        color: #fff;
+        background: rgba(255, 255, 255, 0.08);
+      }
+      .summary-body {
+        padding: 16px 20px;
+        overflow-y: auto;
+        flex: 1;
+      }
+      .summary-section {
+        margin-bottom: 16px;
+      }
+      .summary-section-title {
+        font-size: 0.7rem;
+        letter-spacing: 2px;
+        color: var(--text-dim);
+        text-transform: uppercase;
+        margin-bottom: 8px;
+        padding-bottom: 6px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      }
+      .summary-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 8px 12px;
+        background: rgba(255, 255, 255, 0.04);
+        border-radius: 8px;
+        margin-bottom: 6px;
+        border: 1px solid rgba(255, 255, 255, 0.06);
+      }
+      .summary-row-name {
+        font-size: 0.88rem;
+        color: #fff;
+      }
+      .summary-row-sub {
+        font-size: 0.75rem;
+        color: var(--text-dim);
+        margin-top: 2px;
+      }
+      .summary-row-price {
+        font-family: "Space Mono", monospace;
+        font-size: 0.88rem;
+        color: var(--pink);
+        white-space: nowrap;
+        margin-left: 12px;
+      }
+      .summary-total {
+        padding: 14px 20px;
+        border-top: 1px solid rgba(255, 255, 255, 0.08);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .summary-total-label {
+        font-size: 0.85rem;
+        color: var(--text-dim);
+      }
+      .summary-total-val {
+        font-family: "Space Mono", monospace;
+        font-size: 1.3rem;
+        font-weight: 700;
+        color: #fff;
+      }
+      .summary-footer {
+        padding: 14px 20px;
+        border-top: 1px solid rgba(255, 255, 255, 0.06);
+        display: flex;
+        gap: 10px;
+      }
+      .summary-dl-btn {
+        flex: 1;
+        background: linear-gradient(
+          135deg,
+          rgba(56, 189, 248, 0.2),
+          rgba(125, 211, 252, 0.1)
+        );
+        border: 1px solid rgba(125, 211, 252, 0.5);
+        color: #fff;
+        padding: 12px;
+        border-radius: 10px;
+        font-weight: 700;
+        cursor: pointer;
+        font-family: "Noto Sans TC", sans-serif;
+        font-size: 0.88rem;
+        transition: 0.2s;
+        box-shadow: 0 0 14px rgba(56, 189, 248, 0.2);
+      }
+      .summary-dl-btn:hover {
+        box-shadow: 0 0 24px rgba(56, 189, 248, 0.45);
+      }
+      .summary-empty {
+        text-align: center;
+        color: var(--text-dim);
+        padding: 30px 0;
+        font-size: 0.9rem;
+      }
     </style>
-</head>
-<body>
-<div id="custom-alert">
-    <div class="alert-box">
+  </head>
+  <body>
+    <div id="custom-alert">
+      <div class="alert-box">
         <div id="alert-msg" class="alert-msg">提示訊息</div>
         <button class="alert-btn" onclick="closeAlert()">確認</button>
+      </div>
     </div>
-</div>
-<div id="app">
-    <div id="capture-area">
+    <div id="app">
+      <div id="capture-area">
         <header>
-            <div class="header-eyebrow">4th Anniversary</div>
-            <h1>Animate Cafe<br>新世界狂歡品項</h1>
-            <div class="header-line"></div>
+          <div class="header-eyebrow">4th Anniversary</div>
+          <h1>Animate Cafe<br />新世界狂歡品項</h1>
+          <div class="header-line"></div>
         </header>
         <div class="tabs">
-            <button class="tab-btn active" onclick="showTab('food')">🧋 飲料餅乾</button>
-            <button class="tab-btn" onclick="showTab('goods')">🛍 周邊</button>
-            <a href="https://www.facebook.com/share/p/1NxcpfxPSk/?mibextid=wwXIfr" target="_blank" class="tab-btn">🔗 官網</a>
+          <button class="tab-btn active" onclick="showTab('food')">
+            <span class="material-symbols-rounded">local_cafe</span> 飲料餅乾
+          </button>
+          <button class="tab-btn" onclick="showTab('goods')">
+            <span class="material-symbols-rounded">shopping_bag</span> 周邊
+          </button>
+          <a
+            href="https://www.facebook.com/share/p/1NxcpfxPSk/?mibextid=wwXIfr"
+            target="_blank"
+            class="tab-btn"
+          >
+            <span class="material-symbols-rounded">link</span> 官網
+          </a>
         </div>
         <div id="tab-food" class="item-list active">
-            <div class="item-card" data-group="drink1">
-                <div class="card-header">
-                    <span class="item-name">前半段飲料<br><small style="color:var(--text-dim);font-size:.78rem;font-weight:400">限選 3 杯</small></span>
-                    <span class="item-price">$180</span>
-                </div>
-                <div class="rows-container" id="drink1-rows"></div>
-                <button class="btn-add-row" onclick="addRow('drink1')">＋ 新增飲料</button>
-                <img src="images/1.png" class="card-img" alt="前半段飲料">
+          <div class="item-card" data-group="drink1">
+            <div class="card-header">
+              <span class="item-name"
+                >前半段飲料<br /><small
+                  style="
+                    color: var(--text-dim);
+                    font-size: 0.78rem;
+                    font-weight: 400;
+                  "
+                  >限選 3 杯</small
+                ></span
+              >
+              <span class="item-price">$180</span>
             </div>
-            <div class="item-card" data-group="drink2">
-                <div class="card-header">
-                    <span class="item-name">後半段飲料<br><small style="color:var(--text-dim);font-size:.78rem;font-weight:400">限選 3 杯</small></span>
-                    <span class="item-price">$180</span>
-                </div>
-                <div class="rows-container" id="drink2-rows"></div>
-                <button class="btn-add-row" onclick="addRow('drink2')">＋ 新增飲料</button>
-                <img src="images/2.png" class="card-img" alt="後半段飲料">
+            <div class="rows-container" id="drink1-rows"></div>
+            <button class="btn-add-row" onclick="addRow('drink1')">
+              <span class="material-symbols-rounded">add</span> 新增飲料
+            </button>
+            <img src="images/1.png" class="card-img" alt="前半段飲料" />
+          </div>
+          <div class="item-card" data-group="drink2">
+            <div class="card-header">
+              <span class="item-name"
+                >後半段飲料<br /><small
+                  style="
+                    color: var(--text-dim);
+                    font-size: 0.78rem;
+                    font-weight: 400;
+                  "
+                  >限選 3 杯</small
+                ></span
+              >
+              <span class="item-price">$180</span>
             </div>
-            <div class="item-card" data-group="print-drink">
-                <div class="card-header">
-                    <span class="item-name">印刷飲料<br><small style="color:var(--text-dim);font-size:.78rem;font-weight:400">限選 3 杯</small></span>
-                    <span class="item-price">$180</span>
-                </div>
-                <div class="rows-container" id="print-drink-rows"></div>
-                <button class="btn-add-row" onclick="addRow('print-drink')">＋ 新增飲料</button>
-                <img src="images/3.png" class="card-img" alt="印刷飲料">
+            <div class="rows-container" id="drink2-rows"></div>
+            <button class="btn-add-row" onclick="addRow('drink2')">
+              <span class="material-symbols-rounded">add</span> 新增飲料
+            </button>
+            <img src="images/2.png" class="card-img" alt="後半段飲料" />
+          </div>
+          <div class="item-card" data-group="print-drink">
+            <div class="card-header">
+              <span class="item-name"
+                >印刷飲料<br /><small
+                  style="
+                    color: var(--text-dim);
+                    font-size: 0.78rem;
+                    font-weight: 400;
+                  "
+                  >限選 3 杯</small
+                ></span
+              >
+              <span class="item-price">$180</span>
             </div>
-            <div class="item-card" data-group="cookie">
-                <div class="card-header">
-                    <span class="item-name">印刷糖霜餅乾<br><small style="color:var(--text-dim);font-size:.78rem;font-weight:400">限選 1 片</small></span>
-                    <span class="item-price">$180</span>
-                </div>
-                <div class="rows-container" id="cookie-rows"></div>
-                <button class="btn-add-row" id="btn-add-cookie" onclick="addRow('cookie')">＋ 新增餅乾</button>
-                <img src="images/4.png" class="card-img" alt="印刷糖霜餅乾">
+            <div class="rows-container" id="print-drink-rows"></div>
+            <button class="btn-add-row" onclick="addRow('print-drink')">
+              <span class="material-symbols-rounded">add</span> 新增飲料
+            </button>
+            <img src="images/3.png" class="card-img" alt="印刷飲料" />
+          </div>
+          <div class="item-card" data-group="cookie">
+            <div class="card-header">
+              <span class="item-name"
+                >印刷糖霜餅乾<br /><small
+                  style="
+                    color: var(--text-dim);
+                    font-size: 0.78rem;
+                    font-weight: 400;
+                  "
+                  >限選 1 片</small
+                ></span
+              >
+              <span class="item-price">$180</span>
             </div>
-            <div class="item-card gold-card" id="coaster-card">
-                <div class="card-header">
-                    <span class="item-name">加購：壓克力杯墊</span>
-                    <span class="item-price" style="color:var(--gold);background:var(--gold-dim);border-color:rgba(251,191,36,.2)">$150</span>
-                </div>
-                <div class="number-control">
-                    <button type="button" class="btn-qty" onclick="changeQty('coaster-qty',-1,99)">−</button>
-                    <input type="number" id="coaster-qty" class="qty-input-styled" value="0" min="0" disabled oninput="validateCoaster(this)">
-                    <button type="button" class="btn-qty" onclick="changeQty('coaster-qty',1,99)">+</button>
-                </div>
-                <div id="coaster-limit-info" class="coaster-hint">※ 點飲料及餅乾後才可加購</div>
-                <img src="images/5.png" class="card-img" alt="壓克力杯墊">
+            <div class="rows-container" id="cookie-rows"></div>
+            <button
+              class="btn-add-row"
+              id="btn-add-cookie"
+              onclick="addRow('cookie')"
+            >
+              <span class="material-symbols-rounded">add</span> 新增餅乾
+            </button>
+            <img src="images/4.png" class="card-img" alt="印刷糖霜餅乾" />
+          </div>
+          <div class="item-card gold-card" id="coaster-card">
+            <div class="card-header">
+              <span class="item-name">加購：壓克力杯墊</span>
+              <span
+                class="item-price"
+                style="
+                  color: var(--gold);
+                  background: var(--gold-dim);
+                  border-color: rgba(251, 191, 36, 0.2);
+                "
+                >$150</span
+              >
             </div>
+            <div class="number-control">
+              <button
+                type="button"
+                class="btn-qty"
+                onclick="changeQty('coaster-qty', -1, 99)"
+              >
+                −
+              </button>
+              <input
+                type="number"
+                id="coaster-qty"
+                class="qty-input-styled"
+                value="0"
+                min="0"
+                disabled
+                oninput="validateCoaster(this)"
+              />
+              <button
+                type="button"
+                class="btn-qty"
+                onclick="changeQty('coaster-qty', 1, 99)"
+              >
+                +
+              </button>
+            </div>
+            <div id="coaster-limit-info" class="coaster-hint">
+              ※ 點飲料及餅乾後才可加購
+            </div>
+            <img src="images/5.png" class="card-img" alt="壓克力杯墊" />
+          </div>
         </div>
         <div id="tab-goods" class="item-list">
-            <div class="item-card" data-group="stand">
-                <div class="card-header">
-                    <span class="item-name">立繪壓克力立牌</span>
-                    <span class="item-price">$650</span>
-                </div>
-                <div class="rows-container" id="stand-rows"></div>
-                <button class="btn-add-row" onclick="addRow('stand')">＋ 新增角色</button>
-                <img src="images/14.png" class="card-img" alt="立繪壓克力立牌">
+          <div class="item-card" data-group="stand">
+            <div class="card-header">
+              <span class="item-name">立繪壓克力立牌</span>
+              <span class="item-price">$650</span>
             </div>
-            <div class="item-card" data-group="towel">
-                <div class="card-header">
-                    <span class="item-name">立繪毛巾</span>
-                    <span class="item-price">$800</span>
-                </div>
-                <div class="rows-container" id="towel-rows"></div>
-                <button class="btn-add-row" onclick="addRow('towel')">＋ 新增角色</button>
-                <img src="images/15.png" class="card-img" alt="立繪毛巾">
+            <div class="rows-container" id="stand-rows"></div>
+            <button class="btn-add-row" onclick="addRow('stand')">
+              <span class="material-symbols-rounded">add</span> 新增角色
+            </button>
+            <img src="images/14.png" class="card-img" alt="立繪壓克力立牌" />
+          </div>
+          <div class="item-card" data-group="towel">
+            <div class="card-header">
+              <span class="item-name">立繪毛巾</span>
+              <span class="item-price">$800</span>
             </div>
-            <div id="simple-goods-container"></div>
-            <div class="item-card" data-group="scroll">
-                <div class="card-header">
-                    <span class="item-name">立繪掛軸</span>
-                    <span class="item-price">$2700</span>
-                </div>
-                <div class="rows-container" id="scroll-rows"></div>
-                <button class="btn-add-row" onclick="addRow('scroll')">＋ 新增角色</button>
-                <img src="images/16.png" class="card-img" alt="立繪掛軸">
+            <div class="rows-container" id="towel-rows"></div>
+            <button class="btn-add-row" onclick="addRow('towel')">
+              <span class="material-symbols-rounded">add</span> 新增角色
+            </button>
+            <img src="images/15.png" class="card-img" alt="立繪毛巾" />
+          </div>
+          <div id="simple-goods-container"></div>
+          <div class="item-card" data-group="scroll">
+            <div class="card-header">
+              <span class="item-name">立繪掛軸</span>
+              <span class="item-price">$2700</span>
             </div>
-            <div class="item-card" data-group="big-stand">
-                <div class="card-header">
-                    <span class="item-name">放大版立繪立牌</span>
-                    <span class="item-price">$1850</span>
-                </div>
-                <div class="rows-container" id="big-stand-rows"></div>
-                <button class="btn-add-row" onclick="addRow('big-stand')">＋ 新增角色</button>
-                <img src="images/17.png" class="card-img" alt="放大版立繪立牌">
+            <div class="rows-container" id="scroll-rows"></div>
+            <button class="btn-add-row" onclick="addRow('scroll')">
+              <span class="material-symbols-rounded">add</span> 新增角色
+            </button>
+            <img src="images/16.png" class="card-img" alt="立繪掛軸" />
+          </div>
+          <div class="item-card" data-group="big-stand">
+            <div class="card-header">
+              <span class="item-name">放大版立繪立牌</span>
+              <span class="item-price">$1850</span>
             </div>
-            <div class="item-card">
-                <div class="card-header">
-                    <span class="item-name">伊得超大型立牌</span>
-                    <span class="item-price">$1350</span>
-                </div>
-                <div class="number-control">
-                    <button type="button" class="btn-qty" onclick="changeQty('qty-big-eiden',-1,99)">−</button>
-                    <input type="number" id="qty-big-eiden" class="qty-input-styled goods-qty" data-price="1350" data-max="99" value="0" min="0" oninput="validateAndCalc(this)">
-                    <button type="button" class="btn-qty" onclick="changeQty('qty-big-eiden',1,99)">+</button>
-                </div>
-                <img src="images/18.png" class="card-img" alt="伊得超大型立牌">
+            <div class="rows-container" id="big-stand-rows"></div>
+            <button class="btn-add-row" onclick="addRow('big-stand')">
+              <span class="material-symbols-rounded">add</span> 新增角色
+            </button>
+            <img src="images/17.png" class="card-img" alt="放大版立繪立牌" />
+          </div>
+          <div class="item-card">
+            <div class="card-header">
+              <span class="item-name">伊得超大型立牌</span>
+              <span class="item-price">$1350</span>
             </div>
+            <div class="number-control">
+              <button
+                type="button"
+                class="btn-qty"
+                onclick="changeQty('qty-big-eiden', -1, 99)"
+              >
+                −
+              </button>
+              <input
+                type="number"
+                id="qty-big-eiden"
+                class="qty-input-styled goods-qty"
+                data-price="1350"
+                data-max="99"
+                value="0"
+                min="0"
+                oninput="validateAndCalc(this)"
+              />
+              <button
+                type="button"
+                class="btn-qty"
+                onclick="changeQty('qty-big-eiden', 1, 99)"
+              >
+                +
+              </button>
+            </div>
+            <img src="images/18.png" class="card-img" alt="伊得超大型立牌" />
+          </div>
         </div>
         <div id="bonus-panel">
-            <div class="bonus-title">✦ 特典獲得一覽 ✦</div>
-            <div class="bonus-grid">
-                <div class="bonus-item"><span class="bonus-name">特典杯墊</span><span class="bonus-val" id="bonus-coaster">0</span></div>
-                <div class="bonus-item"><span class="bonus-name">特典小卡 <small>(每滿 $600)</small></span><span class="bonus-val" id="bonus-card">0</span></div>
-                <div class="bonus-item"><span class="bonus-name">限定寫真 <small>(每滿 $800)</small></span><span class="bonus-val" id="bonus-photo">0</span></div>
-                <div class="bonus-item"><span class="bonus-name">生日寫真 <small>(每滿 $800)</small></span><span class="bonus-val" id="bonus-bday">0</span></div>
-                <div class="bonus-item"><span class="bonus-name">特典迎賓卡 <small>(每滿 $1200)</small></span><span class="bonus-val" id="bonus-welcome">0</span></div>
+          <div class="bonus-title">✦ 特典獲得一覽 ✦</div>
+          <div class="bonus-grid">
+            <div class="bonus-item">
+              <span class="bonus-name">特典杯墊</span
+              ><span class="bonus-val" id="bonus-coaster">0</span>
             </div>
+            <div class="bonus-item">
+              <span class="bonus-name">特典小卡 <small>(每滿 $600)</small></span
+              ><span class="bonus-val" id="bonus-card">0</span>
+            </div>
+            <div class="bonus-item">
+              <span class="bonus-name">限定寫真 <small>(每滿 $800)</small></span
+              ><span class="bonus-val" id="bonus-photo">0</span>
+            </div>
+            <div class="bonus-item">
+              <span class="bonus-name">生日寫真 <small>(每滿 $800)</small></span
+              ><span class="bonus-val" id="bonus-bday">0</span>
+            </div>
+            <div class="bonus-item">
+              <span class="bonus-name"
+                >特典迎賓卡 <small>(每滿 $1200)</small></span
+              ><span class="bonus-val" id="bonus-welcome">0</span>
+            </div>
+          </div>
         </div>
-        <div id="screenshot-total"><div>NT$ <span id="print-total-price">0</span></div></div>
-    </div>
-    <footer class="calculator-footer">
-        <button class="action-btn" onclick="exportToExcel()">📊 匯出 Excel</button>
+        <div id="screenshot-total">
+          <div>NT$ <span id="print-total-price">0</span></div>
+        </div>
+      </div>
+      <footer class="calculator-footer">
+        <div style="gap: 0.5rem; display: flex">
+          <button class="action-btn" onclick="openSummary()">
+            <span class="material-symbols-rounded">receipt_long</span> 查看清單
+          </button>
+          <button
+            class="action-btn"
+            style="
+              background: linear-gradient(
+                135deg,
+                rgba(248, 56, 239, 0.3),
+                rgba(252, 125, 229, 0.15)
+              );
+              border: 1px solid rgba(252, 125, 201, 0.5);
+              box-shadow: 0 0 14px rgba(248, 56, 155, 0.25);
+            "
+            onclick="exportToExcel()"
+          >
+            <span class="material-symbols-rounded">table_view</span> 匯出 Excel
+          </button>
+        </div>
+
         <div class="total-container">
-            <div class="total-label">試算總金額</div>
-            <div class="total-val">$<span id="total-price">0</span></div>
+          <div class="total-label">試算總金額</div>
+          <div class="total-val">$<span id="total-price">0</span></div>
         </div>
-    </footer>
-</div>
-<script>
-    const roles_all=["伊得","八雲","艾德蒙特","奧利文","崑西","玖夜","可爾","布儡","啖天","歛","艾斯特","墨菲","休伊","環"];
-    const roles_half1=["01 伊得","02 八雲","03 艾德蒙特","04 奧利文","05 墨菲","06 艾斯特","07 休伊"];
-    const roles_half2=["01 伊得","02 崑西","03 玖夜","04 可爾","05 布儡","06 啖天","07 歛","08 環"];
-    const drinks=["冰紅茶","冰抹茶歐雷","冰鮮奶茶","冰可可歐雷"];
-    const toppings=["無配料","椰果","爆爆珠","黑糖珍珠"];
-    const goods_config=[
-        {name:"CoLotta 克羅塔",price:300,max:10},
-        {name:"名片風小卡",price:200,max:10},
-        {name:"精裝立繪寫真卡",price:300,max:10},
-        {name:"心型胸針",price:180,max:10},
-        {name:"壓克力水晶相框",price:800,max:10},
-        {name:"貼紙套組",price:250,max:10},
-        {name:"簽名小卡",price:150,max:10},
-        {name:"裝飾卡套",price:200,max:10}
-    ];
-    function showAlert(msg){document.getElementById('alert-msg').innerText=msg;document.getElementById('custom-alert').style.display='flex'}
-    function closeAlert(){document.getElementById('custom-alert').style.display='none'}
-    function init(){
-        const container=document.getElementById('simple-goods-container');
-        container.innerHTML='';
-        goods_config.forEach((item,index)=>{
-            const inputId=`qty-item-${index}`;
-            container.innerHTML+=`<div class="item-card"><div class="card-header"><span class="item-name">${item.name}<br><small style="color:var(--text-dim);font-size:.78rem;font-weight:400">限 ${item.max} 個</small></span><span class="item-price">$${item.price}</span></div><div class="number-control"><button class="btn-qty" onclick="changeQty('${inputId}',-1,${item.max})">−</button><input type="number" id="${inputId}" class="qty-input-styled goods-qty" data-price="${item.price}" data-max="${item.max}" value="0" min="0" oninput="validateAndCalc(this)"><button class="btn-qty" onclick="changeQty('${inputId}',1,${item.max})">+</button></div><img src="images/${index+6}.png" class="card-img" alt="${item.name}"></div>`;
+      </footer>
+    </div>
+
+    <!-- 彈窗 -->
+    <div id="summary-modal" onclick="if(event.target===this)closeSummary()">
+      <div class="summary-box">
+        <div class="summary-header">
+          <span class="summary-header-title">✦ 已選品項清單 ✦</span>
+          <button class="summary-close" onclick="closeSummary()">✕</button>
+        </div>
+        <div class="summary-body" id="summary-body"></div>
+        <div class="summary-total">
+          <span class="summary-total-label">合計金額</span>
+          <span class="summary-total-val"
+            >$<span id="summary-total-val">0</span></span
+          >
+        </div>
+        <div class="summary-footer">
+          <button class="summary-dl-btn" onclick="downloadSummaryImage()">
+            <span class="material-symbols-rounded">download</span> 下載清單圖片
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const roles_all = [
+        "伊得",
+        "八雲",
+        "艾德蒙特",
+        "奧利文",
+        "崑西",
+        "玖夜",
+        "可爾",
+        "布儡",
+        "啖天",
+        "歛",
+        "艾斯特",
+        "墨菲",
+        "休伊",
+        "環",
+      ];
+      const roles_half1 = [
+        "01 伊得",
+        "02 八雲",
+        "03 艾德蒙特",
+        "04 奧利文",
+        "05 墨菲",
+        "06 艾斯特",
+        "07 休伊",
+      ];
+      const roles_half2 = [
+        "01 伊得",
+        "02 崑西",
+        "03 玖夜",
+        "04 可爾",
+        "05 布儡",
+        "06 啖天",
+        "07 歛",
+        "08 環",
+      ];
+      const drinks = ["冰紅茶", "冰抹茶歐雷", "冰鮮奶茶", "冰可可歐雷"];
+      const toppings = ["無配料", "椰果", "爆爆珠", "黑糖珍珠"];
+      const goods_config = [
+        { name: "CoLotta 克羅塔", price: 300, max: 10 },
+        { name: "名片風小卡", price: 200, max: 10 },
+        { name: "精裝立繪寫真卡", price: 300, max: 10 },
+        { name: "心型胸針", price: 180, max: 10 },
+        { name: "壓克力水晶相框", price: 800, max: 10 },
+        { name: "貼紙套組", price: 250, max: 10 },
+        { name: "簽名小卡", price: 150, max: 10 },
+        { name: "裝飾卡套", price: 200, max: 10 },
+      ];
+      function showAlert(msg) {
+        document.getElementById("alert-msg").innerText = msg;
+        document.getElementById("custom-alert").style.display = "flex";
+      }
+      function closeAlert() {
+        document.getElementById("custom-alert").style.display = "none";
+      }
+      function openSummary() {
+        const body = document.getElementById("summary-body");
+        body.innerHTML = "";
+        let total = 0;
+        let hasItems = false;
+        let html = "";
+
+        const rowGroups = [
+          { id: "drink1-rows", name: "前半段飲料", price: 180 },
+          { id: "drink2-rows", name: "後半段飲料", price: 180 },
+          { id: "print-drink-rows", name: "印刷飲料", price: 180 },
+          { id: "cookie-rows", name: "印刷糖霜餅乾", price: 180 },
+          { id: "stand-rows", name: "立繪壓克力立牌", price: 650 },
+          { id: "towel-rows", name: "立繪毛巾", price: 800 },
+          { id: "scroll-rows", name: "立繪掛軸", price: 2700 },
+          { id: "big-stand-rows", name: "放大版立繪立牌", price: 1850 },
+        ];
+
+        let sectionHtml = "";
+        rowGroups.forEach((g) => {
+          const container = document.getElementById(g.id);
+          if (!container || container.children.length === 0) return;
+          Array.from(container.children).forEach((row) => {
+            const selects = row.querySelectorAll("select");
+            const sub = Array.from(selects)
+              .map((s) => s.value)
+              .join(" / ");
+            hasItems = true;
+            total += g.price;
+            sectionHtml += `<div class="summary-row">
+                <div><div class="summary-row-name">${g.name}</div><div class="summary-row-sub">${sub}</div></div>
+                <div class="summary-row-price">$${g.price}</div>
+            </div>`;
+          });
         });
-    }
-    function showTab(tab){
-        document.querySelectorAll('.item-list').forEach(el=>el.classList.remove('active'));
-        document.querySelectorAll('.tab-btn').forEach(el=>el.classList.remove('active'));
-        document.getElementById('tab-'+tab).classList.add('active');
-        event.currentTarget.classList.add('active');
-    }
-    function addRow(type){
-        const container=document.getElementById(type+'-rows');
-        const count=container.children.length;
-        if((type.includes('drink')&&count>=3)||(type==='cookie'&&count>=1)){showAlert("已達該項目最大選購筆數");return}
-        const selectedRoles=getSelectedRoles(type);
-        const availableRoles=roles_all.filter(role=>!selectedRoles.includes(role));
-        if(['stand','towel'].includes(type)&&availableRoles.length===0){showAlert("所有角色皆已加入清單！");return}
-        const div=document.createElement('div');
-        div.className='controls';
-        let html='';
-        if(type==='drink1')html=createSelect(roles_half1,type);
-        else if(type==='drink2')html=createSelect(roles_half2,type);
-        else if(type==='print-drink')html=createSelect(roles_all,type)+createSelect(drinks,type)+createSelect(toppings,type);
-        else{const optionsToShow=['stand','towel'].includes(type)?availableRoles:roles_all;html=createSelect(optionsToShow,type)}
-        html+=`<button class="btn-del-row" onclick="this.parentElement.remove();refreshOptions('${type}');calculateTotal();" style="color:#f87171;background:rgba(248,113,113,.08);border:1px solid rgba(248,113,113,.25);border-radius:6px;padding:6px 10px;cursor:pointer;font-size:.8rem;white-space:nowrap;font-family:'Noto Sans TC',sans-serif;">✕ 刪除</button>`;
-        div.innerHTML=html;
+
+        document.querySelectorAll("input.qty-input-styled").forEach((input) => {
+          if (input.id === "coaster-qty") return;
+          const qty = parseInt(input.value) || 0;
+          if (qty <= 0) return;
+          const card = input.closest(".item-card");
+          if (!card) return;
+          const nameEl = card.querySelector(".item-name");
+          const priceEl = card.querySelector(".item-price");
+          if (!nameEl || !priceEl) return;
+          const name = nameEl.innerText.trim().split("\n")[0];
+          const price = parseInt(priceEl.innerText.replace(/[^0-9]/g, "")) || 0;
+          const subtotal = price * qty;
+          hasItems = true;
+          total += subtotal;
+          sectionHtml += `<div class="summary-row">
+            <div><div class="summary-row-name">${name}</div><div class="summary-row-sub">x${qty}</div></div>
+            <div class="summary-row-price">$${subtotal}</div>
+        </div>`;
+        });
+
+        const coasterQty =
+          parseInt(document.getElementById("coaster-qty").value) || 0;
+        if (coasterQty > 0) {
+          hasItems = true;
+          total += coasterQty * 150;
+          sectionHtml += `<div class="summary-row">
+            <div><div class="summary-row-name">加購：壓克力杯墊</div><div class="summary-row-sub">x${coasterQty}</div></div>
+            <div class="summary-row-price">$${coasterQty * 150}</div>
+        </div>`;
+        }
+
+        if (!hasItems) {
+          body.innerHTML = '<div class="summary-empty">尚未選擇任何品項</div>';
+        } else {
+          const bonusItems = [
+            {
+              name: "特典杯墊",
+              val: document.getElementById("bonus-coaster").innerText,
+            },
+            {
+              name: "特典小卡 (每滿$600)",
+              val: document.getElementById("bonus-card").innerText,
+            },
+            {
+              name: "限定寫真 (每滿$800)",
+              val: document.getElementById("bonus-photo").innerText,
+            },
+            {
+              name: "生日寫真 (每滿$800)",
+              val: document.getElementById("bonus-bday").innerText,
+            },
+            {
+              name: "特典迎賓卡 (每滿$1200)",
+              val: document.getElementById("bonus-welcome").innerText,
+            },
+          ];
+
+          const bonusHtml = `
+    <div class="summary-section-title" style="margin-top:16px">✦ 特典獲得一覽</div>
+    ${bonusItems
+      .map(
+        (b) => `
+        <div class="summary-row" style="border-color:rgba(125,211,252,0.2);background:rgba(56,189,248,0.06)">
+            <div class="summary-row-name">${b.name}</div>
+            <div class="summary-row-price" style="color:#38bdf8">× ${b.val}</div>
+        </div>
+    `,
+      )
+      .join("")}
+`;
+
+          body.innerHTML = sectionHtml + bonusHtml;
+        }
+
+        document.getElementById("summary-total-val").innerText =
+          total.toLocaleString();
+        document.getElementById("summary-modal").style.display = "flex";
+      }
+
+      function closeSummary() {
+        document.getElementById("summary-modal").style.display = "none";
+      }
+
+      function init() {
+        const container = document.getElementById("simple-goods-container");
+        container.innerHTML = "";
+        goods_config.forEach((item, index) => {
+          const inputId = `qty-item-${index}`;
+          container.innerHTML += `<div class="item-card"><div class="card-header"><span class="item-name">${item.name}<br><small style="color:var(--text-dim);font-size:.78rem;font-weight:400">限 ${item.max} 個</small></span><span class="item-price">$${item.price}</span></div><div class="number-control"><button class="btn-qty" onclick="changeQty('${inputId}',-1,${item.max})">−</button><input type="number" id="${inputId}" class="qty-input-styled goods-qty" data-price="${item.price}" data-max="${item.max}" value="0" min="0" oninput="validateAndCalc(this)"><button class="btn-qty" onclick="changeQty('${inputId}',1,${item.max})">+</button></div><img src="images/${index + 6}.png" class="card-img" alt="${item.name}"></div>`;
+        });
+      }
+      function showTab(tab) {
+        document
+          .querySelectorAll(".item-list")
+          .forEach((el) => el.classList.remove("active"));
+        document
+          .querySelectorAll(".tab-btn")
+          .forEach((el) => el.classList.remove("active"));
+        document.getElementById("tab-" + tab).classList.add("active");
+        event.currentTarget.classList.add("active");
+      }
+      function addRow(type) {
+        const container = document.getElementById(type + "-rows");
+        const count = container.children.length;
+        if (
+          (type.includes("drink") && count >= 3) ||
+          (type === "cookie" && count >= 1)
+        ) {
+          showAlert("已達該項目最大選購筆數");
+          return;
+        }
+        const selectedRoles = getSelectedRoles(type);
+        const availableRoles = roles_all.filter(
+          (role) => !selectedRoles.includes(role),
+        );
+        if (["stand", "towel"].includes(type) && availableRoles.length === 0) {
+          showAlert("所有角色皆已加入清單！");
+          return;
+        }
+        const div = document.createElement("div");
+        div.className = "controls";
+        let html = "";
+        if (type === "drink1") html = createSelect(roles_half1, type);
+        else if (type === "drink2") html = createSelect(roles_half2, type);
+        else if (type === "print-drink")
+          html =
+            createSelect(roles_all, type) +
+            createSelect(drinks, type) +
+            createSelect(toppings, type);
+        else {
+          const optionsToShow = ["stand", "towel"].includes(type)
+            ? availableRoles
+            : roles_all;
+          html = createSelect(optionsToShow, type);
+        }
+        html += `<button class="btn-del-row" onclick="this.parentElement.remove();refreshOptions('${type}');calculateTotal();" style="color:#f87171;background:rgba(248,113,113,.08);border:1px solid rgba(248,113,113,.25);border-radius:6px;padding:6px 10px;cursor:pointer;white-space:nowrap;display:flex;align-items:center;gap:4px;"><span class="material-symbols-rounded" style="font-size:1rem;">delete</span>刪除</button>`;
+        div.innerHTML = html;
         container.appendChild(div);
         refreshOptions(type);
         calculateTotal();
-    }
-    function createSelect(options,type){
-        return `<select class="role-select" data-type="${type}" onchange="refreshOptions('${type}');calculateTotal();">${options.map(o=>`<option value="${o}">${o}</option>`).join('')}</select>`;
-    }
-    function getSelectedRoles(type){
-        const container=document.getElementById(type+'-rows');
-        if(!container)return[];
-        return Array.from(container.querySelectorAll('.role-select')).map(s=>s.value);
-    }
-    function refreshOptions(type){
-        if(type!=='stand'&&type!=='towel')return;
-        const container=document.getElementById(type+'-rows');
-        const selects=container.querySelectorAll('.role-select');
-        const currentSelections=Array.from(selects).map(s=>s.value);
-        selects.forEach(thisSelect=>{
-            const thisValue=thisSelect.value;
-            let newHtml='';
-            roles_all.forEach(role=>{
-                const isPickedByOthers=currentSelections.some((val,idx)=>val===role&&selects[idx]!==thisSelect);
-                if(!isPickedByOthers)newHtml+=`<option value="${role}"${role===thisValue?' selected':''}>${role}</option>`;
-            });
-            thisSelect.innerHTML=newHtml;
+      }
+      function createSelect(options, type) {
+        return `<select class="role-select" data-type="${type}" onchange="refreshOptions('${type}');calculateTotal();">${options.map((o) => `<option value="${o}">${o}</option>`).join("")}</select>`;
+      }
+      function getSelectedRoles(type) {
+        const container = document.getElementById(type + "-rows");
+        if (!container) return [];
+        return Array.from(container.querySelectorAll(".role-select")).map(
+          (s) => s.value,
+        );
+      }
+      function refreshOptions(type) {
+        if (type !== "stand" && type !== "towel") return;
+        const container = document.getElementById(type + "-rows");
+        const selects = container.querySelectorAll(".role-select");
+        const currentSelections = Array.from(selects).map((s) => s.value);
+        selects.forEach((thisSelect) => {
+          const thisValue = thisSelect.value;
+          let newHtml = "";
+          roles_all.forEach((role) => {
+            const isPickedByOthers = currentSelections.some(
+              (val, idx) => val === role && selects[idx] !== thisSelect,
+            );
+            if (!isPickedByOthers)
+              newHtml += `<option value="${role}"${role === thisValue ? " selected" : ""}>${role}</option>`;
+          });
+          thisSelect.innerHTML = newHtml;
         });
-    }
-    function changeQty(id,delta,max){
-        const input=document.getElementById(id);
-        let val=(parseInt(input.value)||0)+delta;
-        if(val<0)val=0;
-        if(val>max)val=max;
-        input.value=val;
+      }
+      function changeQty(id, delta, max) {
+        const input = document.getElementById(id);
+        let val = (parseInt(input.value) || 0) + delta;
+        if (val < 0) val = 0;
+        if (val > max) val = max;
+        input.value = val;
         calculateTotal();
-    }
-    function validateAndCalc(input){
-        const max=parseInt(input.dataset.max);
-        let val=parseInt(input.value);
-        if(isNaN(val)||val<0)val=0;
-        else if(val>max)val=max;
-        input.value=val;
+      }
+      function validateAndCalc(input) {
+        const max = parseInt(input.dataset.max);
+        let val = parseInt(input.value);
+        if (isNaN(val) || val < 0) val = 0;
+        else if (val > max) val = max;
+        input.value = val;
         calculateTotal();
-    }
-    function validateCoaster(input){
-        const foodCount=document.getElementById('drink1-rows').children.length+document.getElementById('drink2-rows').children.length+document.getElementById('print-drink-rows').children.length+document.getElementById('cookie-rows').children.length;
-        if(parseInt(input.value)>foodCount)input.value=foodCount;
-        if(parseInt(input.value)<0)input.value=0;
+      }
+      function validateCoaster(input) {
+        const foodCount =
+          document.getElementById("drink1-rows").children.length +
+          document.getElementById("drink2-rows").children.length +
+          document.getElementById("print-drink-rows").children.length +
+          document.getElementById("cookie-rows").children.length;
+        if (parseInt(input.value) > foodCount) input.value = foodCount;
+        if (parseInt(input.value) < 0) input.value = 0;
         calculateTotal();
-    }
-    function calculateTotal(){
-        let total=0;
-        const drinkCount=document.getElementById('drink1-rows').children.length+document.getElementById('drink2-rows').children.length+document.getElementById('print-drink-rows').children.length;
-        const cookieCount=document.getElementById('cookie-rows').children.length;
-        const totalFood=drinkCount+cookieCount;
-        const coasterInput=document.getElementById('coaster-qty');
-        const coasterHint=document.getElementById('coaster-limit-info');
-        if(totalFood>0){
-            coasterInput.disabled=false;
-            if(parseInt(coasterInput.value)>totalFood)coasterInput.value=totalFood;
-            coasterHint.innerText=`● 目前加購上限：${totalFood} 份`;
-            coasterHint.className='coaster-hint active';
-        }else{
-            coasterInput.value=0;
-            coasterInput.disabled=true;
-            coasterHint.innerText='※ 點飲料及餅乾後才可加購';
-            coasterHint.className='coaster-hint';
+      }
+      function calculateTotal() {
+        let total = 0;
+        const drinkCount =
+          document.getElementById("drink1-rows").children.length +
+          document.getElementById("drink2-rows").children.length +
+          document.getElementById("print-drink-rows").children.length;
+        const cookieCount =
+          document.getElementById("cookie-rows").children.length;
+        const totalFood = drinkCount + cookieCount;
+        const coasterInput = document.getElementById("coaster-qty");
+        const coasterHint = document.getElementById("coaster-limit-info");
+        if (totalFood > 0) {
+          coasterInput.disabled = false;
+          if (parseInt(coasterInput.value) > totalFood)
+            coasterInput.value = totalFood;
+          coasterHint.innerText = `● 目前加購上限：${totalFood} 份`;
+          coasterHint.className = "coaster-hint active";
+        } else {
+          coasterInput.value = 0;
+          coasterInput.disabled = true;
+          coasterHint.innerText = "※ 點飲料及餅乾後才可加購";
+          coasterHint.className = "coaster-hint";
         }
-        total+=totalFood*180;
-        total+=(parseInt(coasterInput.value)||0)*150;
-        document.querySelectorAll('.goods-qty').forEach(input=>{total+=(parseInt(input.value)||0)*(parseInt(input.dataset.price)||0)});
-        [{id:'stand-rows',p:650},{id:'towel-rows',p:800},{id:'scroll-rows',p:2700},{id:'big-stand-rows',p:1850}].forEach(g=>{const el=document.getElementById(g.id);if(el)total+=el.children.length*g.p});
-        document.getElementById('total-price').innerText=total.toLocaleString();
-        document.getElementById('print-total-price').innerText=total.toLocaleString();
-        const setBonus=(id,val)=>{const el=document.getElementById(id);el.innerText=val;el.className='bonus-val'+(val>0?' has-bonus':'')};
-        setBonus('bonus-coaster',totalFood);
-        setBonus('bonus-card',Math.floor(total/600));
-        setBonus('bonus-photo',Math.floor(total/800));
-        setBonus('bonus-bday',Math.floor(total/800));
-        setBonus('bonus-welcome',Math.floor(total/1200));
-    }
-    function exportToExcel(){
-        const data=[["品項名稱","選擇內容","單價","數量","小計"]];
-        let totalAmount=0,hasItems=false;
-        const rowGroups=[
-            {id:'drink1-rows',name:'前半段飲料',price:180},
-            {id:'drink2-rows',name:'後半段飲料',price:180},
-            {id:'print-drink-rows',name:'印刷飲料',price:180},
-            {id:'cookie-rows',name:'印刷糖霜餅乾',price:180},
-            {id:'stand-rows',name:'立繪壓克力立牌',price:650},
-            {id:'towel-rows',name:'立繪毛巾',price:800},
-            {id:'scroll-rows',name:'立繪掛軸',price:2700},
-            {id:'big-stand-rows',name:'放大版立繪立牌',price:1850},
+        total += totalFood * 180;
+        total += (parseInt(coasterInput.value) || 0) * 150;
+        document.querySelectorAll(".goods-qty").forEach((input) => {
+          total +=
+            (parseInt(input.value) || 0) * (parseInt(input.dataset.price) || 0);
+        });
+        [
+          { id: "stand-rows", p: 650 },
+          { id: "towel-rows", p: 800 },
+          { id: "scroll-rows", p: 2700 },
+          { id: "big-stand-rows", p: 1850 },
+        ].forEach((g) => {
+          const el = document.getElementById(g.id);
+          if (el) total += el.children.length * g.p;
+        });
+        document.getElementById("total-price").innerText =
+          total.toLocaleString();
+        document.getElementById("print-total-price").innerText =
+          total.toLocaleString();
+        const setBonus = (id, val) => {
+          const el = document.getElementById(id);
+          el.innerText = val;
+          el.className = "bonus-val" + (val > 0 ? " has-bonus" : "");
+        };
+        setBonus("bonus-coaster", totalFood);
+        setBonus("bonus-card", Math.floor(total / 600));
+        setBonus("bonus-photo", Math.floor(total / 800));
+        setBonus("bonus-bday", Math.floor(total / 800));
+        setBonus("bonus-welcome", Math.floor(total / 1200));
+      }
+      function exportToExcel() {
+        const data = [["品項名稱", "選擇內容", "單價", "數量", "小計"]];
+        let totalAmount = 0,
+          hasItems = false;
+        const rowGroups = [
+          { id: "drink1-rows", name: "前半段飲料", price: 180 },
+          { id: "drink2-rows", name: "後半段飲料", price: 180 },
+          { id: "print-drink-rows", name: "印刷飲料", price: 180 },
+          { id: "cookie-rows", name: "印刷糖霜餅乾", price: 180 },
+          { id: "stand-rows", name: "立繪壓克力立牌", price: 650 },
+          { id: "towel-rows", name: "立繪毛巾", price: 800 },
+          { id: "scroll-rows", name: "立繪掛軸", price: 2700 },
+          { id: "big-stand-rows", name: "放大版立繪立牌", price: 1850 },
         ];
-        rowGroups.forEach(g=>{
-            const container=document.getElementById(g.id);
-            if(!container)return;
-            const rows=container.children;
-            if(rows.length===0)return;
-            Array.from(rows).forEach(row=>{
-                const selects=row.querySelectorAll('select');
-                const selectedValues=Array.from(selects).map(s=>s.value).join(' / ');
-                hasItems=true;totalAmount+=g.price;
-                data.push([g.name,selectedValues,g.price,1,g.price]);
-            });
+        rowGroups.forEach((g) => {
+          const container = document.getElementById(g.id);
+          if (!container) return;
+          const rows = container.children;
+          if (rows.length === 0) return;
+          Array.from(rows).forEach((row) => {
+            const selects = row.querySelectorAll("select");
+            const selectedValues = Array.from(selects)
+              .map((s) => s.value)
+              .join(" / ");
+            hasItems = true;
+            totalAmount += g.price;
+            data.push([g.name, selectedValues, g.price, 1, g.price]);
+          });
         });
-        document.querySelectorAll('input.qty-input-styled').forEach(input=>{
-            if(input.id==='coaster-qty')return;
-            const qty=parseInt(input.value)||0;
-            if(qty>0){
-                const card=input.closest('.item-card');if(!card)return;
-                const nameEl=card.querySelector('.item-name');
-                const priceEl=card.querySelector('.item-price');
-                if(!nameEl||!priceEl)return;
-                const name=nameEl.innerText.trim().split('\n')[0];
-                const price=parseInt(priceEl.innerText.replace(/[^0-9]/g,''))||0;
-                const subtotal=price*qty;
-                hasItems=true;totalAmount+=subtotal;
-                data.push([name,'—',price,qty,subtotal]);
-            }
+        document.querySelectorAll("input.qty-input-styled").forEach((input) => {
+          if (input.id === "coaster-qty") return;
+          const qty = parseInt(input.value) || 0;
+          if (qty > 0) {
+            const card = input.closest(".item-card");
+            if (!card) return;
+            const nameEl = card.querySelector(".item-name");
+            const priceEl = card.querySelector(".item-price");
+            if (!nameEl || !priceEl) return;
+            const name = nameEl.innerText.trim().split("\n")[0];
+            const price =
+              parseInt(priceEl.innerText.replace(/[^0-9]/g, "")) || 0;
+            const subtotal = price * qty;
+            hasItems = true;
+            totalAmount += subtotal;
+            data.push([name, "—", price, qty, subtotal]);
+          }
         });
-        const coasterQty=parseInt(document.getElementById('coaster-qty').value)||0;
-        if(coasterQty>0){hasItems=true;totalAmount+=coasterQty*150;data.push(['加購：壓克力杯墊','—',150,coasterQty,coasterQty*150])}
-        if(!hasItems){showAlert("尚未選擇任何品項喔！");return}
-        const totalFood2=document.getElementById('drink1-rows').children.length+document.getElementById('drink2-rows').children.length+document.getElementById('print-drink-rows').children.length+document.getElementById('cookie-rows').children.length;
-        data.push([],["✦ 特典獲得一覽 ✦","","","",""],["特典杯墊","","","",totalFood2],["特典小卡 (每滿$600)","","","",Math.floor(totalAmount/600)],["限定寫真 (每滿$800)","","","",Math.floor(totalAmount/800)],["生日寫真 (每滿$800)","","","",Math.floor(totalAmount/800)],["特典迎賓卡 (每滿$1200)","","","",Math.floor(totalAmount/1200)],[],["","","","總計金額：",totalAmount]);
-        const ws=XLSX.utils.aoa_to_sheet(data);
-        const wb=XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(wb,ws,"購買清單");
-        XLSX.writeFile(wb,"4週年安咖購買清單.xlsx");
-    }
-    init();
-</script>
-</body>
+        const coasterQty =
+          parseInt(document.getElementById("coaster-qty").value) || 0;
+        if (coasterQty > 0) {
+          hasItems = true;
+          totalAmount += coasterQty * 150;
+          data.push([
+            "加購：壓克力杯墊",
+            "—",
+            150,
+            coasterQty,
+            coasterQty * 150,
+          ]);
+        }
+        if (!hasItems) {
+          showAlert("尚未選擇任何品項喔！");
+          return;
+        }
+        const totalFood2 =
+          document.getElementById("drink1-rows").children.length +
+          document.getElementById("drink2-rows").children.length +
+          document.getElementById("print-drink-rows").children.length +
+          document.getElementById("cookie-rows").children.length;
+        data.push(
+          [],
+          ["✦ 特典獲得一覽 ✦", "", "", "", ""],
+          ["特典杯墊", "", "", "", totalFood2],
+          ["特典小卡 (每滿$600)", "", "", "", Math.floor(totalAmount / 600)],
+          ["限定寫真 (每滿$800)", "", "", "", Math.floor(totalAmount / 800)],
+          ["生日寫真 (每滿$800)", "", "", "", Math.floor(totalAmount / 800)],
+          [
+            "特典迎賓卡 (每滿$1200)",
+            "",
+            "",
+            "",
+            Math.floor(totalAmount / 1200),
+          ],
+          [],
+          ["", "", "", "總計金額：", totalAmount],
+        );
+        const ws = XLSX.utils.aoa_to_sheet(data);
+        const wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, "購買清單");
+        XLSX.writeFile(wb, "4週年安咖購買清單.xlsx");
+      }
+      function downloadSummaryImage() {
+        const box = document.querySelector(".summary-box");
+        const body = document.getElementById("summary-body");
+
+        // 暫時展開 summary-body 讓 html2canvas 讀取完整高度
+        const originalMaxHeight = body.style.maxHeight;
+        const originalOverflow = body.style.overflow;
+        body.style.maxHeight = "none";
+        body.style.overflow = "visible";
+
+        // 暫時讓整個 box 高度自動撐開
+        const originalBoxMaxHeight = box.style.maxHeight;
+        const originalBoxOverflow = box.style.overflow;
+        box.style.maxHeight = "none";
+        box.style.overflow = "visible";
+
+        html2canvas(box, {
+          backgroundColor: "#0f0720",
+          scale: 2,
+          useCORS: true,
+          scrollY: 0,
+          windowWidth: box.scrollWidth,
+          width: box.offsetWidth,
+          height: box.scrollHeight,
+        }).then((canvas) => {
+          const link = document.createElement("a");
+          link.download = "4週年安咖購買清單.png";
+          link.href = canvas.toDataURL("image/png");
+          link.click();
+
+          // 還原樣式
+          body.style.maxHeight = originalMaxHeight;
+          body.style.overflow = originalOverflow;
+          box.style.maxHeight = originalBoxMaxHeight;
+          box.style.overflow = originalBoxOverflow;
+        });
+      }
+      init();
+    </script>
+  </body>
 </html>
