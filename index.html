@@ -672,6 +672,12 @@
         padding: 30px 0;
         font-size: 0.9rem;
       }
+      .summary-dl-btn:disabled {
+        opacity: 0.35;
+        cursor: not-allowed;
+        box-shadow: none;
+        pointer-events: none;
+      }
     </style>
   </head>
   <body>
@@ -1118,9 +1124,13 @@
         </div>`;
         }
 
+        const dlBtn = document.querySelector(".summary-dl-btn");
+
         if (!hasItems) {
           body.innerHTML = '<div class="summary-empty">尚未選擇任何品項</div>';
+          dlBtn.disabled = true;
         } else {
+          dlBtn.disabled = false;
           const bonusItems = [
             {
               name: "特典杯墊",
