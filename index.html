@@ -6,6 +6,22 @@
       name="viewport"
       content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
     />
+    <!-- Open Graph 預覽設定 -->
+    <meta property="og:title" content="4週年 animate cafe 統計" />
+    <meta
+      property="og:description"
+      content="可多人一起編輯 新世界狂歡 4週年品項，也可計算滿額贈禮。"
+    />
+    <meta
+      property="og:url"
+      content="https://jiangjoie.github.io/NU-4th-Anniversary/"
+    />
+    <meta property="og:type" content="website" />
+    <meta
+      property="og:image"
+      content="https://jiangjoie.github.io/NU-4th-Anniversary/images/18.png"
+    />
+
     <title>4週年 animate cafe</title>
     <link
       href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
@@ -124,9 +140,10 @@
       }
       .room-bar-top {
         display: flex;
-        align-items: center;
+        align-items: flex-start;
         justify-content: space-between;
         gap: 10px;
+        flex-wrap: wrap;
       }
       .room-code-label {
         font-size: 0.7rem;
@@ -145,9 +162,12 @@
         color: var(--text-dim);
         margin-top: 2px;
       }
+
       .room-actions {
         display: flex;
         gap: 6px;
+        flex-wrap: wrap;
+        justify-content: flex-end;
       }
       .room-btn {
         background: rgba(45, 212, 191, 0.1);
